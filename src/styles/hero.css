@@ -1,0 +1,115 @@
+.hero-wrapper{
+    padding-top: 10%;
+    padding-bottom: 30px;
+    padding-left: 10%;
+    padding-right: 10%;
+    background: linear-gradient(180deg, #FFFFFF 0%, #EDF6FF 35.55%);
+    background-size: cover;
+    background-position: bottom;
+    min-height: 100vh;
+}
+.hero-title{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 60px;
+    color: #A5090C;
+    padding-right: 10%;
+}
+.hero-text{ 
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 30px;
+    color: #8D8D8D;
+}
+.hero-right{
+    align-self: center;
+}
+.button{
+    background: #DF3034;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+    color: #FFFFFF;
+}
+.hero-btn-wrapper{
+    margin-top: 15%;
+}
+@media(max-width:1024px){
+    .hero-left{
+        padding-top: 15%;
+    }
+    .hero-title, .hero-download-wrapper{
+        padding-left: 10%;
+    }
+    .hero-text{
+        font-size: 16px;
+        line-height: 150%;
+        padding-left: 10%;
+    }
+}
+@media(max-width:768px){
+    .hero-text, .hero-title, .hero-download-wrapper{
+        padding-left: 7.5%;
+        padding-right: 0;
+    }
+    .hero-title{
+        font-size: 32px;
+    }
+    .hero-text{
+        font-size: 14px;
+        line-height: 150%;
+    }
+    .hero-download{
+        width: 150px;
+        height: 54px;
+    }
+}
+@media(max-width:576px){
+    .hero-text, .hero-title, .hero-download-wrapper{
+        padding-left: 7.5%;
+        padding-right: 7.5%;
+    }
+    .hero-download{
+        width: 170px;
+        height: 60px;
+    }
+    .hero-left{
+        padding-top: 30%;
+    }
+    .hero-title{
+        font-size: 42px;
+    }
+    .hero-text{
+        font-size: 18px;
+        line-height: 150%;
+    }
+    .hero-right{
+        padding-top: 15%;
+    }
+}
+@media(max-width:320px){
+    .hero-text, .hero-title, .hero-download-wrapper{
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+    .hero-title{
+        font-size: 32px;
+    }
+    .hero-text{
+        font-size: 14px;
+        line-height: 150%;
+    }
+    .hero-download{
+        width: 150px;
+        height: 54px;
+    }
+}
