@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import ImgCarousel from "./ImageCarousel";
 
-function Roadmap() {
+function Offering() {
   return (
-    <Wrapper id="roadmap">
+    <Wrapper id="offering">
       <AboutConfig>
         <PC>
           <div className="container-fluid ">
@@ -179,4 +179,4 @@ const IMG = styled.img`
   } */
 `;
 
-export default Roadmap;
+export default Offering;

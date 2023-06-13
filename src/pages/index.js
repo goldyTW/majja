@@ -7,6 +7,7 @@ import Hero from '../../components/Hero';
 import Offering from '../../components/Offering';
 import VideoSection from '../../components/video-section';
 import Testimonies from '../../components/Testimonies';
+import FindUs from '../../components/FindUs';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,6 +27,7 @@ export default function Home() {
      <Offering></Offering>
      <Testimonies></Testimonies>
      <VideoSection></VideoSection>
+     <FindUs></FindUs>
      <Footer></Footer>
    </>
   )

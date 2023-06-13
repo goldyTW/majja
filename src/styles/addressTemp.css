@@ -1,0 +1,417 @@
+@supports not (-webkit-touch-callout: none) {
+  .element {
+    background: #e6ecf2;
+  }
+
+  .container {
+    overflow-y: hidden; // hide vertical
+    overflow-x: hidden; // hide horizontal
+    width: 80%;
+    margin-left: 0%;
+    margin-right: 0%;
+    font-family: "OpenSans", sans-serif;
+  }
+
+  .bigcardLeft {
+    background-color: #debc8f;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+    .text {
+      font-style: normal;
+      font-weight: bold;
+      font-size: var(--fs-52);
+      min-height: 0.000001vw;
+      line-height: 115%;
+      color: #ffffff;
+    }
+
+    .text2 {
+      font-style: normal;
+      font-weight: normal;
+      font-size: var(--fs-14);
+      min-height: 0.000001vw;
+      line-height: 170%;
+      color: #ffffff;
+      margin-bottom: 2rem;
+    }
+
+    button {
+      padding: 2% 10%;
+      border: none;
+      transition: 0.5s;
+      filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.25));
+
+      font-style: normal;
+      font-weight: 500;
+      font-size: var(--fs-16);
+      line-height: 120%;
+      min-height: 0.000001vw;
+      color: #ffffff;
+    }
+
+    .serveitem2 {
+      .label {
+        font-style: normal;
+        font-weight: 600;
+        font-size: var(--fs-14);
+        min-height: 0.000001vw;
+        line-height: 122%;
+        color: #ffffff;
+        margin-bottom: 1%;
+        margin-top: 1.5%;
+      }
+
+      input {
+        height: var(--fs-42);
+        background: rgba(255, 255, 255, 0.7);
+        border: 0.0625rem solid #ffffff;
+        box-sizing: border-box;
+        border-radius: 0.125rem;
+        min-height: 0.000001vw;
+        &:focus {
+          background-color: white;
+        }
+      }
+
+      textarea {
+        min-height: clamp(5.75rem, 5vw, 15rem);
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid #ffffff;
+        box-sizing: border-box;
+        border-radius: 2px;
+        &:focus {
+          background-color: white;
+        }
+      }
+
+      button[type="submit"] {
+        margin-left: 0%;
+        background: #3f82af;
+        border-radius: 3.125rem;
+      }
+
+      button:disabled {
+        filter: grayscale(100%);
+      }
+
+      ::placeholder {
+        color: #1a203d 30%;
+        font-style: normal;
+        font-weight: normal;
+        font-size: var(--fs-14);
+        line-height: 162%;
+        min-height: 0.000001vw;
+      }
+    }
+  }
+
+  .bigcardRight {
+    overflow: hidden;
+    flex-direction: column;
+
+    .serveitem {
+      display: inline-flex;
+      margin: 0 0 2% 0;
+
+      .para {
+        .text {
+          font-family: "Raleway-Bold";
+          font-style: normal;
+          font-weight: bold;
+          font-size: var(--fs-20);
+          min-height: 0.000001vw;
+          line-height: 113%;
+          color: #1f3b62;
+
+          cursor: default;
+        }
+
+        .anChor {
+          margin-top: 5%;
+          font-style: normal;
+          font-weight: normal;
+          font-size: var(--fs-14);
+          min-height: 0.000001vw;
+          line-height: 162%;
+          color: #7690a8;
+          filter: brightness(75%);
+
+          cursor: default;
+
+          .addressTitle {
+            font-size: var(--fs-16);
+            line-height: 162%;
+            min-height: 0.000001vw;
+            color: #1f3b62;
+          }
+        }
+
+        .map {
+          margin-top: 5%;
+        }
+
+        .social {
+          margin-right: -1rem;
+          color: #224799;
+          cursor: pointer;
+          font-size: var(--fs-28);
+          min-height: 0.000001vw;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .bigcardLeft {
+      .text {
+        font-size: 52px;
+      }
+      .text2m,
+      button {
+        font-size: 16px;
+      }
+    }
+    .bigcardRight {
+      .serveitem {
+        .para {
+          .text {
+            font-size: 24px;
+          }
+          .social {
+            font-size: 28px;
+          }
+        }
+      }
+    }
+  }
+  @media (min-width: 1218px) and (max-width: 1337px) {
+    .bigcardRight {
+      .serveitem {
+        .para {
+          .anChor {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+  @media (min-width: 1200px) and (max-width: 1217px) {
+    .bigcardRight {
+      .serveitem {
+        .para {
+          .anChor {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+}
+@supports (-webkit-touch-callout: none) {
+  .element {
+    background: #e6ecf2;
+  }
+
+  .container {
+    overflow-y: hidden; // hide vertical
+    overflow-x: hidden; // hide horizontal
+    width: 80%;
+    margin-left: 0%;
+    margin-right: 0%;
+    font-family: "OpenSans", sans-serif;
+  }
+
+  .bigcardLeft {
+    background-color: #debc8f;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+    .text {
+      font-style: normal;
+      font-weight: bold;
+      font-size: var(--fs-52);
+      min-height: 0.000001vw;
+      line-height: 115%;
+      color: #ffffff;
+    }
+
+    .text2 {
+      font-style: normal;
+      font-weight: normal;
+      font-size: var(--fs-14);
+      min-height: 0.000001vw;
+      line-height: 170%;
+      color: #ffffff;
+      margin-bottom: 2rem;
+    }
+
+    button {
+      padding: 1% 4%;
+      background-color: #94ceef;
+      border: none;
+      transition: 0.5s;
+      filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.25));
+
+      font-style: normal;
+      font-weight: 500;
+      font-size: var(--fs-14);
+      line-height: 120%;
+      min-height: 0.000001vw;
+      color: #ffffff;
+    }
+
+    .serveitem2 {
+      .label {
+        font-style: normal;
+        font-weight: 600;
+        font-size: var(--fs-14);
+        min-height: 0.000001vw;
+        line-height: 122%;
+        color: #ffffff;
+        margin-bottom: 1%;
+        margin-top: 1.5%;
+      }
+
+      input {
+        height: var(--fs-42);
+        background: rgba(255, 255, 255, 0.7);
+        border: 0.0625rem solid #ffffff;
+        box-sizing: border-box;
+        border-radius: 0.125rem;
+        min-height: 0.000001vw;
+        &:focus {
+          background-color: white;
+        }
+      }
+
+      textarea {
+        min-height: clamp(5.75rem, 5vw, 15rem);
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid #ffffff;
+        box-sizing: border-box;
+        border-radius: 2px;
+        &:focus {
+          background-color: white;
+        }
+      }
+
+      button[type="submit"] {
+        margin-left: 0%;
+        background: #3f82af;
+        border-radius: 3.125rem;
+      }
+
+      button:disabled {
+        filter: grayscale(100%);
+      }
+
+      ::placeholder {
+        color: #1a203d 30%;
+        font-style: normal;
+        font-weight: normal;
+        font-size: var(--fs-14);
+        min-height: 0.000001vw;
+        line-height: 162%;
+      }
+    }
+  }
+
+  .bigcardRight {
+    overflow: hidden;
+    flex-direction: column;
+
+    .serveitem {
+      display: inline-flex;
+      margin: 0 0 2% 0;
+
+      .para {
+        .text {
+          font-family: "Raleway-Bold";
+          font-style: normal;
+          font-weight: bold;
+          font-size: var(--fs-20);
+          min-height: 0.000001vw;
+          line-height: 113%;
+          color: #1f3b62;
+
+          cursor: default;
+        }
+
+        .anChor {
+          margin-top: 5%;
+          font-style: normal;
+          font-weight: normal;
+          font-size: var(--fs-14);
+          min-height: 0.000001vw;
+          line-height: 162%;
+          color: #7690a8;
+          filter: brightness(75%);
+
+          cursor: default;
+
+          .addressTitle {
+            font-size: var(--fs-16);
+            line-height: 162%;
+            min-height: 0.000001vw;
+            color: #1f3b62;
+          }
+        }
+
+        .map {
+          margin-top: 5%;
+        }
+
+        .social {
+          margin-right: -1rem;
+          color: #224799;
+          cursor: pointer;
+          font-size: var(--fs-28);
+          min-height: 0.000001vw;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .bigcardLeft {
+      .text {
+        font-size: 52px;
+      }
+      .text2 {
+        font-size: 16px;
+      }
+    }
+    .bigcardRight {
+      .serveitem {
+        .para {
+          .text {
+            font-size: 24px;
+          }
+        }
+      }
+    }
+  }
+  @media (min-width: 1218px) and (max-width: 1337px) {
+    .bigcardRight {
+      .serveitem {
+        .para {
+          .anChor {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+  @media (min-width: 1200px) and (max-width: 1217px) {
+    .bigcardRight {
+      .serveitem {
+        .para {
+          .anChor {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+}
