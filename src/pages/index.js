@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import Footer from '../../components/footer';
 import Navbar from '../../components/Navbar';
 import Hero from '../../components/Hero';
+import Offering from '../../components/Offering';
 import VideoSection from '../../components/video-section';
 import Testimonies from '../../components/Testimonies';
 
@@ -22,6 +23,7 @@ export default function Home() {
      </Head>
      <Navbar></Navbar>
      <Hero></Hero>
+     <Offering></Offering>
      <Testimonies></Testimonies>
      <VideoSection></VideoSection>
      <Footer></Footer>
