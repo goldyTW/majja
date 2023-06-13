@@ -15,14 +15,18 @@ function AddresTemp() {
         <StyledTitle>Opening Hours</StyledTitle>
         <StyledText>
           <table>
-            <tr>
-              <td style={{ padding: ".5rem 6rem .25rem 0" }}>Mon - Fri</td>
-              <td style={{ padding: ".5rem 6rem .25rem 0" }}>06.00 - 22.00</td>
-            </tr>
-            <tr>
-              <td>Sat - Sun</td>
-              <td>06.00 - 20.00</td>
-            </tr>
+            <tbody>
+              <tr>
+                <td style={{ padding: ".5rem 6rem .25rem 0" }}>Mon - Fri</td>
+                <td style={{ padding: ".5rem 6rem .25rem 0" }}>
+                  06.00 - 22.00
+                </td>
+              </tr>
+              <tr>
+                <td>Sat - Sun</td>
+                <td>06.00 - 20.00</td>
+              </tr>
+            </tbody>
           </table>
         </StyledText>
       </div>

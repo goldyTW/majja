@@ -8,6 +8,7 @@ import '../styles/video.css'
 import '../styles/testimonies.css'
 import '../styles/card.css'
 import '../styles/offering.css'
+import '../styles/floatingWA.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "swiper/swiper.min.css";
 
