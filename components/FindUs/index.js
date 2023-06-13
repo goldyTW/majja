@@ -17,7 +17,7 @@ function FindUs() {
                   src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15866.85873367116!2d106.806317!3d-6.168947!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f7a57dbadcb3%3A0x96cb5b79b9070c36!2sMAJJA%20Klinik%20Fertilitas%20Endokrin%20Reproduksi!5e0!3m2!1sen!2sid!4v1686694634517!5m2!1sen!2sid"
                   width="613px"
                   height="472px"
-                  style={{ border:"0" }}
+                  style={{ border: "0" }}
                   allowfullscreen=""
                   loading="lazy"
                   referrerpolicy="no-referrer-when-downgrade"
@@ -81,35 +81,77 @@ function FindUs() {
           </div>
         </PC>
 
-        {/* <MOBILE>
+        <MOBILE>
           <div className="container-fluid text-center">
             <div className="row align-items-center">
               <div className="col-12">
-                <ImgCarousel />
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15866.85873367116!2d106.806317!3d-6.168947!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f7a57dbadcb3%3A0x96cb5b79b9070c36!2sMAJJA%20Klinik%20Fertilitas%20Endokrin%20Reproduksi!5e0!3m2!1sen!2sid!4v1686694634517!5m2!1sen!2sid"
+                  width="613px"
+                  height="472px"
+                  style={{ border: "0" }}
+                  allowfullscreen=""
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                ></iframe>
               </div>
               <div className="col-12">
-                <StyledTitle>
-                  MAJJA Klinik menawarkan layanan konsultasi dan pengobatan
-                  lengkap untuk masalah{" "}
-                  <span style={{ color: "#A5090C" }}>kesuburan.</span>
-                </StyledTitle>
-                <StyledText>
-                  Dengan tim medis ahli di bidang Obstetri, Ginekologi, dan
-                  Andrologi, MAJJA Klinik menggunakan teknologi mutakhir dan
-                  metode efektif untuk memberikan diagnosis akurat dan
-                  penanganan yang tepat.
-                </StyledText>
-                <ImgWrapper>
-                  <img
-                    src="/images/whymajja.png"
-                    alt="why-majja"
-                    width="100%"
-                  />
-                </ImgWrapper>
+                <div className="row">
+                  <div className="col-1">
+                    <Icon
+                      icon="mdi:location"
+                      className=""
+                      style={{
+                        cursor: "pointer",
+                        fontSize: "36px",
+                        color: "#A5090C",
+                      }}
+                    />
+                  </div>
+                  <div className="col-11">
+                    <AddresTemp />
+                  </div>
+                </div>
+                <StyledSectionWrapper className="row">
+                  <div className="col-1">
+                    <Icon
+                      icon="mdi:telephone"
+                      rotate={3}
+                      className=""
+                      style={{
+                        cursor: "pointer",
+                        fontSize: "36px",
+                        color: "#A5090C",
+                      }}
+                    />
+                  </div>
+                  <StyledSubTitle className="col-11 mb-5">
+                    +62 813 8075 1331
+                  </StyledSubTitle>
+                </StyledSectionWrapper>
+                <StyledSectionWrapper className="row">
+                  <div className="col-1">
+                    <Icon
+                      icon="tabler:mail-filled"
+                      className=""
+                      style={{
+                        cursor: "pointer",
+                        fontSize: "36px",
+                        color: "#A5090C",
+                      }}
+                    />
+                  </div>
+                  <StyledSubTitle className="col-11">
+                    sekretariat.majja@gmail.com
+                  </StyledSubTitle>
+                </StyledSectionWrapper>
+                <ButtonWrapper>
+                  <Button link="/booking" text="Booking Sekarang"></Button>
+                </ButtonWrapper>
               </div>
             </div>
           </div>
-        </MOBILE> */}
+        </MOBILE>
       </AboutConfig>
     </Wrapper>
   );
