@@ -9,6 +9,9 @@ import VideoSection from '../../components/video-section';
 import Testimonies from '../../components/Testimonies';
 import FindUs from '../../components/FindUs';
 import FloatingWA from '../../components/FloatingWA';
+import ArticleGridHome from '../../components/articlegrid';
+import LayananHome from '../../components/LayananHome';
+import DoctorHome from '../../components/DoctorHome';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,8 +29,11 @@ export default function Home() {
      <Navbar></Navbar>
      <Hero></Hero>
      <Offering></Offering>
+     <LayananHome></LayananHome>
      <Testimonies></Testimonies>
+     <DoctorHome></DoctorHome>
      <VideoSection></VideoSection>
+     <ArticleGridHome></ArticleGridHome>
      <FindUs></FindUs>
      <FloatingWA></FloatingWA>
      <Footer></Footer>

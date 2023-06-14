@@ -17,14 +17,14 @@ function AddresTemp() {
           <table>
             <tbody>
               <tr>
-                <td style={{ padding: ".5rem 6rem .25rem 0" }}>Mon - Fri</td>
-                <td style={{ padding: ".5rem 6rem .25rem 0" }}>
+                <td style={{ padding: ".5rem 3rem .25rem 0" }}>Mon - Fri</td>
+                <td style={{ padding: ".5rem 3rem .25rem 0" }}>
                   06.00 - 22.00
                 </td>
               </tr>
               <tr>
-                <td>Sat - Sun</td>
-                <td>06.00 - 20.00</td>
+                <td style={{ padding: ".5rem 3rem .25rem 0" }}>Sat - Sun</td>
+                <td style={{ padding: ".5rem 3rem .25rem 0" }}>06.00 - 20.00</td>
               </tr>
             </tbody>
           </table>
@@ -50,6 +50,7 @@ const StyledText = styled.div`
   font-family: "Poppins";
   font-style: normal;
   font-weight: 500;
+  text-align:'center';
   font-size: var(--fs-14);
 
   /* Black */

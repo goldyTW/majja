@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import AddresTemp from "./AddressTemp";
 import Button from "../Button";
 import { Icon } from "@iconify/react";
+import Aos from "aos";
 
 function FindUs() {
+  useEffect(() => {
+    Aos.init();
+  }, []);
+
   return (
     <Wrapper id="findUs">
       <StyledSectionTitle>Find Us!</StyledSectionTitle>
       <AboutConfig>
         <PC>
-          <div className="container-fluid ">
+          <div className="container-fluid" data-aos="fade-up">
             <div className="row align-items-center">
               <div className="col-6">
                 <iframe
@@ -18,9 +23,9 @@ function FindUs() {
                   width="613px"
                   height="472px"
                   style={{ border: "0" }}
-                  allowfullscreen=""
+                  allowFullScreen=""
                   loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
+                  referrerPolicy="no-referrer-when-downgrade"
                 ></iframe>
               </div>
               <div className="col-6">
@@ -90,9 +95,9 @@ function FindUs() {
                   width="613px"
                   height="472px"
                   style={{ border: "0" }}
-                  allowfullscreen=""
+                  allowFullScreen=""
                   loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
+                  referrerPolicy="no-referrer-when-downgrade"
                 ></iframe>
               </div>
               <div className="col-12">
@@ -174,7 +179,7 @@ const ImgWrapper = styled.div`
 
 const AboutConfig = styled.div`
   font-family: "Poppins";
-  padding: 5% 0 5% 5%;
+  padding: 2% 0 10% 5%;
 
   overflow: hidden;
 
@@ -207,7 +212,7 @@ const StyledSectionTitle = styled.div`
   font-family: "Lato";
   font-style: normal;
   font-weight: 700;
-  font-size: var(--fs-42);
+  font-size: var(--fs-32);
   color: #262626;
 
   padding: 0 0 0 5%;

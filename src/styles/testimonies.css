@@ -9,29 +9,22 @@
 }
 .swiper-button-prev,
 .swiper-button-next {
-    color: rgb(239, 239, 239) !important;
+    color: #DF3034 !important;
     font-weight: bold;
-    font-size: 0.7rem;
+    font-size: 0.5rem !important;
+    background: rgba(255, 255, 255, 0.6) !important;
+    border-radius: 50% !important;
     /* margin: -20px; */
 }
-
-@media(max-width:1024px){
-    /* .card{
-        width: 90vw;
-    } */
+.swipercarouselphone{
+    display: none;
 }
-@media(max-width:576px){
-    /* .card{
-        aspect-ratio: 9/16;
-        width: 100%;
+
+@media(max-width:768px){
+    .swipercarousel{
+        display: none;
     }
-    .card .poster img{
-        width:300%;
+    .swipercarouselphone{
+        display: block;
     }
-    .card .details{
-        position: absolute;
-        bottom: 0px;
-        left: 0px;
-        padding: 20px;
-    } */
 }

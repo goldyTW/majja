@@ -40,8 +40,7 @@ function Testimonies() {
       <h1 className='testi-title'>Dipercaya Oleh 8,500+ Pelanggan</h1>
       <div className="row justify-content-center" data-aos="fade-up">
         <div className='col-xl-11 col-12'>
-            {/* {
-                i18n.t('eventtitle') == "Events and Awards" ?  */}
+            <div className="swipercarousel">
                 <Swiper
                 slidesPerView={3.5}
                 navigation={true} 
@@ -52,7 +51,19 @@ function Testimonies() {
                     </SwiperSlide>
                 ))}
                 </Swiper>
-            {/* }            */}
+            </div>
+            <div className="swipercarouselphone">
+                <Swiper
+                slidesPerView={1.5}
+                navigation={true} 
+                >
+                {eventsEN.map((item, i) => (
+                    <SwiperSlide key={i}>
+                        <Card text={item.text} title={item.title}></Card>
+                    </SwiperSlide>
+                ))}
+                </Swiper>
+            </div>          
         </div>
         </div>
     </div>

@@ -4,7 +4,7 @@ import React from 'react'
 function Button({link, text}) {
   return (
     <Link href={link}>
-    <span className='button'>{text}</span>
+    <button className='button'>{text}</button>
     </Link>
   )
 }

@@ -29,36 +29,40 @@
     align-self: center;
 }
 .button{
-    background: #DF3034;
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-family: 'Poppins';
+    border: 0.2rem solid #df3034;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    color: #ffffff;
+
+    background-image: -webkit-linear-gradient(
+        30deg,
+        #df3034 50%,
+        transparent 50%
+    );
+    background-image: linear-gradient(30deg, #df3034 50%, white 50%);
+    background-size: 31.25rem;
+    background-repeat: no-repeat;
+    background-position: 0%;
+    -webkit-transition: background 300ms ease-in-out;
+    transition: background 300ms ease-in-out;
+    font-family: "Poppins";
     font-style: normal;
     font-weight: 600;
     font-size: 14px;
-    line-height: 24px;
-    text-align: center;
-    color: #FFFFFF;
+    text-decoration: none;
+}
+.button:hover {
+    background-position: 100%;
+    color: #df3034;
 }
 .hero-btn-wrapper{
     margin-top: 15%;
 }
+
 @media(max-width:1024px){
-    .hero-left{
-        padding-top: 15%;
-    }
-    .hero-title, .hero-download-wrapper{
-        padding-left: 10%;
-    }
-    .hero-text{
-        font-size: 16px;
-        line-height: 150%;
-        padding-left: 10%;
-    }
-}
-@media(max-width:768px){
     .hero-text, .hero-title, .hero-download-wrapper{
-        padding-left: 7.5%;
+        padding-left: 0;
         padding-right: 0;
     }
     .hero-title{
@@ -68,15 +72,39 @@
         font-size: 14px;
         line-height: 150%;
     }
-    .hero-download{
-        width: 150px;
-        height: 54px;
+    .hero-left{
+        padding-top: 7.5%;
+    }
+    .hero-right{
+        padding-top: 7.5%;
+    }
+    .hero-wrapper{
+        min-height: 45vh;
+    }
+}
+@media(max-width:768px){
+    .hero-text, .hero-title, .hero-download-wrapper{
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .hero-title{
+        font-size: 32px;
+    }
+    .hero-text{
+        font-size: 14px;
+        line-height: 150%;
+    }
+    .hero-right{
+        padding-top: 25%;
+    }
+    .hero-wrapper{
+        min-height: 60vh;
     }
 }
 @media(max-width:576px){
     .hero-text, .hero-title, .hero-download-wrapper{
-        padding-left: 7.5%;
-        padding-right: 7.5%;
+        padding-left: 0%;
+        padding-right: 0%;
     }
     .hero-download{
         width: 170px;

@@ -1,7 +1,5 @@
-/* eslint-disable @next/next/link-passhref */
 import React from 'react';
 import { useRouter } from 'next/router';
-import Link from "next/link";
 import moment from 'moment';
 import { Icon } from '@iconify/react';
 // import i18n from '../../i18n';

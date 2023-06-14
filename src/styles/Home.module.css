@@ -7,12 +7,6 @@
   min-height: 100vh;
 }
 
-.button{
-  background: #DF3034;
-  border-radius: 8px;
-  padding: 16px 24px;
-}
-
 .description {
   display: inherit;
   justify-content: inherit;

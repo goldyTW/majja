@@ -12,7 +12,7 @@
     font-style: normal;
     font-weight: 600;
     font-size: 24px;
-    line-height: 36px;
+    line-height: 150%;
     color: #262626;
 }
 .cardText{
@@ -22,4 +22,73 @@
     font-size: 16px;
     line-height: 24px;
     color: #262626;
+}
+.cardArticle{
+    background: #FFFFFF;
+    box-shadow: 0px 4px 50px rgba(192, 192, 192, 0.3);
+    border-radius: 0 0 10px 10px;
+    height: 220px;
+}
+.cardArticleTitle{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 150%;
+    color: #262626;
+    text-decoration: none;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+.cardArticleText{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    color: #8D8D8D;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+.cardLayanan{
+    background: #FFFFFF;
+    box-shadow: 0px 4px 50px rgba(192, 192, 192, 0.3);
+    padding: 20px;
+    border:none !important;
+    height: 200px;
+}
+.cardLayananTitle{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 150%;
+    color: #433B3B;
+}
+.cardDokter{
+    background: #FFFFFF;
+    box-shadow: 0px 4px 50px rgba(192, 192, 192, 0.3);
+    padding: 20px;
+    height: 220px;
+    border-radius: 20px;
+}
+.cardDokterTitle{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 150%;
+    color: #433B3B;
+}
+.cardDokterText{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+    color: #8D8D8D;
 }

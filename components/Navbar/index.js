@@ -7,6 +7,8 @@ import { useRouter } from "next/router";
 const HeaderWrapper = styled.header`
   background: transparent;
   padding: 1.5rem;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
   position: fixed;
   top: 0;
   left: 0;

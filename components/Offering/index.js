@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import ImgCarousel from "./ImageCarousel";
+import Aos from "aos";
 
 function Offering() {
+  useEffect(() => {
+    Aos.init();
+  }, []);
+
   return (
     <Wrapper id="offering">
       <AboutConfig>
         <PC>
-          <div className="container-fluid ">
+          <div className="container-fluid" data-aos="fade up">
             <div className="row align-items-center">
               <div className="col-6">
                 <ImgCarousel />
@@ -110,19 +115,19 @@ const MOBILE = styled.div`
 
 const StyledTitle = styled.div`
   font-style: normal;
-  font-weight: 400;
-  font-size: var(--fs-42);
-  line-height: 162%;
+  font-weight: 600;
+  font-size: var(--fs-32);
+  line-height: 150%;
   color: #262626;
 
   margin-bottom: 5%;
 
   @media (max-width: 1121px) {
-    font-size: var(--fs-42);
+    font-size: var(--fs-32);
   }
 
   @media (max-width: 768px) {
-    font-size: var(--fs-32);
+    font-size: var(--fs-22);
   }
 
   @media (max-width: 468px) {
@@ -137,20 +142,20 @@ const StyledTitle = styled.div`
 const StyledText = styled.div`
   font-style: normal;
   font-weight: 400;
-  font-size: var(--fs-22);
-  line-height: 162%;
+  font-size: var(--fs-16);
+  line-height: 182%;
   color: #8d8d8d;
 
   @media (max-width: 1121px) {
-    font-size: var(--fs-22);
+    font-size: var(--fs-16);
   }
 
   @media (max-width: 768px) {
-    font-size: var(--fs-20);
+    font-size: var(--fs-14);
   }
 
   @media (max-width: 468px) {
-    font-size: var(--fs-18);
+    font-size: var(--fs-14);
   }
 
   @media (max-width: 368px) {
