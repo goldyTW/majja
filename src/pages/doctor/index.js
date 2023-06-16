@@ -5,7 +5,6 @@ import Navbar from '../../../components/Navbar';
 import { Select, Input } from 'antd';
 import axios from 'axios';
 import FloatingWA from '../../../components/FloatingWA';
-import Search from 'antd/es/transfer/search';
 
 function Dokter() {
   const { Option } = Select;
@@ -62,7 +61,7 @@ function Dokter() {
             </div>
           </div>
           <div className='col-3'>
-
+              
           </div>
         </div>
     </section>
