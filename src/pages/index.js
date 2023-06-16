@@ -1,6 +1,4 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
 import Footer from '../../components/footer';
 import Navbar from '../../components/Navbar';
 import Hero from '../../components/Hero';
@@ -12,8 +10,6 @@ import FloatingWA from '../../components/FloatingWA';
 import ArticleGridHome from '../../components/articlegrid';
 import LayananHome from '../../components/LayananHome';
 import DoctorHome from '../../components/DoctorHome';
-
-const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   return (

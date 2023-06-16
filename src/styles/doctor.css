@@ -1,25 +1,17 @@
-.doctorwrapper{
+.dokterWrapper{
     background: #F9FCFF;
+    padding-top: 7.5%;
 }
-.doctorTitle{
+.dokterPageTitle{
     font-family: 'Poppins';
     font-style: normal;
     font-weight: 600;
     font-size: 32px;
-    line-height: 150%;
+    line-height: 48px;
     color: #A5090C;
 }
-.doctorText{
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 150%;
-    color: #8D8D8D;
-}
-.doctorImg{
-    position: absolute;
-    transform: translateX(-50%);
-    margin-top: 35px;
-    height: 150px;
+.filter{
+    filter: drop-shadow(2px 4px 15px rgba(0, 0, 0, 0.15));
+    background: #FFFFFF;
+    border-radius: 20px;
 }

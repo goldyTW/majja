@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import '../styles/globals.css'
-// import '../styles/Home.module.css'
 import '../styles/hero.css'
 import '../styles/footer.css'
 import '../styles/navbar.css'
@@ -12,6 +11,7 @@ import '../styles/floatingWA.css'
 import '../styles/article.css'
 import '../styles/layanan.css'
 import '../styles/doctor.css'
+import '../styles/doctorHome.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "swiper/swiper.min.css";
 
