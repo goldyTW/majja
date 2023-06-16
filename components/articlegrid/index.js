@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import React, { useEffect } from 'react'
-import Button from '../Button';
 import AOS from 'aos';
 import BacaSelengkapnya from '../BacaSelengkapnya';
+import ButtonAlt from '../ButtonAlt';
 
 const newsList = [
     {
@@ -42,7 +42,6 @@ function ArticleGridHome() {
         <div className="row justify-content-center" data-aos="fade-up">
         {
             newsList.map((item, index)=>(     
-            // <Link href={`/article/${item.link}`} key={index}>
             <div className="col-xl-3 col-lg-5 col-md-6 col-12 p-3" key={index}>
                 <img src={item.image} width="100%"></img>  
                 <div className="cardArticle p-3">
@@ -50,16 +49,15 @@ function ArticleGridHome() {
                     <div className="cardArticleText my-2">
                         <p>{item.text}</p>
                     </div>
-                    <BacaSelengkapnya></BacaSelengkapnya>
+                    <BacaSelengkapnya link={item.link}></BacaSelengkapnya>
                 </div>
             </div>
-            // </Link>
             ))
         }
         </div>
         <div className="row justify-content-center my-4">
             <div className='col-12 text-center'>
-            <Button link="/" text="Lihat Lebih Banyak"></Button>
+            <ButtonAlt link="/" text="Lihat Lebih Banyak Artikel"></ButtonAlt>
             </div>
         </div>
     </div>

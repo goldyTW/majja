@@ -14,10 +14,10 @@ function Hero() {
               Percayakan kehamilanmu hingga kelahiran buah hati kepada ahlinya sekarang juga!
             </p>
             <div className="hero-btn-wrapper">
-            <Button link="/booking" text="Booking Sekarang"></Button>
+              <Button link="/booking" text="Booking Sekarang"></Button>
             </div>
           </div>
-          <div className='col-lg-5 col-md-6 col-12 align-self-baseline hero-right'>
+          <div className='col-lg-5 col-md-6 col-12 align-self-center hero-right'>
             <img src='/images/hero.png' width="100%"></img>
           </div>
         </div>

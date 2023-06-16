@@ -32,7 +32,6 @@ function Footer() {
                             </h3>
                         <p className='footer-text'>Location</p>
                         <p className='footer-text'>Contacts</p>
-                        <p className='footer-text'>Doctors</p>
                         <p className='footer-text'>Articles</p>
                     </div>
                     <div className="col-lg-3 col-md-5 col-12 p-md-2 px-4 py-2">

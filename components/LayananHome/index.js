@@ -1,6 +1,6 @@
 import React from 'react'
 import CardLayanan from '../CardLayanan'
-import Button from '../Button'
+import ButtonAlt from '../ButtonAlt'
 
 function LayananHome() {
     const layanan = [
@@ -33,10 +33,10 @@ function LayananHome() {
     <section className='layananWrapper py-5'>
         <div className="container my-5">
             <h1 className='ArticleTitleHome'>Layanan Terbaik Untuk Kamu</h1>
-            <div className="row" data-aos="fade-up">
+            <div className="row">
                 {
                     layanan.map((item, i) => (
-                        <div className='col-xl-4 col-lg-4 col-md-6 col-12 p-3' key={i}>
+                        <div className='col-xl-4 col-lg-4 col-md-6 col-12 p-4' key={i} data-aos="fade-up">
                             <CardLayanan title={item.title} text={item.text}></CardLayanan>
                         </div>
                     ))
@@ -44,7 +44,7 @@ function LayananHome() {
             </div>
             <div className="row justify-content-center my-4">
                 <div className='col-12 text-center'>
-                <Button link="/" text="Lihat Semua Layanan"></Button>
+                <ButtonAlt link="/" text="Lihat Semua Layanan"></ButtonAlt>
                 </div>
             </div>
         </div>

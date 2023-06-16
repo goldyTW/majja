@@ -5,16 +5,16 @@ function CardLayanan({text, title}) {
   return (
     <div className='cardLayanan p-3'>
         <div className='row justify-content-center'>
-            <div className='col-2'>
+            <div className='col-2 align-self-center'>
                 <img src='/images/layananimg.png' width="100%"></img>
             </div>
-            <div className='col-10'>
-                <p className='cardLayananTitle align-self-center'>{title}</p>
+            <div className='cardLayananTitle col-10 align-self-center py-2'>
+                {title}
             </div>
         </div>
-        <p className='article'>
+        <div className='cardLayananArticle py-2'>
             {text}
-        </p>
+        </div>
         <BacaSelengkapnya></BacaSelengkapnya>
     </div>
   )

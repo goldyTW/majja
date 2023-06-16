@@ -1,7 +1,7 @@
 import React from 'react'
-import Button from '../Button'
 import BacaSelengkapnya from '../BacaSelengkapnya'
 import { Icon } from '@iconify/react'
+import ButtonAlt from '../ButtonAlt'
 
 function DoctorHome() {
     const dokter = [
@@ -48,14 +48,14 @@ function DoctorHome() {
         <div className='row justify-content-center'>
             <div className="col-xl-3 col-12 align-self-center pe-5">
                 <h2 className="doctorTitle">Temui Dokter Berpengalaman</h2>
-                <p className='doctorText'>MAJJA Klinik memiliki dokter-dokter terbaik yang ahli pada bidangnya dan berpengalaman</p>
-                <Button link="/" text="Lihat Semua Dokter"></Button>
+                <p className='doctorText mb-5'>MAJJA Klinik memiliki dokter-dokter terbaik yang ahli pada bidangnya dan berpengalaman</p>
+                <ButtonAlt link="/" text="Lihat Semua Dokter"></ButtonAlt>
             </div>
-            <div className="col-xl-9 col-12 ps-3">
+            <div className="col-xl-9 col-12 ps-md-5">
                 <div className="row justify-content-center">
                     {
                         dokter.map((item, i) => (
-                            <div className='col-xl-5 col-md-5 col-9 m-md-4 ms-4 me-0 my-3' key={i}>
+                            <div className='col-xl-5 col-md-5 col-9 m-md-4 ms-4 me-0 my-3' key={i} data-aos="fade-up">
                                 <img className='doctorImg align-self-center' src={item.image}></img>
                                 <div className='cardDokter'>
                                     <div className='row'>
@@ -64,12 +64,12 @@ function DoctorHome() {
                                             <p className='cardDokterTitle'>{item.name}</p>
                                             <p className='cardDokterText'>{item.position}</p>
                                             <div className='d-flex'>
-                                            <Icon
-                                                icon="fa6-solid:briefcase-medical"
-                                                className="me-2"
-                                                style={{ cursor: "pointer", fontSize: "18px", color: "#8D8D8D" }}
-                                            />
-                                            <p className='cardDokterText'>{item.xp}</p>
+                                                <Icon
+                                                    icon="fa6-solid:briefcase-medical"
+                                                    className="me-2"
+                                                    style={{ cursor: "pointer", fontSize: "18px", color: "#8D8D8D" }}
+                                                />
+                                                <p className='cardDokterText'>{item.xp}</p>
                                             </div>
                                             <BacaSelengkapnya text="Booking Jadwal"></BacaSelengkapnya>
                                         </div>

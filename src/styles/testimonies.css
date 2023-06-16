@@ -9,17 +9,22 @@
 }
 .swiper-button-prev,
 .swiper-button-next {
-    color: #DF3034 !important;
+    color: #A5090C !important;
+    padding: 1.4rem;
+    /* background-color: #ffffff; */
     font-weight: bold;
-    font-size: 0.5rem !important;
-    background: rgba(255, 255, 255, 0.6) !important;
-    border-radius: 50% !important;
-    /* margin: -20px; */
+    border-radius: 50px;
+}
+.swiper-button-next::after{
+    font-size: 10px;
 }
 .swipercarouselphone{
     display: none;
 }
-
+.backtestimonies{
+    background: url('/images/backtestimonies.png');
+    object-fit: contain;
+}
 @media(max-width:768px){
     .swipercarousel{
         display: none;

@@ -1,5 +1,5 @@
 .hero-wrapper{
-    padding-top: 10%;
+    padding-top: 12.5%;
     padding-bottom: 30px;
     padding-left: 10%;
     padding-right: 10%;
@@ -12,7 +12,7 @@
     font-family: 'Poppins';
     font-style: normal;
     font-weight: 600;
-    font-size: 36px;
+    font-size: 40px;
     line-height: 60px;
     color: #A5090C;
     padding-right: 10%;
@@ -21,16 +21,17 @@
     font-family: 'Poppins';
     font-style: normal;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 30px;
     color: #8D8D8D;
+    padding-right: 15%;
 }
 .hero-right{
     align-self: center;
 }
 .button{
     border: 0.2rem solid #df3034;
-    padding: 0.5rem 1rem;
+    padding: 0.7rem 1.4rem;
     border-radius: 0.5rem;
     cursor: pointer;
     color: #ffffff;
@@ -57,7 +58,7 @@
     color: #df3034;
 }
 .hero-btn-wrapper{
-    margin-top: 15%;
+    margin-top: 12.5%;
 }
 
 @media(max-width:1024px){
@@ -71,6 +72,7 @@
     .hero-text{
         font-size: 14px;
         line-height: 150%;
+        padding-right: 0;
     }
     .hero-left{
         padding-top: 7.5%;

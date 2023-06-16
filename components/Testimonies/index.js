@@ -36,13 +36,13 @@ function Testimonies() {
         AOS.init();
       }, []);
   return (
-    <div className='container py-5 mb-5'>
-      <h1 className='testi-title'>Dipercaya Oleh 8,500+ Pelanggan</h1>
-      <div className="row justify-content-center" data-aos="fade-up">
-        <div className='col-xl-11 col-12'>
+    <div className='container py-5 my-5'>
+      <h1 className='testi-title mb-4'>Dipercaya Oleh 8,500+ Pelanggan</h1>
+      <div className="row justify-content-center backtestimonies">
+        <div className='col-12 my-5'>
             <div className="swipercarousel">
                 <Swiper
-                slidesPerView={3.5}
+                slidesPerView={3.75}
                 navigation={true} 
                 >
                 {eventsEN.map((item, i) => (

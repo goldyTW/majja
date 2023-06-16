@@ -1,10 +1,12 @@
 import React from 'react'
 import { Icon } from '@iconify/react';
+import Link from 'next/link';
 
-function BacaSelengkapnya({text}) {
+function BacaSelengkapnya({text, link}) {
   return (
+    <Link href={link ? link : '/'} style={{textDecoration:'none'}}>
     <div className='row justify-content-center bacaSelengkapnya'>
-        <div className='col-10'>
+        <div className='col-10' style={{ cursor: "pointer" }}>
             {text ? text : 'Baca Selengkapnya'}
         </div>
         <div className='col-2 text-end'>
@@ -15,6 +17,7 @@ function BacaSelengkapnya({text}) {
         />
         </div>
     </div>
+    </Link>
   )
 }
 
