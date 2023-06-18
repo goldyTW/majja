@@ -1,10 +1,105 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ChooseBooking from "./ChooseBooking";
 import DetailBooking from "./DetailBooking";
 import { Card } from "antd";
+import "@amir04lm26/react-modern-calendar-date-picker/lib/DatePicker.css";
+import { Calendar, utils } from "@amir04lm26/react-modern-calendar-date-picker";
+import { Icon } from "@iconify/react";
+import moment from "moment";
+
+const disabledDays = [
+  {
+    year: 2023,
+    month: 6,
+    day: 19,
+  },
+  {
+    year: 2023,
+    month: 6,
+    day: 29,
+  },
+  {
+    year: 2023,
+    month: 6,
+    day: 27,
+  },
+];
+
+const availableDays = [
+  {
+    year: 2023,
+    month: 6,
+    day: 20,
+    className: "GrDay",
+    hour: {
+      available: [9, 10, 17, 19, 20, 21],
+      unavailable: [8, 18],
+    },
+  },
+  {
+    year: 2023,
+    month: 6,
+    day: 21,
+    className: "GrDay",
+    hour: {
+      available: [9, 17, 19, 21],
+      unavailable: [8, 10, 18, 20],
+    },
+  },
+  {
+    year: 2023,
+    month: 6,
+    day: 22,
+    className: "GrDay",
+    hour: {
+      available: [8, 9, 10, 17, 19, 20, 21],
+      unavailable: [18],
+    },
+  },
+  {
+    year: 2023,
+    month: 6,
+    day: 23,
+    className: "GrDay",
+    hour: {
+      available: [8, 9, 10, 17, 18, 19, 20, 21],
+      unavailable: [],
+    },
+  },
+  {
+    year: 2023,
+    month: 6,
+    day: 24,
+    className: "GrDay",
+    hour: {
+      available: [9],
+      unavailable: [8, 10, 17, 18, 19, 20, 21],
+    },
+  },
+];
 
 function BookingJadwalContent() {
+  const [selectedDay, setSelectedDay] = useState(utils().getToday());
+  const [filteredDate, setFilteredDate] = useState([]);
+  const [value, setValue] = useState();
+
+  const filterData = availableDays.filter(
+    (item) =>
+      item.day == selectedDay.day &&
+      item.month == selectedDay.month &&
+      item.year == selectedDay.year
+  );
+  const mappingJam = filterData.map((item) => item.hour);
+  const availableHour = mappingJam.map((item) => item.available);
+  const unavailableHour = mappingJam.map((item) => item.unavailable);
+  const allHour = availableHour.flat(1).concat(unavailableHour.flat(1));
+  const sortAllHour = allHour.sort(function (a, b) {
+    return a - b;
+  });
+  const chkDisabled = () => {
+    if (allHour.indexOf(unavailableHour) !== -1) return true;
+  };
   return (
     <Wrapper id="findUs">
       <StyledSectionTitle>Booking Jadwal</StyledSectionTitle>
@@ -19,15 +114,91 @@ function BookingJadwalContent() {
                   style={{
                     width: "100%",
                     height: "32rem",
-                    backgroundColor: "white", 
-                    borderRadius: "1.5rem", 
+                    backgroundColor: "white",
+                    borderRadius: "1.5rem",
                   }}
                 >
-                  <ChooseBooking />
+                  {/* <ChooseBooking /> */}
+                  <div className="row align-items-center">
+                    <div className="col-6">
+                      <Calendar
+                        value={selectedDay}
+                        onChange={setSelectedDay}
+                        shouldHighlightWeekends
+                        minimumDate={utils().getToday()}
+                        disabledDays={disabledDays} // here to disable off days
+                        customDaysClassName={availableDays}
+                        colorPrimary="#DF3034"
+                        calendarClassName="responsive-calendar"
+                        renderFooter={() => (
+                          <div className="row align-items-center text-center">
+                            <StyledSelected className="col-4">
+                              Selected
+                            </StyledSelected>
+                            <StyledAvailable className="col-4">
+                              Available
+                            </StyledAvailable>
+                            <StyledNotAvail className="col-4">
+                              Not Available
+                            </StyledNotAvail>
+                          </div>
+                        )}
+                      />
+                    </div>
+                    <div className="col-6">
+                      <div>
+                        {/* <DetailDokter /> */}
+                        <div className="row">
+                          <div className="col-3">
+                            <img
+                              src="/images/doctor1Rec.png"
+                              alt="doctor1"
+                              width="100%"
+                            />
+                          </div>
+                          <div className="col-9">
+                            <StyledTitle>Dr. Cindy Rani, SpOG-KFER</StyledTitle>
+                            <StyledText>
+                              Spesialis Obstetri dan Ginekologi
+                            </StyledText>
+                            <StyledTextWIcon>
+                              <Icon
+                                icon="ion:medkit"
+                                className=""
+                                style={{
+                                  cursor: "pointer",
+                                  fontSize: "var(--fs-24)",
+                                  color: "#8D8D8D",
+                                  marginRight: "2%",
+                                }}
+                              />
+                              Pengalaman: 15 tahun
+                            </StyledTextWIcon>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        {/* <RenderJam data={availableDays} selectedDate={selectedDay} /> */}
+                        <RenderJamWrapper className="section">
+                          {sortAllHour.map((item) => (
+                            // <ButtonJam text={item} disabled={chkDisabled} />
+                            <BtnWrapper
+                              // onClick={(e) => handleInput(e, "value")}
+                              onClick={(e) => setValue(e.target.value, "value")}
+                            >
+                              <StyledButton value={item} >
+                                {moment(item, "HH").format("HH:mm")}
+                              </StyledButton>
+                            </BtnWrapper>
+                          ))}
+                        </RenderJamWrapper>
+                      </div>
+                    </div>
+                  </div>
                 </Card>
               </div>
               <div className="col-3">
-                <DetailBooking />
+                <DetailBooking value={value} dateItem={selectedDay} />
               </div>
             </div>
           </div>
@@ -44,7 +215,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center; */
 
-  background: #EDF6FF;
+  background: #edf6ff;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -83,6 +254,108 @@ const StyledSectionTitle = styled.div`
   color: #a5090c;
 
   padding: 0 0 0 5%;
+`;
+
+const StyledSelected = styled.div`
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 600;
+  font-size: var(--fs-12);
+  color: #df3034;
+
+  display: list-item;
+  list-style-type: "•";
+  list-style-position: inside;
+`;
+
+const StyledAvailable = styled.div`
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 600;
+  font-size: var(--fs-12);
+  color: #09a53e;
+
+  display: list-item;
+  list-style-type: "•";
+  list-style-position: inside;
+`;
+
+const StyledNotAvail = styled.div`
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 600;
+  font-size: var(--fs-12);
+  color: #8d8d8d;
+
+  display: list-item;
+  list-style-type: "•";
+  list-style-position: inside;
+`;
+
+const StyledTitle = styled.div`
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: var(--fs-18);
+  color: #433b3b;
+
+  margin-bottom: 2%;
+`;
+
+const StyledText = styled.div`
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  text-align: "center";
+  font-size: var(--fs-14);
+  color: #8d8d8d;
+
+  margin-bottom: 10%;
+`;
+
+const StyledTextWIcon = styled.div`
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  text-align: "center";
+  font-size: var(--fs-14);
+  color: #8d8d8d;
+`;
+
+const RenderJamWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  grid-gap: 10px;
+
+  overflow-y: auto;
+  width: 39.375rem;
+  height: 13.813rem;
+`;
+
+const BtnWrapper = styled.div`
+  padding: 5% 0 0 0;
+`;
+
+const StyledButton = styled.button`
+  /* display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center; */
+  padding: 0.8rem 4rem;
+
+  background: #ffffff;
+  border: 0.2rem solid #e0e0e0;
+  border-radius: 1rem;
+
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: var(--fs-14);
+
+  :focus {
+    color: #ffffff;
+    background: #df3034;
+  }
 `;
 
 export default BookingJadwalContent;
