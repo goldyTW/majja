@@ -2,7 +2,75 @@
   /* by setting font-size, all the elements will correspond */
   font-size: 12px !important; /* default to 10px */
 }
-
+.bookingInputLabel{
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 21px;
+}
+.antd-radio-inner{
+  color: #DF3034 !important;
+  background-color: #DF3034 !important;
+}
+.kategori{
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #433B3B;
+}
+.successSectionTitle{
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: #8D8D8D;
+}
+.successSectionLeft{
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #433B3B;
+}
+.successSectionRight{
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: #433B3B;
+}
+.disclaimer{
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 18px;
+  color: #8D8D8D;
+}
+.successTitle{
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 36px;
+  text-align: center;
+  color: #09A53E;
+}
+.successText{
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+  text-align: center;
+  color: #09A53E;
+}
 @media (max-width: 1500px) {
   .responsive-calendar {
     font-size: 8px !important;
