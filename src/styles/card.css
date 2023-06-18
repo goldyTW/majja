@@ -128,9 +128,40 @@
     line-height: 150%;
     color: #8D8D8D;
 }
+.cardDokterList .text2{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 21px;
+    color: #433B3B;
+}
 .cardDokterList .dot{
     border: 0.5px dashed #c1c1c1;
 }
 .cardDokterList .line{
     border-bottom: 0.5px solid #c2c2c2;
+}
+.ant-pagination-item{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 21px;
+    color: #808080; 
+}
+.ant-pagination-item:hover{
+    border-radius: 50px !important;
+}
+.ant-pagination-item-active{
+    background: #DF3034 !important;
+    border:none !important;
+    border-radius: 50px !important;
+    color: white;
+}
+.ant-pagination-next, .ant-pagination-prev{
+    color: #DF3034 !important;
+}
+.ant-pagination-disabled{
+    color: #808080 !important; 
 }
