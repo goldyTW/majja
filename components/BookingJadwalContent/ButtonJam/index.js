@@ -1,11 +1,23 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import moment from "moment";
+import DetailBooking from "../DetailBooking";
 
 function ButtonJam({ text, disabled }) {
+  const [value, setValue] = useState();
+  // const handleInput = (e) => {
+  //   // console.log(e.target.value);
+  //   setValue(e.target.value);
+  //   console.log(value)
+  // };
   return (
-    <Wrapper>
-        <StyledButton disabled={disabled}>{moment(text,'HH').format('HH:mm')}</StyledButton>
+    <Wrapper 
+    // onClick={(e) => handleInput(e, "value")}
+    onClick={(e) => setValue(e.target.value, "value")}
+    >
+      <StyledButton value={text} disabled={disabled}>
+        {moment(text, "HH").format("HH:mm")}
+      </StyledButton>
     </Wrapper>
   );
 }
@@ -30,9 +42,9 @@ const StyledButton = styled.button`
   font-weight: 600;
   font-size: var(--fs-14);
 
-  :focus{
+  :focus {
     color: #ffffff;
-    background: #DF3034;
+    background: #df3034;
   }
 `;
 export default ButtonJam;

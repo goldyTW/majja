@@ -121,6 +121,10 @@ const StyledNumberTable = styled.div`
 `;
 
 const StyledTextTable = styled.div`
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
   color: #8d8d8d;
 
   @media (max-width: 1121px) {
