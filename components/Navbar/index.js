@@ -3,12 +3,12 @@ import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
+// onClick={()=>window.open(link, '_blank')}
 const HeaderWrapper = styled.header`
   background: transparent;
   padding: 1.5rem;
-  padding-left: 2.5rem;
-  padding-right: 2.5rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
   position: fixed;
   top: 0;
   left: 0;
@@ -41,8 +41,8 @@ const Menu = styled.ul`
   font-family: "Poppins";
   font-style: normal;
   font-weight: 600;
-  font-size: var(--fs-12);
-  /* line-height: 24px; */
+  font-size: var(--fs-14);
+  // line-height: 200%;
 
   li {
     margin-left: 2.5rem;
@@ -97,23 +97,26 @@ const Menu = styled.ul`
 
 const LoginButton = styled.button`
   /* background: #df3034; */
+  margin-bottom:15px;
   border: 0.2rem solid #df3034;
-  padding: 0.5rem 1rem;
+  padding: 0.65rem 1.3rem;
   border-radius: 0.5rem;
   cursor: pointer;
   color: #ffffff;
 
-  background-image: -webkit-linear-gradient(
-    30deg,
-    #df3034 50%,
-    transparent 50%
-  );
-  background-image: linear-gradient(30deg, #df3034 50%, white 50%);
-  background-size: 31.25rem;
-  background-repeat: no-repeat;
-  background-position: 0%;
-  -webkit-transition: background 300ms ease-in-out;
-  transition: background 300ms ease-in-out;
+  // background-image: -webkit-linear-gradient(
+  //   30deg,
+  //   #df3034 50%,
+  //   transparent 50%
+  // );
+  // background-image: linear-gradient(30deg, #df3034 50%, white 50%);
+  // background-size: 31.25rem;
+  // background-repeat: no-repeat;
+  // background-position: 0%;
+  // -webkit-transition: background 300ms ease-in-out;
+  background-color: #df3034;
+  // transition: background 300ms ease-in-out;
+  transition: 0.5s ease-in-out;
 
   font-family: "Poppins";
   font-style: normal;
@@ -122,8 +125,11 @@ const LoginButton = styled.button`
   /* line-height: 24px; */
 
   &:hover {
-    background-position: 100%;
-    color: #df3034;
+    // background-position: 100%;
+    color: white;
+    // transform: scaleX(1.05);
+    border: 0.2rem solid #A5090C;
+    background-color: #A5090C;
   }
 
   @media (max-width: 768px) {
@@ -206,8 +212,9 @@ const Header = () => {
     <>
       <HeaderWrapper
         style={{
-          backgroundColor: "rgba(250, 250, 250, 0.8)", 
+          backgroundColor: "rgba(250,250,250,0.8)", 
           backdropFilter: "blur(5px)",
+          boxShadow: router.pathname != "/" ? " 0px 0px 2rem rgba(192, 192, 192, 0.25)" : "",
           transition: "background 300ms ease-out 0s",
         }}
       >

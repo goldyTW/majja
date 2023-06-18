@@ -1,19 +1,19 @@
 import Head from 'next/head'
 import React from 'react'
-import Footer from '../../../../../components/footer'
-import Navbar from '../../../../../components/Navbar';
+import Footer from '../../../components/footer'
+import Navbar from '../../../components/Navbar';
 import { Select, Input } from 'antd';
 import axios from 'axios';
-import FloatingWA from '../../../../../components/FloatingWA';
+import FloatingWA from '../../../components/FloatingWA';
 
-function Dokter() {
+function BookingSuccess() {
   return (
     <>
-    <Head><title>Dokter</title></Head>
+    <Head><title>Booking Success</title></Head>
     <Navbar></Navbar>
     <section className='dokterWrapper'>
         <div className='container'>
-          <h1 className='dokterPageTitle'>Booking Jadwal</h1>
+            pembayaran berhasil
         </div>
     </section>
     <FloatingWA></FloatingWA>
@@ -22,4 +22,4 @@ function Dokter() {
   )
 }
 
-export default Dokter
+export default BookingSuccess

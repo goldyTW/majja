@@ -15,14 +15,14 @@ function FindUs() {
       <AboutConfig>
       <StyledSectionTitle>Find Us!</StyledSectionTitle>
         <PC>
-          <div className="container-fluid" data-aos="fade-up">
+          <div className="container p-0" data-aos="fade-up">
             <div className="row align-items-center">
-              <div className="col-6">
+              <div className="col-6 p-0" >
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15866.85873367116!2d106.806317!3d-6.168947!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f7a57dbadcb3%3A0x96cb5b79b9070c36!2sMAJJA%20Klinik%20Fertilitas%20Endokrin%20Reproduksi!5e0!3m2!1sen!2sid!4v1686694634517!5m2!1sen!2sid"
-                  width="613px"
+                  // width="613px"
                   height="472px"
-                  style={{ border: "0", width: "85%" }}
+                  style={{ border: "0", width: "95%", borderRadius:'10px' }}
                   allowFullScreen=""
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
@@ -92,15 +92,15 @@ function FindUs() {
               <div className="col-12">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15866.85873367116!2d106.806317!3d-6.168947!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f7a57dbadcb3%3A0x96cb5b79b9070c36!2sMAJJA%20Klinik%20Fertilitas%20Endokrin%20Reproduksi!5e0!3m2!1sen!2sid!4v1686694634517!5m2!1sen!2sid"
-                  width="613px"
+                  // width="613px"
                   height="472px"
-                  style={{ border: "0" }}
+                  style={{ border: "0", width:'100%' }}
                   allowFullScreen=""
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                 ></iframe>
               </div>
-              <div className="col-12">
+              <div className="col-12 py-4">
                 <div className="row">
                   <div className="col-1">
                     <Icon
@@ -173,9 +173,9 @@ const Wrapper = styled.div`
   background-position: center;
 `;
 
-const ImgWrapper = styled.div`
-  margin: 0 5%;
-`;
+// const ImgWrapper = styled.div`
+//   margin: 0 5%;
+// `;
 
 const AboutConfig = styled.div`
   font-family: "Poppins";
@@ -215,7 +215,7 @@ const StyledSectionTitle = styled.div`
   font-size: var(--fs-32);
   color: #A5090C;
 
-  padding: 0 0 5% 5%;
+  padding: 0 0 2.5% 5%;
 `;
 
 const StyledTitle = styled.div`

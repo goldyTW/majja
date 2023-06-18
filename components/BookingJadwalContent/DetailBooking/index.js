@@ -5,7 +5,7 @@ function DetailBooking() {
   return (
     <div>
       <Card
-        title="Detail Booking"
+        // title="Detail Booking"
         // bordered={false}
         style={{
           width: "100%",
@@ -13,6 +13,7 @@ function DetailBooking() {
           borderRadius: "1.5rem", 
         }}
       >
+        <h1 className="detailBookingTitle">Detail Booking</h1>
         <p>Card content</p>
         <p>Card content</p>
         <p>Card content</p>

@@ -1,6 +1,6 @@
 .dokterWrapper{
     background: #F9FCFF;
-    padding-top: 7.5%;
+    padding-top: 10%;
 }
 .dokterPageTitle{
     font-family: 'Poppins';
@@ -31,4 +31,25 @@
 }
 .button2:hover{
     background: #A5090C;
+}
+
+@media (max-width:1024px){
+    .dokterWrapper{
+        background: #F9FCFF;
+        padding-top: 15%;
+    }
+}
+
+@media (max-width:768px){
+    .dokterWrapper{
+        background: #F9FCFF;
+        padding-top: 22.5%;
+    }
+}
+
+@media (max-width:576px){
+    .dokterWrapper{
+        background: #F9FCFF;
+        padding-top: 47.5%;
+    }
 }

@@ -6,36 +6,42 @@ import ButtonAlt from '../ButtonAlt'
 function DoctorHome() {
     const dokter = [
         {
+            id:2,
             name:'Dr. Cindy Rani Wirasti, SpOG-KFER',
             position:'Endocrinology Consultant',
             image:'images/doctor1.png',
             xp:'Pengalaman: 10 tahun',
         },
         {
+            id:3,
             name:'Dr. Harianto Wijaya, SpOG-KFER',
             position:'Endocrinology Consultant',
             image:'images/doctor2.png',
             xp:'Pengalaman: 13 tahun',
         },
         {
+            id:14,
             name:'Dr. Surya Tjahyadi, SpOG-KFER',
             position:'Endocrinology Consultant',
             image:'images/doctor3.png',
             xp:'Pengalaman: 7 tahun',
         },
         {
+            id:15,
             name:'Dr. Viviana Agustina, SpOG-KFER',
-            position:'Endocrinology Consultant',
-            image:'images/doctor4.png',
-            xp:'Pengalaman: 10 tahun',
-        },
-        {
-            name:'Dr. Reza Adisatria, SpOG-KFER',
             position:'Endocrinology Consultant',
             image:'images/doctor5.png',
             xp:'Pengalaman: 10 tahun',
         },
         {
+            id:16,
+            name:'Dr. Reza Adisatria, SpOG-KFER',
+            position:'Endocrinology Consultant',
+            image:'images/doctor4.png',
+            xp:'Pengalaman: 10 tahun',
+        },
+        {
+            id:17,
             name:'Dr. Herlina Pertiwi, SpOG-KFER',
             position:'Endocrinology Consultant',
             image:'images/doctor6.png',
@@ -49,7 +55,7 @@ function DoctorHome() {
             <div className="col-xl-3 col-12 align-self-center pe-5">
                 <h2 className="doctorTitle">Temui Dokter Berpengalaman</h2>
                 <p className='doctorText mb-5'>MAJJA Klinik memiliki dokter-dokter terbaik yang ahli pada bidangnya dan berpengalaman</p>
-                <ButtonAlt link="/" text="Lihat Semua Dokter"></ButtonAlt>
+                <ButtonAlt link="/doctor" text="Lihat Semua Dokter"></ButtonAlt>
             </div>
             <div className="col-xl-9 col-12 ps-md-5">
                 <div className="row justify-content-center">
@@ -71,7 +77,7 @@ function DoctorHome() {
                                                 />
                                                 <p className='cardDokterText'>{item.xp}</p>
                                             </div>
-                                            <BacaSelengkapnya text="Booking Jadwal"></BacaSelengkapnya>
+                                            <BacaSelengkapnya link={`/booking/`+item.id} text="Booking Jadwal"></BacaSelengkapnya>
                                         </div>
                                     </div>
                                 </div>

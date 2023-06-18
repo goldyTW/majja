@@ -4,7 +4,7 @@ import ChooseBooking from "./ChooseBooking";
 import DetailBooking from "./DetailBooking";
 import { Card } from "antd";
 
-function BookingJadwalContent() {
+function BookingJadwalContent({dokter}) {
   return (
     <Wrapper id="findUs">
       <StyledSectionTitle>Booking Jadwal</StyledSectionTitle>
@@ -21,9 +21,10 @@ function BookingJadwalContent() {
                     height: "32rem",
                     backgroundColor: "white", 
                     borderRadius: "1.5rem", 
+                    boxShadow: "0px 4px 20px rgba(192, 192, 192, 0.25)"
                   }}
                 >
-                  <ChooseBooking />
+                  <ChooseBooking dokter={dokter}/>
                 </Card>
               </div>
               <div className="col-3">
@@ -49,7 +50,7 @@ const Wrapper = styled.div`
   background-repeat: no-repeat;
   background-position: center;
 
-  padding-top: 7.5%;
+  padding-top: 10%;
 `;
 
 const Config = styled.div`

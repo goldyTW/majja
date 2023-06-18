@@ -36,7 +36,7 @@ const Wrapper = styled.div`
   grid-gap: 10px;
 
   overflow-y: auto;
-  width: 39.375rem;
+  width: 100%;
   height: 13.813rem;
 `;
 

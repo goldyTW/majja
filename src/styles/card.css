@@ -113,6 +113,13 @@
     line-height: 24px;
     text-align: center;
     color: #DF3034;
+    transition: 0.5s ease-in-out;
+}
+.buttonAlt:hover {
+    /* transform: scaleX(1.05); */
+    /* border: 1px solid #ebebeb; */
+    background-color: #ebebeb;
+    background-position: 100%;
 }
 .cardDokterList{
     background: #FFFFFF;
@@ -164,4 +171,18 @@
 }
 .ant-pagination-disabled{
     color: #808080 !important; 
+}
+.Calendar .Calendar__monthArrowWrapper{
+    color: #DF3034 !important;
+}
+.Calendar .Calendar__monthYear{
+    font-weight: bold !important;
+}
+.Calendar{
+    box-shadow: none !important;
+}
+@media (max-width:576px) {
+    .card{
+        min-height: 420px;
+    }
 }

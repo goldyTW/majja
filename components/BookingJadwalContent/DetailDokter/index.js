@@ -4,9 +4,9 @@ import { Icon } from "@iconify/react";
 
 function DetailDokter() {
   return (
-    <div className="row">
+    <div className="row mb-4">
       <div className="col-3">
-        <img src="/images/doctor1Rec.png" alt="doctor1" width="100%" />
+        <img src="/images/doctor1Rec.png" alt="doctor1" width="90%" />
       </div>
       <div className="col-9">
         <StyledTitle>Dr. Cindy Rani, SpOG-KFER</StyledTitle>

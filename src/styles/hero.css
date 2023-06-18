@@ -1,8 +1,8 @@
 .hero-wrapper{
     padding-top: 12.5%;
     padding-bottom: 30px;
-    padding-left: 10%;
-    padding-right: 10%;
+    padding-left: 7.5%;
+    padding-right: 7.5%;
     background: linear-gradient(180deg, #FFFFFF 0%, #EDF6FF 35.55%);
     background-size: cover;
     background-position: bottom;
@@ -36,17 +36,19 @@
     cursor: pointer;
     color: #ffffff;
 
-    background-image: -webkit-linear-gradient(
+    /* background-image: -webkit-linear-gradient(
         30deg,
         #df3034 50%,
         transparent 50%
-    );
-    background-image: linear-gradient(30deg, #df3034 50%, white 50%);
+    ); */
+    /* background-image: linear-gradient(30deg, #df3034 50%, white 50%); */
+    background-color: #df3034;
     background-size: 31.25rem;
     background-repeat: no-repeat;
     background-position: 0%;
-    -webkit-transition: background 300ms ease-in-out;
-    transition: background 300ms ease-in-out;
+    /* -webkit-transition: background 300ms ease-in-out;
+    transition: background 300ms ease-in-out; */
+    transition: 0.5s ease-in-out;
     font-family: "Poppins";
     font-style: normal;
     font-weight: 600;
@@ -54,8 +56,10 @@
     text-decoration: none;
 }
 .button:hover {
+    transform: scaleX(1.05);
+    border: 0.2rem solid #A5090C;
+    background-color: #A5090C;
     background-position: 100%;
-    color: #df3034;
 }
 .hero-btn-wrapper{
     margin-top: 12.5%;

@@ -87,11 +87,11 @@ const availableDays = [
   },
 ];
 
-function ChooseBooking() {
+function ChooseBooking({dokter}) {
   const [selectedDay, setSelectedDay] = useState(utils().getToday());
   return (
     <div className="row align-items-center">
-      <div className="col-6">
+      <div className="col-5">
         <Calendar
           value={selectedDay}
           onChange={setSelectedDay}
@@ -101,6 +101,7 @@ function ChooseBooking() {
           customDaysClassName={availableDays}
           colorPrimary="#DF3034"
           calendarClassName="responsive-calendar"
+          style={{boxShadow:'none', width:'100%'}}
           renderFooter={() => (
             <div className="row align-items-center text-center">
               <StyledSelected className="col-4">Selected</StyledSelected>
@@ -110,7 +111,7 @@ function ChooseBooking() {
           )}
         />
       </div>
-      <div className="col-6">
+      <div className="col-7">
         <div>
           <DetailDokter />
         </div>
