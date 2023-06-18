@@ -96,34 +96,21 @@ const Menu = styled.ul`
 `;
 
 const LoginButton = styled.button`
-  /* background: #df3034; */
-  border: 0.2rem solid #df3034;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  color: #ffffff;
-
-  background-image: -webkit-linear-gradient(
-    30deg,
-    #df3034 50%,
-    transparent 50%
-  );
-  background-image: linear-gradient(30deg, #df3034 50%, white 50%);
-  background-size: 31.25rem;
-  background-repeat: no-repeat;
-  background-position: 0%;
-  -webkit-transition: background 300ms ease-in-out;
-  transition: background 300ms ease-in-out;
-
+  background: #df3034;
+  border-radius: 8px;
+  padding: 8px 16px;
   font-family: "Poppins";
   font-style: normal;
   font-weight: 600;
-  font-size: var(--fs-12);
-  /* line-height: 24px; */
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #ffffff;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
 
   &:hover {
-    background-position: 100%;
-    color: #df3034;
+    background: #a5090c;
   }
 
   @media (max-width: 768px) {
@@ -132,34 +119,21 @@ const LoginButton = styled.button`
 `;
 
 const LoginButtonMobile = styled.button`
-  /* background: #df3034; */
-  border: 0.2rem solid #df3034;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  color: #ffffff;
-
-  background-image: -webkit-linear-gradient(
-    30deg,
-    #df3034 50%,
-    transparent 50%
-  );
-  background-image: linear-gradient(30deg, #df3034 50%, white 50%);
-  background-size: 31.25rem;
-  background-repeat: no-repeat;
-  background-position: 0%;
-  -webkit-transition: background 300ms ease-in-out;
-  transition: background 300ms ease-in-out;
-
+  background: #df3034;
+  border-radius: 8px;
+  padding: 8px 16px;
   font-family: "Poppins";
   font-style: normal;
   font-weight: 600;
-  font-size: var(--fs-12);
-  /* line-height: 24px; */
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #ffffff;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
 
   &:hover {
-    background-position: 100%;
-    color: #df3034;
+    background: #a5090c;
   }
 
   @media (max-width: 768px) {
@@ -206,7 +180,7 @@ const Header = () => {
     <>
       <HeaderWrapper
         style={{
-          backgroundColor: "rgba(250, 250, 250, 0.8)", 
+          backgroundColor: "rgba(250, 250, 250, 0.8)",
           backdropFilter: "blur(5px)",
           transition: "background 300ms ease-out 0s",
         }}
