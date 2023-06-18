@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import ImgCarousel from "./ImageCarousel";
 import Aos from "aos";
+import ImgTable from "./ImgTable";
 
 function Offering() {
   useEffect(() => {
@@ -30,11 +31,7 @@ function Offering() {
                   penanganan yang tepat.
                 </StyledText>
                 <ImgWrapper>
-                  <img
-                    src="/images/whymajja.png"
-                    alt="why-majja"
-                    width="100%"
-                  />
+                  <ImgTable />
                 </ImgWrapper>
               </div>
             </div>
@@ -60,11 +57,7 @@ function Offering() {
                   penanganan yang tepat.
                 </StyledText>
                 <ImgWrapper>
-                  <img
-                    src="/images/whymajja.png"
-                    alt="why-majja"
-                    width="100%"
-                  />
+                  <ImgTable />
                 </ImgWrapper>
               </div>
             </div>
@@ -84,10 +77,17 @@ const Wrapper = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+
+  padding: 2% 0 10% 5%;
 `;
 
 const ImgWrapper = styled.div`
-  margin: 0 5%;
+  width: 85%;
+  margin-top: 5%;
+
+  @media (max-width: 1120px) {
+    width: auto;
+  }
 `;
 
 const AboutConfig = styled.div`
@@ -120,7 +120,10 @@ const StyledTitle = styled.div`
   line-height: 150%;
   color: #262626;
 
-  margin-bottom: 5%;
+  margin-bottom: 1rem;
+  inline-size: 85%;
+  overflow-wrap: break-word;
+  text-align: left;
 
   @media (max-width: 1121px) {
     font-size: var(--fs-32);
@@ -145,6 +148,10 @@ const StyledText = styled.div`
   font-size: var(--fs-16);
   line-height: 182%;
   color: #8d8d8d;
+
+  inline-size: 85%;
+  overflow-wrap: break-word;
+  text-align: left;
 
   @media (max-width: 1121px) {
     font-size: var(--fs-16);

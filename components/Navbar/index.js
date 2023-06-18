@@ -204,7 +204,13 @@ const Header = () => {
 
   return (
     <>
-      <HeaderWrapper style={{ background: navbar ? "#f5f5f5" : "transparent" }}>
+      <HeaderWrapper
+        style={{
+          backgroundColor: navbar ? "rgba(250, 250, 250, 0.8)" : "transparent",
+          backdropFilter: "blur(5px)",
+          transition: "background 300ms ease-out 0s",
+        }}
+      >
         <Nav>
           <Logo>
             <img src="/images/logo.png" />
@@ -217,7 +223,7 @@ const Header = () => {
             </li>
             <li>
               <Link
-                href="/"
+                href="/tentang"
                 className={router.pathname == "/tentang" ? "active" : ""}
               >
                 Tentang Kami
@@ -225,15 +231,15 @@ const Header = () => {
             </li>
             <li>
               <Link
-                href="/"
-                className={router.pathname == "/dokter" ? "active" : ""}
+                href="/doctor"
+                className={router.pathname == "/doctor" ? "active" : ""}
               >
                 Dokter
               </Link>
             </li>
             <li>
               <Link
-                href="/"
+                href="/layanan"
                 className={router.pathname == "/layanan" ? "active" : ""}
               >
                 Layanan
@@ -241,7 +247,7 @@ const Header = () => {
             </li>
             <li>
               <Link
-                href="/"
+                href="/artikel"
                 className={router.pathname == "/artikel" ? "active" : ""}
               >
                 Artikel
@@ -249,7 +255,7 @@ const Header = () => {
             </li>
             <li>
               <Link
-                href="/"
+                href="/hubungiKami"
                 className={router.pathname == "/hubungiKami" ? "active" : ""}
               >
                 Hubungi Kami
