@@ -206,14 +206,16 @@ const Header = () => {
     <>
       <HeaderWrapper
         style={{
-          backgroundColor: navbar ? "rgba(250, 250, 250, 0.8)" : "transparent",
+          backgroundColor: "rgba(250, 250, 250, 0.8)", 
           backdropFilter: "blur(5px)",
           transition: "background 300ms ease-out 0s",
         }}
       >
         <Nav>
           <Logo>
-            <img src="/images/logo.png" />
+            <Link href="/">
+              <img src="/images/Logo.svg" />
+            </Link>
           </Logo>
           <Menu isMenuOpen={isMenuOpen}>
             <li>
@@ -262,10 +264,14 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <LoginButtonMobile>Booking Jadwal</LoginButtonMobile>
+              <Link href="/booking">
+                <LoginButtonMobile>Booking Jadwal</LoginButtonMobile>
+              </Link>
             </li>
           </Menu>
-          <LoginButton>Booking Jadwal</LoginButton>
+          <Link href="/booking">
+            <LoginButton>Booking Jadwal</LoginButton>
+          </Link>
           <BurgerIcon onClick={toggleMenu}>
             {isMenuOpen ? (
               <Icon

@@ -12,6 +12,8 @@ import '../styles/article.css'
 import '../styles/layanan.css'
 import '../styles/doctor.css'
 import '../styles/doctorHome.css'
+import '../styles/chooseBooking.css'
+import '../styles/renderJam.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "swiper/swiper.min.css";
 
