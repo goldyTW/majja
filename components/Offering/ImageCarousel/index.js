@@ -5,26 +5,41 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
+import styled from "styled-components";
 
 const ImageSlider = () => {
   return (
-    <Swiper
-      modules={[Navigation, Pagination, Scrollbar, A11y]}
-      spaceBetween={50}
-      slidesPerView={1}
-      navigation
-      loop={true}
-      autoplay={true}
-      // pagination={{ clickable: true }}
-      // scrollbar={{ draggable: true }}
-      // onSwiper={(swiper) => console.log(swiper)}
-    >
-      <SwiperSlide><img src="/images/offering1.png" alt="slide1" /></SwiperSlide>
-      <SwiperSlide><img src="/images/offering1.png" alt="slide2" /></SwiperSlide>
-      <SwiperSlide><img src="/images/offering1.png" alt="slide3" /></SwiperSlide>
-      <SwiperSlide><img src="/images/offering1.png" alt="slide4" /></SwiperSlide>
-    </Swiper>
+    <Wrapper>
+      <Swiper
+        modules={[Navigation, Pagination, Scrollbar, A11y]}
+        spaceBetween={50}
+        slidesPerView={1}
+        navigation
+        loop={true}
+        autoplay={true}
+        // pagination={{ clickable: true }}
+        // scrollbar={{ draggable: true }}
+        // onSwiper={(swiper) => console.log(swiper)}
+      >
+        <SwiperSlide>
+          <img src="/images/offering1.png" alt="slide1" />
+        </SwiperSlide>
+        <SwiperSlide>
+          <img src="/images/offering1.png" alt="slide2" />
+        </SwiperSlide>
+        <SwiperSlide>
+          <img src="/images/offering1.png" alt="slide3" />
+        </SwiperSlide>
+        <SwiperSlide>
+          <img src="/images/offering1.png" alt="slide4" />
+        </SwiperSlide>
+      </Swiper>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  width: 100%;
+`;
 
 export default ImageSlider;

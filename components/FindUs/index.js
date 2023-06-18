@@ -12,8 +12,8 @@ function FindUs() {
 
   return (
     <Wrapper id="findUs">
-      <StyledSectionTitle>Find Us!</StyledSectionTitle>
       <AboutConfig>
+      <StyledSectionTitle>Find Us!</StyledSectionTitle>
         <PC>
           <div className="container-fluid" data-aos="fade-up">
             <div className="row align-items-center">
@@ -22,7 +22,7 @@ function FindUs() {
                   src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15866.85873367116!2d106.806317!3d-6.168947!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f7a57dbadcb3%3A0x96cb5b79b9070c36!2sMAJJA%20Klinik%20Fertilitas%20Endokrin%20Reproduksi!5e0!3m2!1sen!2sid!4v1686694634517!5m2!1sen!2sid"
                   width="613px"
                   height="472px"
-                  style={{ border: "0" }}
+                  style={{ border: "0", width: "85%" }}
                   allowFullScreen=""
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
@@ -87,7 +87,7 @@ function FindUs() {
         </PC>
 
         <MOBILE>
-          <div className="container-fluid text-center">
+          <div className="container-fluid">
             <div className="row align-items-center">
               <div className="col-12">
                 <iframe
@@ -108,7 +108,7 @@ function FindUs() {
                       className=""
                       style={{
                         cursor: "pointer",
-                        fontSize: "36px",
+                        fontSize: "26px",
                         color: "#A5090C",
                       }}
                     />
@@ -125,7 +125,7 @@ function FindUs() {
                       className=""
                       style={{
                         cursor: "pointer",
-                        fontSize: "36px",
+                        fontSize: "26px",
                         color: "#A5090C",
                       }}
                     />
@@ -141,7 +141,7 @@ function FindUs() {
                       className=""
                       style={{
                         cursor: "pointer",
-                        fontSize: "36px",
+                        fontSize: "26px",
                         color: "#A5090C",
                       }}
                     />
@@ -213,9 +213,9 @@ const StyledSectionTitle = styled.div`
   font-style: normal;
   font-weight: 700;
   font-size: var(--fs-32);
-  color: #262626;
+  color: #A5090C;
 
-  padding: 0 0 0 5%;
+  padding: 0 0 5% 5%;
 `;
 
 const StyledTitle = styled.div`
