@@ -56,7 +56,7 @@
     text-decoration: none;
 }
 .button:hover {
-    transform: scaleX(1.05);
+    /* transform: scaleX(1.05); */
     border: 0.2rem solid #A5090C;
     background-color: #A5090C;
     background-position: 100%;

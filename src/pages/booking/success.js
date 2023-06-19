@@ -23,7 +23,7 @@ function BookingSuccess() {
                 <Card
                   style={{
                     width: "100%",
-                    height: "32rem",
+                    // height: "32rem",
                     backgroundColor: "white",
                     borderRadius: "1rem",
                     boxShadow: "0px 4px 20px rgba(192, 192, 192, 0.25)"
@@ -41,13 +41,13 @@ function BookingSuccess() {
                 <Card
                   style={{
                     width: "100%",
-                    height: "32rem",
+                    // height: "32rem",
                     backgroundColor: "white",
                     borderRadius: "1rem",
                     boxShadow: "0px 4px 20px rgba(192, 192, 192, 0.25)"
                   }}
                 >
-                <div className="row justify-content-center align-items-center">
+                <div className="row justify-content-center align-items-center m-4">
                   <div className='col-12 successSectionTitle'>
                     Detail Booking
                   </div>

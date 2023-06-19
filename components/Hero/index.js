@@ -14,7 +14,7 @@ function Hero() {
               Percayakan kehamilanmu hingga kelahiran buah hati kepada ahlinya sekarang juga!
             </p>
             <div className="hero-btn-wrapper">
-              <Button link="/booking" text="Booking Sekarang"></Button>
+              <Button link="/doctor" text="Booking Sekarang"></Button>
             </div>
           </div>
           <div className='col-lg-5 col-md-6 col-12 align-self-center hero-right'>

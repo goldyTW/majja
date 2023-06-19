@@ -78,7 +78,7 @@ const Wrapper = styled.div`
   background-repeat: no-repeat;
   background-position: center;
 
-  padding: 2% 0 10% 5%;
+  // padding: 2% 0 10% 5%;
 `;
 
 const ImgWrapper = styled.div`
