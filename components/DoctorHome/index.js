@@ -2,6 +2,7 @@ import React from 'react'
 import BacaSelengkapnya from '../BacaSelengkapnya'
 import { Icon } from '@iconify/react'
 import ButtonAlt from '../ButtonAlt'
+import Link from 'next/link'
 
 function DoctorHome() {
     const dokter = [
@@ -49,7 +50,7 @@ function DoctorHome() {
         }
     ]
   return (
-    <section className='doctorwrapper py-5'>
+    <section className='doctorwrapper py-5' id='doctor'>
     <div className="container my-5">
         <div className='row justify-content-center'>
             <div className="col-xl-3 col-12 align-self-center pe-5">
@@ -63,6 +64,7 @@ function DoctorHome() {
                         dokter.map((item, i) => (
                             <div className='col-xl-5 col-md-5 col-9 m-md-4 ms-4 me-0 my-3' key={i} data-aos="fade-up">
                                 <img className='doctorImg align-self-center' src={item.image}></img>
+                                <Link href={`/booking/`+item.id} style={{textDecoration:'none'}}>
                                 <div className='cardDokter'>
                                     <div className='row'>
                                         <div className='col-2'></div>
@@ -81,6 +83,7 @@ function DoctorHome() {
                                         </div>
                                     </div>
                                 </div>
+                                </Link>
                             </div>
                         ))
                     }

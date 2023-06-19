@@ -37,12 +37,14 @@ function ArticleGridHome() {
       }, []);
 
   return (
-    <div className="container my-5" >
+    <div className="container my-5" id='artikel'>
         <h1 className='ArticleTitleHome'>Artikel Kesehatan</h1>
         <div className="row justify-content-center" data-aos="fade-up">
         {
             newsList.map((item, index)=>(     
             <div className="col-xl-3 col-lg-5 col-md-6 col-12 p-3" key={index}>
+                <Link href={item.link} style={{textDecoration:'none'}}>
+                <>
                 <img src={item.image} width="100%"></img>  
                 <div className="cardArticle p-3">
                     <a className="cardArticleTitle">{item.title}</a>
@@ -51,6 +53,8 @@ function ArticleGridHome() {
                     </div>
                     <BacaSelengkapnya link={item.link}></BacaSelengkapnya>
                 </div>
+                </>
+                </Link>
             </div>
             ))
         }

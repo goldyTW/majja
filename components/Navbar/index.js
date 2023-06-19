@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-// onClick={()=>window.open(link, '_blank')}
+import Link2 from 'react-scroll/modules/components/Link';
+
 const HeaderWrapper = styled.header`
   background: transparent;
   padding: 1.5rem;
@@ -223,44 +224,49 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link
-                href="/tentang"
+              <Link2
+                // href="/tentang"
+                to="offering"
                 className={router.pathname == "/tentang" ? "active" : ""}
               >
                 Tentang Kami
-              </Link>
+              </Link2>
             </li>
             <li>
-              <Link
-                href="/doctor"
-                className={router.pathname == "/doctor" ? "active" : ""}
-              >
-                Dokter
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/layanan"
+              <Link2
+                // href="/layanan"
+                to="layanan"
                 className={router.pathname == "/layanan" ? "active" : ""}
               >
                 Layanan
-              </Link>
+              </Link2>
             </li>
             <li>
-              <Link
-                href="/artikel"
+              <Link2
+                // href="/doctor"
+                to="doctor"
+                className={router.pathname == "/doctor" ? "active" : ""}
+              >
+                Dokter
+              </Link2>
+            </li>
+            <li>
+              <Link2
+                // href="/artikel"
+                to="artikel"
                 className={router.pathname == "/artikel" ? "active" : ""}
               >
                 Artikel
-              </Link>
+              </Link2>
             </li>
             <li>
-              <Link
-                href="/hubungiKami"
+              <Link2
+                // href="/hubungiKami"
+                to="findUs"
                 className={router.pathname == "/hubungiKami" ? "active" : ""}
               >
                 Hubungi Kami
-              </Link>
+              </Link2>
             </li>
             <li>
               <Link href="/booking">

@@ -30,7 +30,7 @@ function LayananHome() {
         },
     ]
   return (
-    <section className='layananWrapper py-5'>
+    <section className='layananWrapper py-5' id='layanan'>
         <div className="container my-5">
             <h1 className='ArticleTitleHome'>Layanan Terbaik Untuk Kamu</h1>
             <div className="row">
