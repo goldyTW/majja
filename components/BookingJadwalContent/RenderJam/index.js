@@ -22,8 +22,8 @@ function RenderJam({ data, selectedDate }) {
   };
   return (
     <Wrapper className="section">
-      {sortAllHour.map((item) => (
-        <ButtonJam text={item} disabled={chkDisabled} />
+      {sortAllHour.map((item, i) => (
+        <ButtonJam key={i} text={item} disabled={chkDisabled} />
       ))}
     </Wrapper>
   );

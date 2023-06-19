@@ -200,10 +200,11 @@ function BookingJadwalContent({dokter, id}) {
                       <div>
                         {/* <RenderJam data={availableDays} selectedDate={selectedDay} /> */}
                         <RenderJamWrapper className="section">
-                          {sortAllHour.map((item) => (
+                          {sortAllHour.map((item, i) => (
                             // <ButtonJam text={item} disabled={chkDisabled} />
                             <BtnWrapper
                               // onClick={(e) => handleInput(e, "value")}
+                              key={i}
                               onClick={(e) => setValue(e.target.value, "value")}
                             >
                               <StyledButton value={item} >

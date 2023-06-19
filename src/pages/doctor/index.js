@@ -567,8 +567,8 @@ function Dokter() {
           <div className='row'>
             {
               DataDokter.map((item, i) => (
-                <div className='col-xl-4 col-lg-6 col-12 p-3'>
-                  <div className='cardDokterList' key={i}>
+                <div className='col-xl-4 col-lg-6 col-12 p-3' key={i}>
+                  <div className='cardDokterList' >
                     <div className='d-flex'>
                       <img src={item.image} height="122px"></img>
                       <div className='ps-3' style={{height:"122px"}}>
