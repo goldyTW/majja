@@ -453,7 +453,7 @@ function Booking() {
         <title>Booking Jadwal</title>
       </Head>
       <Navbar></Navbar>
-      <BookingJadwalContent dokter={dokter}/>
+      <BookingJadwalContent dokter={dokter} />
       <FloatingWA></FloatingWA>
       <Footer></Footer>
     </>

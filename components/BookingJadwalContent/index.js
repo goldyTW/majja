@@ -7,6 +7,7 @@ import "@amir04lm26/react-modern-calendar-date-picker/lib/DatePicker.css";
 import { Calendar, utils } from "@amir04lm26/react-modern-calendar-date-picker";
 import { Icon } from "@iconify/react";
 import moment from "moment";
+import { useRouter } from "next/router";
 
 const disabledDays = [
   {
@@ -80,6 +81,8 @@ const availableDays = [
 ];
 
 function BookingJadwalContent({dokter, id}) {
+  const router = useRouter()
+  const data = dokter[router.query.id - 1]
   const [selectedDay, setSelectedDay] = useState(utils().getToday());
   const [filteredDate, setFilteredDate] = useState([]);
   const [value, setValue] = useState();
@@ -90,7 +93,8 @@ function BookingJadwalContent({dokter, id}) {
   const [kategoriPasien, setKategoriPasien] = useState();
   const [keluhan, setkeluhan] = useState();
   const { TextArea } = Input;
-  console.log(id)
+  // console.log("bookingPageID", router.query)
+  console.log("bookingPage", data) 
 
   const onChangeKategori = (e) => {
     setKategoriPasien(e.target.value)
@@ -130,7 +134,8 @@ function BookingJadwalContent({dokter, id}) {
                   // headStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.0)', border: 0 }}
                   style={{
                     width: "100%",
-                    height: "32rem",
+                    maxheight: "auto",
+                    minHeight: "38rem",
                     backgroundColor: "white",
                     borderRadius: "1.5rem",
                     boxShadow: "0px 4px 20px rgba(192, 192, 192, 0.25)"
@@ -171,15 +176,15 @@ function BookingJadwalContent({dokter, id}) {
                         <div className="row">
                           <div className="col-3">
                             <img
-                              src={'/'+dokter[2].image}
+                              src={'/'+data.image}
                               alt="doctor1"
                               width="100%"
                             />
                           </div>
                           <div className="col-9">
-                            <StyledTitle>{dokter[2].name}</StyledTitle>
+                            <StyledTitle>{data.name}</StyledTitle>
                             <StyledText>
-                              {dokter[2].position}
+                              {data.position}
                             </StyledText>
                             <StyledTextWIcon>
                               <Icon
@@ -192,7 +197,7 @@ function BookingJadwalContent({dokter, id}) {
                                   marginRight: "2%",
                                 }}
                               />
-                              Pengalaman: {dokter[2].xp} tahun
+                              Pengalaman: {data.xp} tahun
                             </StyledTextWIcon>
                           </div>
                         </div>
