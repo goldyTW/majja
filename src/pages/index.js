@@ -25,11 +25,11 @@ export default function Home() {
      <Navbar></Navbar>
      <Hero></Hero>
      <Offering></Offering>
-     <LayananHome></LayananHome>
+     <LayananHome></LayananHome> {/*Link perlu di fix hydration error*/}
      <Testimonies></Testimonies>
-     <DoctorHome></DoctorHome>
+     <DoctorHome></DoctorHome> {/*Link perlu di fix hydration error*/}
      <VideoSection></VideoSection>
-     <ArticleGridHome></ArticleGridHome>
+     <ArticleGridHome></ArticleGridHome> {/*Link perlu di fix hydration error*/}
      <FindUs></FindUs>
      <FloatingWA></FloatingWA>
      <Footer></Footer>

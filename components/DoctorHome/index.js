@@ -64,7 +64,7 @@ function DoctorHome() {
                         dokter.map((item, i) => (
                             <div className='col-xl-5 col-md-5 col-9 m-md-4 ms-4 me-0 my-3' key={i} data-aos="fade-up">
                                 <img className='doctorImg align-self-center' src={item.image}></img>
-                                <Link href={`/booking/`+item.id} style={{textDecoration:'none'}}>
+                                {/* <Link href={`/booking/`+item.id} style={{textDecoration:'none'}}> */}
                                 <div className='cardDokter'>
                                     <div className='row'>
                                         <div className='col-2'></div>
@@ -83,7 +83,7 @@ function DoctorHome() {
                                         </div>
                                     </div>
                                 </div>
-                                </Link>
+                                {/* </Link> */}
                             </div>
                         ))
                     }

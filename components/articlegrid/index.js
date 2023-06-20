@@ -43,7 +43,7 @@ function ArticleGridHome() {
         {
             newsList.map((item, index)=>(     
             <div className="col-xl-3 col-lg-5 col-md-6 col-12 p-3" key={index}>
-                <Link href={item.link} style={{textDecoration:'none'}}>
+                {/* <Link href={item.link} style={{textDecoration:'none'}}> */}
                 <>
                 <img src={item.image} width="100%"></img>  
                 <div className="cardArticle p-3">
@@ -54,7 +54,7 @@ function ArticleGridHome() {
                     <BacaSelengkapnya link={item.link}></BacaSelengkapnya>
                 </div>
                 </>
-                </Link>
+                {/* </Link> */}
             </div>
             ))
         }
