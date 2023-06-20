@@ -8,24 +8,31 @@ import { Calendar, utils } from "@amir04lm26/react-modern-calendar-date-picker";
 import { Icon } from "@iconify/react";
 import moment from "moment";
 import { useRouter } from "next/router";
+import {
+  convertDaysToNumbers,
+  getArrayEveryNDayDates,
+  getArrayEveryNDayDatesFromToday,
+  transformDatesToFormatDaysOff,
+  transformDatesToFormatDaysOn,
+} from "../../lib/getEveryDate";
 
-const disabledDays = [
-  {
-    year: 2023,
-    month: 6,
-    day: 19,
-  },
-  {
-    year: 2023,
-    month: 6,
-    day: 29,
-  },
-  {
-    year: 2023,
-    month: 6,
-    day: 27,
-  },
-];
+// const disabledDays = [
+//   {
+//     year: 2023,
+//     month: 6,
+//     day: 19,
+//   },
+//   {
+//     year: 2023,
+//     month: 6,
+//     day: 29,
+//   },
+//   {
+//     year: 2023,
+//     month: 6,
+//     day: 27,
+//   },
+// ];
 
 const availableDays = [
   {
@@ -80,9 +87,9 @@ const availableDays = [
   },
 ];
 
-function BookingJadwalContent({dokter, id}) {
-  const router = useRouter()
-  const data = dokter[router.query.id - 1]
+function BookingJadwalContent({ dokter, id }) {
+  const router = useRouter();
+  const data = dokter[router.query.id - 1];
   const [selectedDay, setSelectedDay] = useState(utils().getToday());
   const [filteredDate, setFilteredDate] = useState([]);
   const [value, setValue] = useState();
@@ -93,17 +100,14 @@ function BookingJadwalContent({dokter, id}) {
   const [kategoriPasien, setKategoriPasien] = useState();
   const [keluhan, setkeluhan] = useState();
   const { TextArea } = Input;
-  // console.log("bookingPageID", router.query)
-  console.log("bookingPage", data) 
-
   const onChangeKategori = (e) => {
-    setKategoriPasien(e.target.value)
-    if(e.target.value == "lama"){
-      setshowrekamMedis(true)
-    }else{
-      setshowrekamMedis(false)
+    setKategoriPasien(e.target.value);
+    if (e.target.value == "lama") {
+      setshowrekamMedis(true);
+    } else {
+      setshowrekamMedis(false);
     }
-  }
+  };
 
   const filterData = availableDays.filter(
     (item) =>
@@ -121,38 +125,53 @@ function BookingJadwalContent({dokter, id}) {
   const chkDisabled = () => {
     if (allHour.indexOf(unavailableHour) !== -1) return true;
   };
+
+  // Jadwal Days off
+  const JadwalHariOff = data.jadwal.filter((jadwal) => !jadwal.jam);
+  const convertHariOff = convertDaysToNumbers(
+    JadwalHariOff.map((hari) => hari.hari)
+  );
+  const AllHariOffInThisYear = getArrayEveryNDayDates(convertHariOff);
+  const disabledDaysDynamic = transformDatesToFormatDaysOff(AllHariOffInThisYear);
+
+  // Jadwal Days on
+  const JadwalHariOn = data.jadwal.filter((jadwal) => jadwal.jam);
+  const convertHariOn = convertDaysToNumbers(
+    JadwalHariOn.map((hari) => hari.hari)
+  );
+  const AllHariOnInThisYear = getArrayEveryNDayDatesFromToday(convertHariOn);
+  const availableDaysDynamic = transformDatesToFormatDaysOn(AllHariOnInThisYear);
   return (
     <Wrapper id="findUs">
       <StyledSectionTitle>Booking Jadwal</StyledSectionTitle>
       <Config>
         {/* <PC> */}
-          <div className="container-fluid">
-            <div className="row align-items-center">
-              <div className="col-9">
-                <Card
-                  // title={<p>&nbsp;</p>}
-                  // headStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.0)', border: 0 }}
-                  style={{
-                    width: "100%",
-                    maxheight: "auto",
-                    minHeight: "38rem",
-                    backgroundColor: "white",
-                    borderRadius: "1.5rem",
-                    boxShadow: "0px 4px 20px rgba(192, 192, 192, 0.25)"
-                  }}
-                >
-                  {/* <ChooseBooking /> */}
-                  {
-                    showCalendar ? 
-                    <div className="row align-items-center align-self-center">
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-9">
+              <Card
+                // title={<p>&nbsp;</p>}
+                // headStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.0)', border: 0 }}
+                style={{
+                  width: "100%",
+                  maxheight: "auto",
+                  minHeight: "100%",
+                  backgroundColor: "white",
+                  borderRadius: "1.5rem",
+                  boxShadow: "0px 4px 20px rgba(192, 192, 192, 0.25)",
+                }}
+              >
+                {/* <ChooseBooking /> */}
+                {showCalendar ? (
+                  <div className="row align-items-center align-self-center">
                     <div className="col-5">
                       <Calendar
                         value={selectedDay}
                         onChange={setSelectedDay}
                         shouldHighlightWeekends
                         minimumDate={utils().getToday()}
-                        disabledDays={disabledDays} // here to disable off days
-                        customDaysClassName={availableDays}
+                        disabledDays={disabledDaysDynamic} // here to disable off days
+                        customDaysClassName={availableDaysDynamic}
                         colorPrimary="#DF3034"
                         calendarClassName="responsive-calendar"
                         renderFooter={() => (
@@ -176,16 +195,14 @@ function BookingJadwalContent({dokter, id}) {
                         <div className="row">
                           <div className="col-3">
                             <img
-                              src={'/'+data.image}
+                              src={"/" + data.image}
                               alt="doctor1"
                               width="100%"
                             />
                           </div>
                           <div className="col-9">
                             <StyledTitle>{data.name}</StyledTitle>
-                            <StyledText>
-                              {data.position}
-                            </StyledText>
+                            <StyledText>{data.position}</StyledText>
                             <StyledTextWIcon>
                               <Icon
                                 icon="ion:medkit"
@@ -212,7 +229,7 @@ function BookingJadwalContent({dokter, id}) {
                               key={i}
                               onClick={(e) => setValue(e.target.value, "value")}
                             >
-                              <StyledButton value={item} >
+                              <StyledButton value={item}>
                                 {moment(item, "HH").format("HH:mm")}
                               </StyledButton>
                             </BtnWrapper>
@@ -220,45 +237,80 @@ function BookingJadwalContent({dokter, id}) {
                         </RenderJamWrapper>
                       </div>
                     </div>
+                  </div>
+                ) : (
+                  <div className="row align-items-center align-self-center">
+                    <div className="col-md-7 col-12 p-3">
+                      <span className="bookingInputLabel py-2">
+                        Nama lengkap pasien
+                      </span>
+                      <Input
+                        placeholder="Tulis nama lengkapmu di sini"
+                        value={nama}
+                        onChange={(event) => setnama(event.target.value)}
+                      />
                     </div>
-                    :
-                    <div className="row align-items-center align-self-center">
-                      <div className="col-md-7 col-12 p-3">
-                        <span className="bookingInputLabel py-2">Nama lengkap pasien</span>
-                        <Input placeholder="Tulis nama lengkapmu di sini" value={nama} onChange={(event) => setnama(event.target.value)}/>
+                    <div className="col-md-5 col-12 p-3">
+                      <span className="bookingInputLabel py-2">
+                        Nomor Telepon
+                      </span>
+                      <Input
+                        placeholder="Tulis nama lengkapmu di sini"
+                        value={nama}
+                        onChange={(event) => setnama(event.target.value)}
+                      />
+                    </div>
+                    <div className="col-12 p-3">
+                      <span className="bookingInputLabel py-2">
+                        Kategori Pasien
+                      </span>
+                      <br></br>
+                      <Radio.Group
+                        className="kategori"
+                        onChange={onChangeKategori}
+                        value={kategoriPasien}
+                      >
+                        <Radio value="baru">Pasien Baru</Radio>
+                        <Radio value="lama">Pasien Lama</Radio>
+                      </Radio.Group>
+                    </div>
+                    {showRekamMedis && (
+                      <div className="col-md-6 col-12 p-3">
+                        <span className="bookingInputLabel py-2">
+                          Nomor Rekam Medis
+                        </span>
+                        <Input
+                          placeholder="Ex: 12345678"
+                          value={rekamMedis}
+                          onChange={(event) =>
+                            setrekamMedis(event.target.value)
+                          }
+                        />
                       </div>
-                      <div className="col-md-5 col-12 p-3">
-                        <span className="bookingInputLabel py-2">Nomor Telepon</span>
-                        <Input placeholder="Tulis nama lengkapmu di sini" value={nama} onChange={(event) => setnama(event.target.value)}/>
-                      </div>
-                      <div className="col-12 p-3">
-                        <span className="bookingInputLabel py-2">Kategori Pasien</span><br></br>
-                        <Radio.Group className="kategori" onChange={onChangeKategori} value={kategoriPasien}>  
-                          <Radio value="baru">Pasien Baru</Radio>
-                          <Radio value="lama">Pasien Lama</Radio>
-                        </Radio.Group>
-                      </div>
-                      {
-                        showRekamMedis && 
-                        <div className="col-md-6 col-12 p-3">
-                          <span className="bookingInputLabel py-2">Nomor Rekam Medis</span>
-                          <Input placeholder="Ex: 12345678" value={rekamMedis} onChange={(event) => setrekamMedis(event.target.value)}/>
-                        </div>
-                      }
-                      <div className="col-12 p-3">
+                    )}
+                    <div className="col-12 p-3">
                       <span className="bookingInputLabel py-2">Keluhan</span>
-                        <TextArea placeholder="Tulis keluhanmu di sini" value={keluhan} onChange={(event) => setkeluhan(event.target.value)} rows={3}/>
-                      </div>
+                      <TextArea
+                        placeholder="Tulis keluhanmu di sini"
+                        value={keluhan}
+                        onChange={(event) => setkeluhan(event.target.value)}
+                        rows={3}
+                      />
                     </div>
-                  }
-                 
-                </Card>
-              </div>
-              <div className="col-3">
-                <DetailBooking value={value} dateItem={selectedDay} showCalendar={showCalendar} setshowCalendar={setshowCalendar}/>
-              </div>
+                  </div>
+                )}
+              </Card>
+            </div>
+            <div className="col-3">
+              <DetailBooking
+                value={value}
+                dateItem={selectedDay}
+                showCalendar={showCalendar}
+                setshowCalendar={setshowCalendar}
+              />
             </div>
           </div>
+        </div>
         {/* </PC> */}
 
         <MOBILE></MOBILE>
@@ -272,11 +324,10 @@ export async function getServerSideProps({ req, params }) {
 
   return {
     props: {
-      id: id
+      id: id,
     },
   };
 }
-
 
 const Wrapper = styled.div`
   /* display: flex;
@@ -391,12 +442,12 @@ const StyledTextWIcon = styled.div`
 
 const RenderJamWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  grid-gap: 1rem;
 
   overflow-y: auto;
   width: 100%;
-  height: 13.813rem;
+  height: 14.813rem;
 `;
 
 const BtnWrapper = styled.div`

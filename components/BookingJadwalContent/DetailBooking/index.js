@@ -32,8 +32,8 @@ function DetailBooking({ value, dateItem, showCalendar, setshowCalendar }) {
         }}
         style={{
           width: "100%",
-          maxHeight: "auto",
-          minHeight: "38rem",
+          // maxHeight: "auto",
+          minHeight: "32rem",
           borderRadius: "1.5rem",
         }}
       >
