@@ -126,6 +126,10 @@ function BookingJadwalContent({ dokter, id }) {
     if (allHour.indexOf(unavailableHour) !== -1) return true;
   };
 
+  // Minggu jadi Days off
+  const AllHariMingguOffInThisYear = getArrayEveryNDayDates(["0"]);
+  const disabledMingguDaysDynamic = transformDatesToFormatDaysOff(AllHariMingguOffInThisYear);
+
   // Jadwal Days off
   const JadwalHariOff = data.jadwal.filter((jadwal) => !jadwal.jam);
   const convertHariOff = convertDaysToNumbers(
@@ -170,7 +174,7 @@ function BookingJadwalContent({ dokter, id }) {
                         onChange={setSelectedDay}
                         shouldHighlightWeekends
                         minimumDate={utils().getToday()}
-                        disabledDays={disabledDaysDynamic} // here to disable off days
+                        disabledDays={disabledDaysDynamic.concat(disabledMingguDaysDynamic)} // here to disable off days
                         customDaysClassName={availableDaysDynamic}
                         colorPrimary="#DF3034"
                         calendarClassName="responsive-calendar"
