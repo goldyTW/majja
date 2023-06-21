@@ -6,18 +6,18 @@ import axios from 'axios';
 import FloatingWA from '../../../components/FloatingWA';
 import { Card } from "antd";
 import styled from "styled-components";
-import Lottie from 'react-lottie';
+// import Lottie from 'react-lottie';
 import * as animationData from '../../../public/images/success.json'
 
 function BookingSuccess() {
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice"
-    }
-  };
+  // const defaultOptions = {
+  //   loop: true,
+  //   autoplay: true,
+  //   animationData: animationData,
+  //   rendererSettings: {
+  //     preserveAspectRatio: "xMidYMid slice"
+  //   }
+  // };
 
   return (
     <>
@@ -43,11 +43,11 @@ function BookingSuccess() {
                   <div className='align-self-center pt-4'>
                   <h1 className='successTitle'>Pembayaran Berhasil</h1>
                   {/* <img src='/images/successful.gif' width="60%"></img> */}
-                  <Lottie 
+                  {/* <Lottie 
                   options={defaultOptions}
                     // height={400}
                     width={'60%'}
-                  />
+                  /> */}
                  <p className='successText'>Anda akan segera menerima pesan konfirmasi melalui Whatsapp</p>
                  </div>
                 </Card>
