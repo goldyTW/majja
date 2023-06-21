@@ -16,6 +16,8 @@ import '../styles/chooseBooking.css'
 import '../styles/renderJam.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "swiper/swiper.min.css";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 export default function App({ Component, pageProps }) {
   return(
@@ -34,6 +36,7 @@ export default function App({ Component, pageProps }) {
       <link rel="shortcut icon" type="image/x-icon" href="/images/LogoRounded.png"></link>
     </Head>
     <Component {...pageProps} />
+    <ToastContainer />
     </>
   )
 }

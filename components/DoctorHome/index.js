@@ -7,14 +7,14 @@ import Link from 'next/link'
 function DoctorHome() {
     const dokter = [
         {
-            id:2,
+            id:3,
             name:'Dr. Cindy Rani Wirasti, SpOG-KFER',
             position:'Endocrinology Consultant',
             image:'images/doctor1.png',
             xp:'Pengalaman: 10 tahun',
         },
         {
-            id:3,
+            id:2,
             name:'Dr. Harianto Wijaya, SpOG-KFER',
             position:'Endocrinology Consultant',
             image:'images/doctor2.png',
