@@ -181,6 +181,19 @@
 .Calendar{
     box-shadow: none !important;
 }
+.error {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    color: #DF3034;
+    text-decoration: none;
+}
+.required{
+    font-size: 14px;
+    color: #DF3034;
+}
 @media (max-width:576px) {
     .card{
         min-height: 420px;

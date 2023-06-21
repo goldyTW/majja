@@ -2,8 +2,9 @@ import React from "react";
 import { Card } from "antd";
 import moment, { months } from "moment";
 import styled from "styled-components";
+import { Icon } from "@iconify/react";
 
-function DetailBooking({ value, dateItem, showCalendar, setshowCalendar }) {
+function DetailBooking({ value, dateItem, showCalendar, setshowCalendar, bayar,loading }) {
   // console.log("DetailValue:", value);
   // console.log("detailDate:", dateItem);
   const getMonthName = (monthNumber) => {
@@ -59,8 +60,22 @@ function DetailBooking({ value, dateItem, showCalendar, setshowCalendar }) {
                 </div>
               </div>
             </BottomWrapper>
-            <LoginButton className="button" onClick={() => (showCalendar ? setshowCalendar(false) : window.open('/booking/success'))}>{showCalendar ? 'Selanjutnya' : "Bayar"}</LoginButton>
-          </div>
+            {
+              !loading ? 
+                (
+                  showCalendar ? 
+                  <LoginButton className="button" onClick={() => setshowCalendar(false)}>Selanjutnya</LoginButton>
+                  :
+                  <LoginButton className="button" onClick={() => bayar()}>Bayar</LoginButton>
+                )
+              :
+              <Icon
+                icon="svg-spinners:pulse-3"
+                className="text-right"
+                style={{ cursor: "pointer", fontSize: "18px", color: '#DF3034' }}
+              />
+            }
+            </div>
          ) : (
           <></>
         )} 

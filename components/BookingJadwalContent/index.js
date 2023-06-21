@@ -15,6 +15,8 @@ import {
   transformDatesToFormatDaysOff,
   transformDatesToFormatDaysOn,
 } from "../../lib/getEveryDate";
+import axios from "axios";
+import { toast } from 'react-toastify';
 
 // const disabledDays = [
 //   {
@@ -87,18 +89,30 @@ const availableDays = [
   },
 ];
 
-function BookingJadwalContent({ dokter, id }) {
+function BookingJadwalContent({ dokter, id1 }) {
   const router = useRouter();
-  const data = dokter[router.query.id - 1];
+  const data = router.query.id && dokter[router.query.id - 1];
+  // console.log(id1)
   const [selectedDay, setSelectedDay] = useState(utils().getToday());
   const [filteredDate, setFilteredDate] = useState([]);
-  const [value, setValue] = useState();
+  const [valuejam, setValuejam] = useState();
   const [nama, setnama] = useState();
+  const [phone, setphone] = useState();
   const [rekamMedis, setrekamMedis] = useState();
   const [showRekamMedis, setshowrekamMedis] = useState(false);
   const [showCalendar, setshowCalendar] = useState(true);
   const [kategoriPasien, setKategoriPasien] = useState();
   const [keluhan, setkeluhan] = useState();
+  const [errornama, seterrornama] = useState(false);
+  const [errorphone, seterrorphone] = useState(false);
+  const [errorphone2, seterrorphone2] = useState(false);
+  const [errorkategori, seterrorkategori] = useState(false);
+  const [errorrekam, seterrorrekam] = useState(false);
+  const regExPhone = /^(\+62|62)8[1-9]{1}\d{1}[\s-]?\d{4}[\s-]?\d{2,5}$/;
+  const [loading, setLoading] = useState(false);
+  const url = process.env.NEXT_APP_API_URL || "http://localhost:3000";
+  const urlxendit = "https://checkout.xendit.co/web/";
+  
   const { TextArea } = Input;
   const onChangeKategori = (e) => {
     setKategoriPasien(e.target.value);
@@ -131,9 +145,9 @@ function BookingJadwalContent({ dokter, id }) {
   const disabledMingguDaysDynamic = transformDatesToFormatDaysOff(AllHariMingguOffInThisYear);
 
   // Jadwal Days off
-  const JadwalHariOff = data.jadwal.filter((jadwal) => !jadwal.jam);
+  const JadwalHariOff = data && data.jadwal && data.jadwal.filter((jadwal) => !jadwal.jam);
   const convertHariOff = convertDaysToNumbers(
-    JadwalHariOff.map((hari) => hari.hari)
+    JadwalHariOff && JadwalHariOff.map((hari) => hari.hari)
   );
   const AllHariOffInThisYear = getArrayEveryNDayDates(convertHariOff);
   const disabledDaysDynamic = transformDatesToFormatDaysOff(AllHariOffInThisYear);
@@ -145,6 +159,65 @@ function BookingJadwalContent({ dokter, id }) {
   );
   const AllHariOnInThisYear = getArrayEveryNDayDatesFromToday(convertHariOn);
   const availableDaysDynamic = transformDatesToFormatDaysOn(AllHariOnInThisYear);
+
+  function bayar(){
+    setLoading(true);
+    seterrornama(false)
+    seterrorphone(false)
+    seterrorkategori(false)
+    seterrorrekam(false)
+    if(!nama || !phone || !kategoriPasien){
+      if(!nama){
+        setLoading(false);
+        seterrornama(true)
+      }
+      if(!phone){
+        setLoading(false);
+        seterrorphone(true)
+      }
+      // if(phone && !phone.match(regExPhone)){
+      //   seterrorphone2(true)
+      //   setLoading(false)
+      // }
+      if(!kategoriPasien){
+        setLoading(false);
+        seterrorkategori(true)
+      }
+      if(kategoriPasien == "lama" && !rekamMedis){
+        setLoading(false);
+        seterrorrekam(true)
+      }
+    }else{
+      axios.post(`${url}/api/booking/add`,{nama, phone:phone.toString(), kategori:kategoriPasien, no_rekam_medis:rekamMedis, keluhan, 
+        tanggal_booking:moment(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day).format("YYYY-MM-DD"), jam_booking: valuejam, id_dokter:router.query.id},{
+        headers: {
+          'Content-Type': 'application/json',
+        },}).then(res => {
+          if(res.status==200){
+            // console.log(res.data)
+            router.push(`${urlxendit}`+res.data.result.insertId)
+          }       
+      })
+      .catch(function (error) {
+        setLoading(true);
+          if (error.response) {
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+            if(error.response.status == 404){
+              toast.error(error)
+              setLoading(false);
+            }
+          } else if (error.request) {
+            console.log(error.request);
+            setLoading(false);
+          } else {
+            console.log('Error', error.message);
+            setLoading(false);
+          }})
+    }
+  }
+
   return (
     <Wrapper id="findUs">
       <StyledSectionTitle>Booking Jadwal</StyledSectionTitle>
@@ -152,7 +225,7 @@ function BookingJadwalContent({ dokter, id }) {
         {/* <PC> */}
         <div className="container-fluid">
           <div className="row">
-            <div className="col-9">
+            <div className="col-lg-9 col-12 my-2">
               <Card
                 // title={<p>&nbsp;</p>}
                 // headStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.0)', border: 0 }}
@@ -168,7 +241,7 @@ function BookingJadwalContent({ dokter, id }) {
                 {/* <ChooseBooking /> */}
                 {showCalendar ? (
                   <div className="row align-items-center align-self-center">
-                    <div className="col-5">
+                    <div className="col-lg-5 col-12">
                       <Calendar
                         value={selectedDay}
                         onChange={setSelectedDay}
@@ -193,18 +266,18 @@ function BookingJadwalContent({ dokter, id }) {
                         )}
                       />
                     </div>
-                    <div className="col-7">
+                    <div className="col-lg-7 col-12">
                       <div>
                         {/* <DetailDokter /> */}
                         <div className="row">
-                          <div className="col-3">
+                          <div className="col-lg-3 col-12">
                             <img
                               src={"/" + data.image}
                               alt="doctor1"
                               width="100%"
                             />
                           </div>
-                          <div className="col-9">
+                          <div className="col-lg-9 col-12">
                             <StyledTitle>{data.name}</StyledTitle>
                             <StyledText>{data.position}</StyledText>
                             <StyledTextWIcon>
@@ -231,7 +304,7 @@ function BookingJadwalContent({ dokter, id }) {
                             <BtnWrapper
                               // onClick={(e) => handleInput(e, "value")}
                               key={i}
-                              onClick={(e) => setValue(e.target.value, "value")}
+                              onClick={(e) => setValuejam(e.target.value, "value")}
                             >
                               <StyledButton value={item}>
                                 {moment(item, "HH").format("HH:mm")}
@@ -246,27 +319,36 @@ function BookingJadwalContent({ dokter, id }) {
                   <div className="row align-items-center align-self-center">
                     <div className="col-md-7 col-12 p-3">
                       <span className="bookingInputLabel py-2">
-                        Nama lengkap pasien
+                        Nama lengkap pasien<span className='required'>*</span>
                       </span>
                       <Input
                         placeholder="Tulis nama lengkapmu di sini"
                         value={nama}
                         onChange={(event) => setnama(event.target.value)}
                       />
+                      {
+                        errornama &&  
+                        <span className='error mt-4'>Nama Anda harus diisi!</span>
+                      }
                     </div>
                     <div className="col-md-5 col-12 p-3">
                       <span className="bookingInputLabel py-2">
-                        Nomor Telepon
+                        Nomor Telepon<span className='required'>*</span>
                       </span>
                       <Input
-                        placeholder="Tulis nama lengkapmu di sini"
-                        value={nama}
-                        onChange={(event) => setnama(event.target.value)}
+                        placeholder="Tulis nomor HP di sini"
+                        value={phone}
+                        type="number"
+                        onChange={(event) => setphone(event.target.value)}
                       />
+                      {
+                        errorphone &&  
+                        <span className='error mt-4'>Nomor Telepon Anda harus diisi!</span>
+                      }
                     </div>
                     <div className="col-12 p-3">
                       <span className="bookingInputLabel py-2">
-                        Kategori Pasien
+                        Kategori Pasien<span className='required'>*</span>
                       </span>
                       <br></br>
                       <Radio.Group
@@ -277,11 +359,16 @@ function BookingJadwalContent({ dokter, id }) {
                         <Radio value="baru">Pasien Baru</Radio>
                         <Radio value="lama">Pasien Lama</Radio>
                       </Radio.Group>
+                      <br></br>
+                      {
+                        errorkategori &&  
+                        <span className='error mt-4'>Kategori harus dipilih!</span>
+                      }
                     </div>
                     {showRekamMedis && (
                       <div className="col-md-6 col-12 p-3">
                         <span className="bookingInputLabel py-2">
-                          Nomor Rekam Medis
+                          Nomor Rekam Medis<span className='required'>*</span>
                         </span>
                         <Input
                           placeholder="Ex: 12345678"
@@ -290,27 +377,33 @@ function BookingJadwalContent({ dokter, id }) {
                             setrekamMedis(event.target.value)
                           }
                         />
+                        {
+                        errorrekam &&  
+                          <span className='error mt-4'>Rekam medis harus diisi!</span>
+                        }
                       </div>
                     )}
                     <div className="col-12 p-3">
-                      <span className="bookingInputLabel py-2">Keluhan</span>
+                      <span className="bookingInputLabel py-2">Keluhan<span className='required'>*</span></span>
                       <TextArea
                         placeholder="Tulis keluhanmu di sini"
                         value={keluhan}
                         onChange={(event) => setkeluhan(event.target.value)}
                         rows={3}
-                      />
+                      />                                                      
                     </div>
                   </div>
                 )}
               </Card>
             </div>
-            <div className="col-3">
+            <div className="col-lg-3 col-12 my-2">
               <DetailBooking
-                value={value}
+                value={valuejam}
                 dateItem={selectedDay}
                 showCalendar={showCalendar}
                 setshowCalendar={setshowCalendar}
+                bayar={bayar}
+                loading={loading}
               />
             </div>
           </div>
@@ -324,11 +417,11 @@ function BookingJadwalContent({ dokter, id }) {
 }
 
 export async function getServerSideProps({ req, params }) {
-  const { id } = params;
+  const { id1 } = params;
 
   return {
     props: {
-      id: id,
+      id1: id1,
     },
   };
 }
