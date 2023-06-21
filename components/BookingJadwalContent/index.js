@@ -89,10 +89,9 @@ const availableDays = [
   },
 ];
 
-function BookingJadwalContent({ dokter, id1 }) {
+function BookingJadwalContent({ dokter, id }) {
   const router = useRouter();
-  const data = router.query.id && dokter[router.query.id - 1];
-  // console.log(id1)
+  const data = router.query.id ? dokter[router.query.id - 1] : dokter[1];
   const [selectedDay, setSelectedDay] = useState(utils().getToday());
   const [filteredDate, setFilteredDate] = useState([]);
   const [valuejam, setValuejam] = useState();
@@ -156,9 +155,9 @@ function BookingJadwalContent({ dokter, id1 }) {
     transformDatesToFormatDaysOff(AllHariOffInThisYear);
 
   // Jadwal Days on
-  const JadwalHariOn = data.jadwal.filter((jadwal) => jadwal.jam);
+  const JadwalHariOn = data && data.jadwal && data.jadwal.filter((jadwal) => jadwal.jam);
   const convertHariOn = convertDaysToNumbers(
-    JadwalHariOn.map((hari) => hari.hari)
+    JadwalHariOn && JadwalHariOn.map((hari) => hari.hari)
   );
   const AllHariOnInThisYear = getArrayEveryNDayDatesFromToday(convertHariOn);
 
@@ -423,16 +422,6 @@ function BookingJadwalContent({ dokter, id1 }) {
   );
 }
 
-export async function getServerSideProps({ req, params }) {
-  const { id1 } = params;
-
-  return {
-    props: {
-      id1: id1,
-    },
-  };
-}
-
 const Wrapper = styled.div`
   /* display: flex;
   justify-content: center;
@@ -581,3 +570,13 @@ const StyledButton = styled.button`
 `;
 
 export default BookingJadwalContent;
+
+export async function getServerSideProps({ req, params }) {
+  const { id } = params;
+
+  return {
+    props: {
+      id: id,
+    },
+  };
+}
