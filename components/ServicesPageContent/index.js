@@ -11,24 +11,26 @@ import "moment/locale/id";
 moment.locale("id");
 
 function ServicesPageContent() {
-  const { Search } = Input;
   useEffect(() => {
     AOS.init();
     setDataServices([...slice2(serviceList, 0, 16)]);
   }, []);
+  const { Search } = Input;
   const [DataServices, setDataServices] = useState(serviceList);
   const sortedServicesList = sortByCreatedDateDescending(DataServices);
 
   const onSearch = (value) => {
     const filteredData = serviceList.filter((entry) =>
-      entry.name.toLowerCase().includes(value)
+      entry.title.toLowerCase().includes(value)
     );
     setDataServices(filteredData);
   };
 
   const handlePagination = async (value) => {
     if (value * 16 - 1 > serviceList.length) {
-      setDataServices([...slice2(serviceList, (value - 1) * 16, serviceList.length)]);
+      setDataServices([
+        ...slice2(serviceList, (value - 1) * 16, serviceList.length),
+      ]);
     } else {
       setDataServices([...slice2(serviceList, (value - 1) * 16, value * 16)]);
     }
@@ -69,7 +71,13 @@ function ServicesPageContent() {
                 <CardBodyWrapper className="my-2">
                   <CardBodyText>{item.text}</CardBodyText>
                 </CardBodyWrapper>
-                <BacaSelengkapnya link={item.link}></BacaSelengkapnya>
+                <BacaSelengkapnya
+                  link={
+                    "/articles/" +
+                    item.slug +
+                    moment(item.created).format("YYYYMMDD")
+                  }
+                ></BacaSelengkapnya>
               </CardWrapper>
             </>
             {/* </Link> */}
@@ -107,7 +115,7 @@ const StyledTitle = styled.div`
   font-weight: 600;
   font-size: var(--fs-32);
   color: #a5090c;
-  
+
   margin-bottom: 2%;
 `;
 

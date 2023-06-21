@@ -20,7 +20,7 @@ function ArticlesPageContent() {
 
   const onSearch = (value) => {
     const filteredData = newsList.filter((entry) =>
-      entry.name.toLowerCase().includes(value)
+      entry.title.toLowerCase().includes(value)
     );
     setDataNews(filteredData);
   };
@@ -68,7 +68,7 @@ function ArticlesPageContent() {
                 <CardBodyWrapper className="my-2">
                   <CardBodyText>{item.text}</CardBodyText>
                 </CardBodyWrapper>
-                <BacaSelengkapnya link={item.link}></BacaSelengkapnya>
+                <BacaSelengkapnya link={'/articles/' + item.slug + moment(item.created).format("YYYYMMDD")}></BacaSelengkapnya>
               </CardWrapper>
             </>
             {/* </Link> */}
