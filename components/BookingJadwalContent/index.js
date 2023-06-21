@@ -128,7 +128,9 @@ function BookingJadwalContent({ dokter, id }) {
 
   // Minggu jadi Days off
   const AllHariMingguOffInThisYear = getArrayEveryNDayDates(["0"]);
-  const disabledMingguDaysDynamic = transformDatesToFormatDaysOff(AllHariMingguOffInThisYear);
+  const disabledMingguDaysDynamic = transformDatesToFormatDaysOff(
+    AllHariMingguOffInThisYear
+  );
 
   // Jadwal Days off
   const JadwalHariOff = data.jadwal.filter((jadwal) => !jadwal.jam);
@@ -136,7 +138,8 @@ function BookingJadwalContent({ dokter, id }) {
     JadwalHariOff.map((hari) => hari.hari)
   );
   const AllHariOffInThisYear = getArrayEveryNDayDates(convertHariOff);
-  const disabledDaysDynamic = transformDatesToFormatDaysOff(AllHariOffInThisYear);
+  const disabledDaysDynamic =
+    transformDatesToFormatDaysOff(AllHariOffInThisYear);
 
   // Jadwal Days on
   const JadwalHariOn = data.jadwal.filter((jadwal) => jadwal.jam);
@@ -144,7 +147,10 @@ function BookingJadwalContent({ dokter, id }) {
     JadwalHariOn.map((hari) => hari.hari)
   );
   const AllHariOnInThisYear = getArrayEveryNDayDatesFromToday(convertHariOn);
-  const availableDaysDynamic = transformDatesToFormatDaysOn(AllHariOnInThisYear);
+  const availableDaysDynamic =
+    transformDatesToFormatDaysOn(AllHariOnInThisYear);
+
+  // Jadwal Days on Jam on
   return (
     <Wrapper id="findUs">
       <StyledSectionTitle>Booking Jadwal</StyledSectionTitle>
@@ -174,7 +180,9 @@ function BookingJadwalContent({ dokter, id }) {
                         onChange={setSelectedDay}
                         shouldHighlightWeekends
                         minimumDate={utils().getToday()}
-                        disabledDays={disabledDaysDynamic.concat(disabledMingguDaysDynamic)} // here to disable off days
+                        disabledDays={disabledDaysDynamic.concat(
+                          disabledMingguDaysDynamic
+                        )} // here to disable off days
                         customDaysClassName={availableDaysDynamic}
                         colorPrimary="#DF3034"
                         calendarClassName="responsive-calendar"
