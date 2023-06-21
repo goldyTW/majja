@@ -16,6 +16,7 @@ import '../styles/chooseBooking.css'
 import '../styles/renderJam.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "swiper/swiper.min.css";
+import 'antd/dist/antd.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
