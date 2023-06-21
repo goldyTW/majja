@@ -44,7 +44,7 @@ function LayananHome() {
             </div>
             <div className="row justify-content-center my-4">
                 <div className='col-12 text-center'>
-                <ButtonAlt link="/" text="Lihat Semua Layanan"></ButtonAlt>
+                <ButtonAlt link="/services" text="Lihat Semua Layanan"></ButtonAlt>
                 </div>
             </div>
         </div>

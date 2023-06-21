@@ -61,7 +61,7 @@ function ArticleGridHome() {
         </div>
         <div className="row justify-content-center my-4">
             <div className='col-12 text-center'>
-            <ButtonAlt link="/" text="Lihat Lebih Banyak Artikel"></ButtonAlt>
+            <ButtonAlt link="/articles" text="Lihat Lebih Banyak Artikel"></ButtonAlt>
             </div>
         </div>
     </div>
