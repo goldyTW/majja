@@ -11,7 +11,7 @@
   "dependencies": {
     "@amir04lm26/react-modern-calendar-date-picker": "^1.0.1",
     "@iconify/react": "^4.1.0",
-    "antd": "^5.6.1",
+    "antd": "^4.23.5",
     "aos": "^2.3.4",
     "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
