@@ -50,7 +50,7 @@ function Footer() {
                 </div>
                 <div className='row justify-content-center'>
                     <div className="col-12 text-left pb-5">
-                        <span className="copyright">© Copyright {year} Majja Klinik | Made by <a href='https://websitesimple.id/' target="_blank" rel="noreferrer" style={{textDecoration:'none', fontWeight:'bold', color:'white'}}>WebsiteSimple.id</a></span>
+                        <span className="copyright">© Copyright {year} Majja Klinik</span>
                     </div>
                 </div>
                 </div>

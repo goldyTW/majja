@@ -161,6 +161,9 @@
 }
 .ant-pagination-item:hover{
     border-radius: 50px !important;
+    background: #DF3034 !important;
+    color: white;
+    border:none !important;
 }
 .ant-pagination-item-active{
     background: #DF3034 !important;
