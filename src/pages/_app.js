@@ -14,6 +14,7 @@ import '../styles/doctor.css'
 import '../styles/doctorHome.css'
 import '../styles/chooseBooking.css'
 import '../styles/renderJam.css'
+import '../styles/dashboard.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "swiper/swiper.min.css";
 import 'antd/dist/antd.css';
