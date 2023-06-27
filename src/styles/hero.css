@@ -1,8 +1,8 @@
 .hero-wrapper{
     padding-top: 12.5%;
     padding-bottom: 30px;
-    padding-left: 7.5%;
-    padding-right: 7.5%;
+    padding-left: 10%;
+    padding-right: 10%;
     background: linear-gradient(180deg, #FFFFFF 0%, #EDF6FF 35.55%);
     background-size: cover;
     background-position: bottom;
@@ -12,17 +12,17 @@
   font-family: "Poppins";
   font-style: normal;
   font-weight: 600;
-  font-size: 40px;
+  font-size: 48px;
   line-height: 60px;
   color: #a5090c;
-  padding-right: 10%;
+  padding-right: 5%;
 }
 .hero-text {
   font-family: "Poppins";
   font-style: normal;
   font-weight: 500;
-  font-size: 18px;
-  line-height: 30px;
+  font-size: 20px;
+  line-height: 150%;
   color: #8d8d8d;
   padding-right: 15%;
 }

@@ -6,23 +6,22 @@ import axios from 'axios';
 import FloatingWA from '../../../components/FloatingWA';
 import { Card } from "antd";
 import styled from "styled-components";
-// import Lottie from 'react-lottie';
 import Lottie from "lottie-react";
-import * as animationData from '../../../public/images/success.json'
+import * as animationData from '../../../public/images/fail.json'
 
 function BookingSuccess() {
   const defaultOptions = {
     loop: true,
     autoplay: true,
     animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice"
-    }
+    // rendererSettings: {
+    //   preserveAspectRatio: "xMidYMid slice"
+    // }
   };
 
   return (
     <>
-    <Head><title>Booking Success</title></Head>
+    <Head><title>Booking Failed</title></Head>
     <Navbar></Navbar>
     <Wrapper id="findUs">
       <Config>
@@ -42,14 +41,14 @@ function BookingSuccess() {
                   
                 >
                   <div className='align-self-center pt-4'>
-                  <h1 className='successTitle'>Pembayaran Berhasil</h1>
-                  {/* <img src='/images/successful.gif' width="60%"></img> */}
+                  <h1 className='failTitle'>Pembayaran Gagal</h1>
+                  {/* <img src='/images/failful.gif' width="60%"></img> */}
                   <div className='row justify-content-center'>
-                    <div className='col-lg-8 col-12'>
-                      <Lottie animationData={animationData} loop={true}/>
+                    <div className='col-lg-5 col-12'>
+                    <Lottie animationData={animationData} loop={true} />
                     </div>
                   </div>
-                 <p className='successText'>Anda akan segera menerima pesan konfirmasi melalui Whatsapp</p>
+                  <p className='failText'>Mohon maaf, kami mengalami kendala dalam memproses pembayaran untuk booking jadwal Anda saat ini. Harap mencoba kembali!</p>
                  </div>
                 </Card>
               </div>
