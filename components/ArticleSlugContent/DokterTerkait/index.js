@@ -15,7 +15,7 @@ function DokterTerkait() {
           key={i}
           // data-aos="fade-up"
         >
-          {console.log(item)}
+          {/* {console.log(item)} */}
           <img
             className="doctorImg align-self-center"
             src={"/" + item.image}

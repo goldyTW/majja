@@ -4,7 +4,9 @@ import Navbar from "../../../../components/Navbar";
 import FloatingWA from "../../../../components/FloatingWA";
 import Footer from "../../../../components/footer";
 import { serviceList } from "../../../../components/ServiceData";
+import { newsList } from "../../../../components/ArticleData";
 import ServiceSlugContent from "../../../../components/ServiceSlugContent";
+import ArticleSlugContent from "../../../../components/ArticleSlugContent";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import moment from "moment";
@@ -19,8 +21,8 @@ function Slug() {
       </Head>
       <Navbar></Navbar>
       <StyledSection>
-        <ServiceSlugContent
-          data={serviceList.filter(
+        <ArticleSlugContent
+          data={newsList.filter(
             (item) =>
               item.slug + moment(item.created).format("YYYYMMDD") === slug
           )}
