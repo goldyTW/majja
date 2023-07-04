@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 // import ChooseBooking from "./ChooseBooking";
 import DetailBooking from "./DetailBooking";
-import { Card, Input, Radio } from "antd";
+import { Card, Input, Radio, Select } from "antd";
 import "@amir04lm26/react-modern-calendar-date-picker/lib/DatePicker.css";
 import { Calendar, utils } from "@amir04lm26/react-modern-calendar-date-picker";
 import { Icon } from "@iconify/react";
@@ -36,63 +36,67 @@ import { toast } from 'react-toastify';
 //   },
 // ];
 
-const availableDays = [
-  {
-    year: 2023,
-    month: 6,
-    day: 20,
-    className: "GrDay",
-    hour: {
-      available: [9, 10, 17, 19, 20, 21],
-      unavailable: [8, 18],
-    },
-  },
-  {
-    year: 2023,
-    month: 6,
-    day: 21,
-    className: "GrDay",
-    hour: {
-      available: [9, 17, 19, 21],
-      unavailable: [8, 10, 18, 20],
-    },
-  },
-  {
-    year: 2023,
-    month: 6,
-    day: 22,
-    className: "GrDay",
-    hour: {
-      available: [8, 9, 10, 17, 19, 20, 21],
-      unavailable: [18],
-    },
-  },
-  {
-    year: 2023,
-    month: 6,
-    day: 23,
-    className: "GrDay",
-    hour: {
-      available: [8, 9, 10, 17, 18, 19, 20, 21],
-      unavailable: [],
-    },
-  },
-  {
-    year: 2023,
-    month: 6,
-    day: 24,
-    className: "GrDay",
-    hour: {
-      available: [9],
-      unavailable: [8, 10, 17, 18, 19, 20, 21],
-    },
-  },
-];
+// const availableDays = [
+//   {
+//     year: 2023,
+//     month: 6,
+//     day: 20,
+//     className: "GrDay",
+//     hour: {
+//       available: [9, 10, 17, 19, 20, 21],
+//       unavailable: [8, 18],
+//     },
+//   },
+//   {
+//     year: 2023,
+//     month: 6,
+//     day: 21,
+//     className: "GrDay",
+//     hour: {
+//       available: [9, 17, 19, 21],
+//       unavailable: [8, 10, 18, 20],
+//     },
+//   },
+//   {
+//     year: 2023,
+//     month: 6,
+//     day: 22,
+//     className: "GrDay",
+//     hour: {
+//       available: [8, 9, 10, 17, 19, 20, 21],
+//       unavailable: [18],
+//     },
+//   },
+//   {
+//     year: 2023,
+//     month: 6,
+//     day: 23,
+//     className: "GrDay",
+//     hour: {
+//       available: [8, 9, 10, 17, 18, 19, 20, 21],
+//       unavailable: [],
+//     },
+//   },
+//   {
+//     year: 2023,
+//     month: 6,
+//     day: 24,
+//     className: "GrDay",
+//     hour: {
+//       available: [9],
+//       unavailable: [8, 10, 17, 18, 19, 20, 21],
+//     },
+//   },
+// ];
 
 function BookingJadwalContent({ dokter, id }) {
   const router = useRouter();
   const data = router.query.id ? dokter[router.query.id - 1] : dokter[1];
   const [selectedDay, setSelectedDay] = useState(utils().getToday());
+  var days = ['Minggu','Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+  var d = new Date(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day);
+  var dayName = days[d.getDay()];
+  // const [DayofWeek, setDayofWeek] = useState(utils().getDayOfWeek());
   const [filteredDate, setFilteredDate] = useState([]);
   const [valuejam, setValuejam] = useState();
   const [nama, setnama] = useState();
@@ -111,8 +115,9 @@ function BookingJadwalContent({ dokter, id }) {
   const [loading, setLoading] = useState(false);
   const url = process.env.NEXT_APP_API_URL || "http://localhost:3000";
   const urlxendit = "https://checkout.xendit.co/web/";
-  
+  const { Option } = Select;
   const { TextArea } = Input;
+
   const onChangeKategori = (e) => {
     setKategoriPasien(e.target.value);
     if (e.target.value == "lama") {
@@ -122,22 +127,22 @@ function BookingJadwalContent({ dokter, id }) {
     }
   };
 
-  const filterData = availableDays.filter(
-    (item) =>
-      item.day == selectedDay.day &&
-      item.month == selectedDay.month &&
-      item.year == selectedDay.year
-  );
-  const mappingJam = filterData.map((item) => item.hour);
-  const availableHour = mappingJam.map((item) => item.available);
-  const unavailableHour = mappingJam.map((item) => item.unavailable);
-  const allHour = availableHour.flat(1).concat(unavailableHour.flat(1));
-  const sortAllHour = allHour.sort(function (a, b) {
-    return a - b;
-  });
-  const chkDisabled = () => {
-    if (allHour.indexOf(unavailableHour) !== -1) return true;
-  };
+  // const filterData = availableDays.filter(
+  //   (item) =>
+  //     item.day == selectedDay.day &&
+  //     item.month == selectedDay.month &&
+  //     item.year == selectedDay.year
+  // );
+  // const mappingJam = filterData.map((item) => item.hour);
+  // const availableHour = mappingJam.map((item) => item.available);
+  // const unavailableHour = mappingJam.map((item) => item.unavailable);
+  // const allHour = availableHour.flat(1).concat(unavailableHour.flat(1));
+  // const sortAllHour = allHour.sort(function (a, b) {
+  //   return a - b;
+  // });
+  // const chkDisabled = () => {
+  //   if (allHour.indexOf(unavailableHour) !== -1) return true;
+  // };
 
   // Minggu jadi Days off
   const AllHariMingguOffInThisYear = getArrayEveryNDayDates(["0"]);
@@ -187,10 +192,10 @@ function BookingJadwalContent({ dokter, id }) {
         setLoading(false);
         seterrorkategori(true)
       }
-      if(kategoriPasien == "lama" && !rekamMedis){
-        setLoading(false);
-        seterrorrekam(true)
-      }
+      // if(kategoriPasien == "lama" && !rekamMedis){
+      //   setLoading(false);
+      //   seterrorrekam(true)
+      // }
     }else{
       axios.post(`${url}/api/booking/add`,{nama, phone:phone.toString(), kategori:kategoriPasien, no_rekam_medis:rekamMedis, keluhan, 
         tanggal_booking:moment(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day).format("YYYY-MM-DD"), jam_booking: valuejam, id_dokter:router.query.id},{
@@ -222,6 +227,25 @@ function BookingJadwalContent({ dokter, id }) {
     }
   }
 
+  function pecahjam(jam){
+    var temp = [];
+    if(jam){
+      jam.split('.')
+      var awal = jam[0]+jam[1];
+      var awalconverted = Number(awal)
+      var akhir = jam[6]+jam[7];
+      var akhirconverted = Number(akhir)
+      for(var i = awalconverted; i < akhirconverted; i++){
+        var jamstring = i+'.00'
+        temp.push(jamstring)
+      }
+    }  
+    return temp
+    // console.log(temp)
+  }
+
+  // pecahjam(valuejam)
+
   return (
     <Wrapper id="findUs">
       <StyledSectionTitle>Booking Jadwal</StyledSectionTitle>
@@ -244,7 +268,7 @@ function BookingJadwalContent({ dokter, id }) {
               >
                 {/* <ChooseBooking /> */}
                 {showCalendar ? (
-                  <div className="row align-items-center align-self-center">
+                  <div className="row justify-content-center">
                     <div className="col-lg-5 col-12">
                       <Calendar
                         value={selectedDay}
@@ -272,39 +296,36 @@ function BookingJadwalContent({ dokter, id }) {
                         )}
                       />
                     </div>
-                    <div className="col-lg-7 col-12">
-                      <div>
-                        {/* <DetailDokter /> */}
-                        <div className="row">
-                          <div className="col-lg-3 col-12">
-                            <img
-                              src={"/" + data.image}
-                              alt="doctor1"
-                              width="100%"
+                    <div className="col-lg-7 col-12 pt-4">
+                      <div className="row">
+                        <div className="col-lg-3 col-12">
+                          <img
+                            src={"/" + data.image}
+                            alt="doctor1"
+                            width="100%"
+                          />
+                        </div>
+                        <div className="col-lg-9 col-12">
+                          <StyledTitle>{data.name}</StyledTitle>
+                          <StyledText>{data.position}</StyledText>
+                          <StyledTextWIcon>
+                            <Icon
+                              icon="ion:medkit"
+                              className=""
+                              style={{
+                                cursor: "pointer",
+                                fontSize: "var(--fs-24)",
+                                color: "#8D8D8D",
+                                marginRight: "2%",
+                              }}
                             />
-                          </div>
-                          <div className="col-lg-9 col-12">
-                            <StyledTitle>{data.name}</StyledTitle>
-                            <StyledText>{data.position}</StyledText>
-                            <StyledTextWIcon>
-                              <Icon
-                                icon="ion:medkit"
-                                className=""
-                                style={{
-                                  cursor: "pointer",
-                                  fontSize: "var(--fs-24)",
-                                  color: "#8D8D8D",
-                                  marginRight: "2%",
-                                }}
-                              />
-                              Pengalaman: {data.xp} tahun
-                            </StyledTextWIcon>
-                          </div>
+                            Pengalaman: {data.xp} tahun
+                          </StyledTextWIcon>
                         </div>
                       </div>
-                      <div>
+                      <div className="pt-3">
                         {/* <RenderJam data={availableDays} selectedDate={selectedDay} /> */}
-                        <RenderJamWrapper className="section">
+                        {/* <RenderJamWrapper className="section">
                           {sortAllHour.map((item, i) => (
                             // <ButtonJam text={item} disabled={chkDisabled} />
                             <BtnWrapper
@@ -317,7 +338,37 @@ function BookingJadwalContent({ dokter, id }) {
                               </StyledButton>
                             </BtnWrapper>
                           ))}
-                        </RenderJamWrapper>
+                        </RenderJamWrapper> */}
+                        <span className="waktuTemu pt-5">Waktu Temu</span><br></br>
+                         <Select
+                          style={{width: '40%'}}
+                          showSearch
+                          className='py-1'
+                          placeholder="Pilih jam"
+                          optionFilterProp="children"
+                          onChange={(e) => setValuejam(e)}
+                          value={valuejam}
+                            >
+                              {
+                                data.jadwal && data.jadwal.map((item, i) => (
+                                  dayName == item.hari && 
+                                    pecahjam(item.jam).map((item2, i2) => (
+                                      <Option key={i2} value={item2}>{item2}</Option>
+                                    ))
+                                  
+                                  
+                                ))
+                              }
+                               {
+                                data.jadwal && data.jadwal.map((item, i) => (
+                                  dayName == item.hari && item.jam2 && 
+                                    pecahjam(item.jam2).map((item3, i3) => (
+                                      <Option key={i3} value={item3}>{item3}</Option>
+                                    ))
+                                  
+                                ))
+                              }
+                      </Select>
                       </div>
                     </div>
                   </div>
@@ -374,7 +425,8 @@ function BookingJadwalContent({ dokter, id }) {
                     {showRekamMedis && (
                       <div className="col-md-6 col-12 p-3">
                         <span className="bookingInputLabel py-2">
-                          Nomor Rekam Medis<span className='required'>*</span>
+                          Nomor Rekam Medis
+                          {/* <span className='required'>*</span> */}
                         </span>
                         <Input
                           placeholder="Ex: 12345678"
@@ -383,10 +435,10 @@ function BookingJadwalContent({ dokter, id }) {
                             setrekamMedis(event.target.value)
                           }
                         />
-                        {
+                        {/* {
                         errorrekam &&  
                           <span className='error mt-4'>Rekam medis harus diisi!</span>
-                        }
+                        } */}
                       </div>
                     )}
                     <div className="col-12 p-3">
