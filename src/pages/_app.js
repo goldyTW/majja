@@ -15,6 +15,8 @@ import '../styles/doctorHome.css'
 import '../styles/chooseBooking.css'
 import '../styles/renderJam.css'
 import '../styles/dashboard.css'
+import '../styles/login.css'
+import '../styles/modal.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "swiper/swiper.min.css";
 import 'antd/dist/antd.css';

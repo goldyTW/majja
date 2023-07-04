@@ -198,8 +198,8 @@ function BookingJadwalContent({ dokter, id }) {
           'Content-Type': 'application/json',
         },}).then(res => {
           if(res.status==200){
-            // console.log(res.data)
-            router.push(`${urlxendit}`+res.data.result.insertId)
+            console.log(res.data)
+            // router.push(`${urlxendit}`+res.data.result.insertId)
           }       
       })
       .catch(function (error) {

@@ -1,0 +1,95 @@
+.modalDoctorTitle{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 100%;
+    color: #433B3B;
+}
+.modalSubtitle{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    color: #8d8d8d;
+}
+.modalSubtitleData{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    color: #433B3B;
+}
+.buttonModalReminded{
+    background-color: #F0A613;
+    padding: 10px 20px; 
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+.buttonModalComplete{
+    background-color: #09A53E;
+    padding: 10px 20px;  
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+.buttonModalNot{
+    background-color: #eeeeee;
+    padding: 10px 20px;  
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    color: #433B3B;
+    border: none;
+    border-radius: 5px;
+}
+.buttonTab{
+    background-color: white;
+    padding: 8px 16px; 
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    color: black;
+    border-top: 1px solid #d5d5d5;
+    border-left: 1px solid #d5d5d5;
+    border-bottom: 1px solid #d5d5d5;
+    border-right: 1px solid #d5d5d5;
+    /* border-radius: 5px; */
+}
+.buttonTabSelected{
+    background-color: white;
+    padding: 8px 16px; 
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    color: #DF3034;
+    border: 1.5px solid #DF3034;
+    /* border-radius: 5px; */
+}
+.tambahjam{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    color: #DF3034;
+}

@@ -6,6 +6,8 @@ import { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import DashboardSection from "../../../components/AdminPage/Dashboard";
 import DoctorList from "../../../components/AdminPage/Dashboard/DoctorList";
+import NewDoctor from "../../../components/AdminPage/Dashboard/NewDoctor";
+import DoctorSchedule from "../../../components/AdminPage/Dashboard/DoctorSchedule";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -14,15 +16,17 @@ const getKeyDisplayName = (key) => {
     case "1":
       return "Dashboard";
     case "2":
-      return "Appointments";
+      return "Jadwal Temu";
     case "3":
-      return "Patient List";
+      return "Daftar pasien";
     case "4":
-      return "Doctor List";
+      return "Daftar Dokter";
     case "5":
-      return "Articles";
+      return "Jadwal Dokter";
     case "6":
-      return "Settings";
+      return "Artikel";
+    case "7":
+      return "Pengaturan";
     default:
       return "Unknown";
   }
@@ -60,7 +64,7 @@ function Dashboard() {
       />
     ),
     getItem(
-      "Appointments",
+      "Jadwal Temu",
       "2",
       <Icon
         icon="ion:calendar"
@@ -73,7 +77,7 @@ function Dashboard() {
       />
     ),
     getItem(
-      "Patient List",
+      "daftar Pasien",
       "3",
       <Icon
         icon="fluent:text-bullet-list-square-person-20-filled"
@@ -86,7 +90,7 @@ function Dashboard() {
       />
     ),
     getItem(
-      "Doctor List",
+      "Daftar Dokter",
       "4",
       <Icon
         icon="fa6-solid:user-doctor"
@@ -99,8 +103,21 @@ function Dashboard() {
       />
     ),
     getItem(
-      "Articles",
+      "Jadwal Dokter",
       "5",
+      <Icon
+        icon="ion:calendar"
+        className="me-2"
+        style={{
+          cursor: "pointer",
+          fontSize: "18px",
+          color: "#8D8D8D",
+        }}
+      />
+    ),
+    getItem(
+      "Artikel",
+      "6",
       <Icon
         icon="ant-design:home-filled"
         className="me-2"
@@ -112,8 +129,8 @@ function Dashboard() {
       />
     ),
     getItem(
-      "Settings",
-      "6",
+      "Pengaturan",
+      "7",
       <Icon
         icon="ant-design:setting-filled"
         className="me-2"
@@ -193,23 +210,27 @@ function Dashboard() {
                 </div>
               </>
             ) : selectedKey == 4 ? (
+              <>
               <DoctorList />
-            ) : selectedKey == 5 ? (
-              <>
-                <h1>Articles</h1>
-                <div
-                  style={{
-                    padding: 24,
-                    minHeight: 360,
-                    background: "#FFFFFF",
-                  }}
-                >
-                  Articles
-                </div>
               </>
-            ) : selectedKey == 6 ? (
+            ) : selectedKey == 5 ? (
+              <DoctorSchedule></DoctorSchedule>
+               ) : selectedKey == 6 ? (
+                <>
+                  <h1>Artikel</h1>
+                  <div
+                    style={{
+                      padding: 24,
+                      minHeight: 360,
+                      background: "#FFFFFF",
+                    }}
+                  >
+                    Artikel
+                  </div>
+                </>
+            ) : selectedKey == 7 ? (
               <>
-                <h1>Settings</h1>
+                <h1>Pengaturan</h1>
                 <div
                   style={{
                     padding: 24,
@@ -217,7 +238,7 @@ function Dashboard() {
                     background: "#FFFFFF",
                   }}
                 >
-                  Settings
+                  Pengaturan
                 </div>
               </>
             ) : (
