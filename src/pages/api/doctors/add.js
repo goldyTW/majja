@@ -1,4 +1,3 @@
-import { t } from "i18next";
 import excuteQuery from "../../../../lib/db";
 import NextCors from 'nextjs-cors';
 

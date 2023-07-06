@@ -18,7 +18,23 @@ export default async function exportDoctor(req, res) {
             query: `SELECT * FROM tb_jadwal a NATURAL JOIN tb_dokter b`,
             values:'',
         });
-        res.status(200).json({ jadwal })
+        const groupedSched = jadwal.reduce((result, item) => {
+            const existingItem = result.find((d) => d.id_dokter === item.id_dokter);
+            if (existingItem) {
+              existingItem.hari.push(item.hari);
+            } else {
+              result.push({
+                id_dokter: item.id_dokter,
+                nama: item.nama,
+                posisi: item.posisi,
+                gambar: item.gambar,
+                xp: item.xp,
+                hari: [item.hari],
+              });
+            }
+            return result;
+          }, []);
+        res.status(200).json({ jadwal:groupedSched })
     } catch (error) {
         res.status(404).json({ message: error.message });
     }

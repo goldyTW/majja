@@ -23,10 +23,21 @@ export default async function exportDoctor(req, res) {
         }
         
         const jadwal = await excuteQuery({
-            query: `SELECT * FROM tb_jadwal a NATURAL JOIN tb_dokter b WHERE b.id_dokter = ${id_dokter}`, // Add a WHERE clause to filter by id_doctor
+            query: `SELECT hari FROM tb_jadwal a NATURAL JOIN tb_dokter b WHERE b.id_dokter = ${id_dokter} `, // Add a WHERE clause to filter by id_doctor
             values: '', 
         });
-        res.status(200).json({ jadwal })
+        const groupedSched = jadwal.reduce((result, item) => {
+            const existingItem = result.find((d) => d.id_dokter === item.id_dokter);
+            if (existingItem) {
+              existingItem.hari.push(item.hari);
+            } else {
+              result.push({
+                hari: [item.hari],
+              });
+            }
+            return result;
+          }, []);
+        res.status(200).json({ jadwal:groupedSched[0] })
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
