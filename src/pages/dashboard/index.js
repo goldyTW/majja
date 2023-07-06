@@ -5,8 +5,28 @@ import { Icon } from "@iconify/react";
 import { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import DashboardSection from "../../../components/AdminPage/Dashboard";
+import DoctorList from "../../../components/AdminPage/Dashboard/DoctorList";
 
 const { Header, Content, Footer, Sider } = Layout;
+
+const getKeyDisplayName = (key) => {
+  switch (key) {
+    case "1":
+      return "Dashboard";
+    case "2":
+      return "Appointments";
+    case "3":
+      return "Patient List";
+    case "4":
+      return "Doctor List";
+    case "5":
+      return "Articles";
+    case "6":
+      return "Settings";
+    default:
+      return "Unknown";
+  }
+};
 
 function Dashboard() {
   const [collapsed, setCollapsed] = useState(false);
@@ -108,7 +128,7 @@ function Dashboard() {
   return (
     <>
       <Head>
-        <title>Dashboard</title>
+        <title>{getKeyDisplayName(selectedKey.toString())}</title>
       </Head>
       <Layout
         style={{
@@ -173,18 +193,7 @@ function Dashboard() {
                 </div>
               </>
             ) : selectedKey == 4 ? (
-              <>
-                <h1>Doctor List</h1>
-                <div
-                  style={{
-                    padding: 24,
-                    minHeight: 360,
-                    background: "#FFFFFF",
-                  }}
-                >
-                  Doctor List
-                </div>
-              </>
+              <DoctorList />
             ) : selectedKey == 5 ? (
               <>
                 <h1>Articles</h1>

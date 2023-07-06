@@ -3,8 +3,9 @@ import Head from "next/head";
 import Navbar from "../../../../components/Navbar";
 import FloatingWA from "../../../../components/FloatingWA";
 import Footer from "../../../../components/footer";
-import { newsList } from "../../../../components/ArticleData";
+import { serviceList } from "../../../../components/ServiceData";
 import ArticleSlugContent from "../../../../components/ArticleSlugContent";
+import ServiceSlugContent from "../../../../components/ServiceSlugContent";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import moment from "moment";
@@ -15,12 +16,12 @@ function Slug() {
   return (
     <>
       <Head>
-        <title>Artikel</title>
+        <title>Layanan</title>
       </Head>
       <Navbar></Navbar>
       <StyledSection>
-        <ArticleSlugContent
-          data={newsList.filter(
+        <ServiceSlugContent
+          data={serviceList.filter(
             (item) =>
               item.slug + moment(item.created).format("YYYYMMDD") === slug
           )}

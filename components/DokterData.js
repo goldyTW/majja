@@ -5,6 +5,8 @@ export const dokter = [
     position: "Spesialis Obstetri dan Ginekologi",
     image: "images/dr_denny.png",
     xp: 20,
+    telp: "082138349021",
+    status: 1,
     jadwal: [
       {
         hari: "Senin",
@@ -38,6 +40,8 @@ export const dokter = [
     position: "Spesialis Obstetri dan Ginekologi",
     image: "images/dr_harianto.png",
     xp: 18,
+    telp: "081323498000",
+    status: 1,
     jadwal: [
       {
         hari: "Senin",
@@ -75,6 +79,8 @@ export const dokter = [
     position: "Spesialis Obstetri dan Ginekologi",
     image: "images/dr_cindy.png",
     xp: 15,
+    telp: "082198874902",
+    status: 1,
     jadwal: [
       {
         hari: "Senin",
@@ -113,6 +119,8 @@ export const dokter = [
     position: "Spesialis Obstetri dan Ginekologi",
     image: "images/dr_edward.png",
     xp: 10,
+    telp: "081398734021",
+    status: 1,
     jadwal: [
       {
         hari: "Senin",
@@ -146,6 +154,8 @@ export const dokter = [
     position: "Spesialis Anak",
     image: "images/dr_juliana.png",
     xp: 7,
+    telp: "082138349021",
+    status: 1,
     jadwal: [
       {
         hari: "Senin",
@@ -179,6 +189,8 @@ export const dokter = [
     position: "Spesialis Anak",
     image: "images/dr_lioe.png",
     xp: 14,
+    telp: "082243370999",
+    status: 1,
     jadwal: [
       {
         hari: "Senin",
@@ -212,6 +224,8 @@ export const dokter = [
     position: "Spesialis Penyakit Dalam",
     image: "images/dr_hendarto.png",
     xp: 17,
+    telp: "082166782121",
+    status: 2,
     jadwal: [
       {
         hari: "Senin",
@@ -245,6 +259,8 @@ export const dokter = [
     position: "Spesialis Penyakit Dalam",
     image: "images/dr_stephanie.png",
     xp: 9,
+    telp: "081239438210",
+    status: 1,
     jadwal: [
       {
         hari: "Senin",
@@ -278,6 +294,8 @@ export const dokter = [
     position: "Spesialis Anestesi Konsultan Intensive Care",
     image: "images/dr_antin.png",
     xp: 12,
+    telp: "082132183490",
+    status: 2,
     jadwal: [
       {
         hari: "Senin",
@@ -311,6 +329,8 @@ export const dokter = [
     position: "Spesialis Gizi",
     image: "images/dr_lineke.png",
     xp: 8,
+    telp: "081348390212",
+    status: 1,
     jadwal: [
       {
         hari: "Senin",
@@ -344,6 +364,8 @@ export const dokter = [
     position: "Psikolog",
     image: "images/dr_nadia.png",
     xp: 6,
+    telp: "082149021383",
+    status: 2,
     jadwal: [
       {
         hari: "Senin",
@@ -377,6 +399,8 @@ export const dokter = [
     position: "Dokter Umum",
     image: "images/dr_lalan.png",
     xp: 5,
+    telp: "087844409226",
+    status: 2,
     jadwal: [
       {
         hari: "Senin",
@@ -410,6 +434,8 @@ export const dokter = [
     position: "Dokter Umum",
     image: "images/dr_raymond.png",
     xp: 8,
+    telp: "087844409226",
+    status: 1,
     jadwal: [
       {
         hari: "Senin",
