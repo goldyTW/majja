@@ -114,7 +114,7 @@ function BookingJadwalContent({ dokter, id }) {
   const regExPhone = /^(\+62|62)8[1-9]{1}\d{1}[\s-]?\d{4}[\s-]?\d{2,5}$/;
   const [loading, setLoading] = useState(false);
   const url = process.env.NEXT_APP_API_URL || "http://localhost:3000";
-  const urlxendit = "https://checkout.xendit.co/web/";
+  const awsendpoint = "http://18.223.239.47:8084";
   const { Option } = Select;
   const { TextArea } = Input;
 
@@ -198,14 +198,20 @@ function BookingJadwalContent({ dokter, id }) {
       // }
     }else{
       axios.post(`${url}/api/booking/add`,{nama, phone:phone.toString(), kategori:kategoriPasien, no_rekam_medis:rekamMedis, keluhan, 
-        tanggal_booking:moment(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day).format("YYYY-MM-DD"), jam_booking: valuejam, id_dokter:router.query.id},{
+        tanggal_booking:moment(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day).format("YYYY-MM-DD"), jam_booking: moment(valuejam).format('HH:00:00'), 
+        id_dokter:router.query.id},{
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json', 
         },}).then(res => {
-          if(res.status==200){
-            console.log(res.data)
-            // router.push(`${urlxendit}`+res.data.result.insertId)
-          }       
+          // if(res.status==200){
+            axios.post(`${awsendpoint}/gateway1/snap/checkout`,{booking_id: res.data.result.insertId, amount: 50000, full_name: nama, phone: phone.toString()},{ 
+              headers: {
+              'Content-Type': 'application/json',
+            },}).
+            then(res => {
+              router.push(res.data.url)
+            })
+          // }       
       })
       .catch(function (error) {
         setLoading(true);
