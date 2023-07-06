@@ -5,6 +5,4 @@ services:
         ports:
             - '8084:8084'
         restart: always
-        volumes:
-            - '/home/admin_server/auth_app:/app/db'
         image: payment_service
