@@ -1,0 +1,7 @@
+PORT                = <port number>
+IS_PRODDUCTION      = <false if sanbox mode>
+STAGE               = <dev/majja>
+SERVER_KEY          = xxxxxxxxxxx
+CLIENT_KEY          = xxxxxxxxxxx
+DEFAULT_ITEM_NAME   = "Sesi Konsultasi"
+DEFAULT_ITEM_QTY    = 1
