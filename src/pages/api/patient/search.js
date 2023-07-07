@@ -2,32 +2,32 @@ import excuteQuery from "../../../../lib/db";
 import NextCors from 'nextjs-cors';
 
 export default async function exportDoctor(req, res) {
-    if (req.method !== 'POST') {
+    if (req.method !== 'GET') {
         return res.status(405).json({ message: 'Method Not Allowed' });
     }
-
+    
     await NextCors(req, res, {
         // Options
-        methods: ['POST'],
+        methods: ['GET'],
         origin: '*',
         optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     });
 
-    const { nama, posisi, gambar, xp} = req.body;
-
     try {
-        const dokter = await excuteQuery({
-            query: `INSERT INTO tb_dokter(nama, posisi, gambar, xp, telp) VALUE("${nama}", "${posisi}", "${gambar}", ${xp})`,
-            values:'',
-        });
-        if (dokter.error == null){
-            res.status(200).json({ msg:"Success" })
-        } else {
-            res.status(200).json({ msg:dokter.error.sqlMessage })
+        const urlParams = new URLSearchParams(req.query);
+        var nama = "";
+        for (const [key, value] of urlParams) {
+            if(key === "nama"){
+                nama = value;
+            }
         }
         
+        const pasien = await excuteQuery({
+            query: `SELECT * FROM tb_pasien WHERE nama LIKE "%${nama}%" LIMIT 5`, 
+            values: '', 
+        });
+        res.status(200).json({ pasien:pasien[0] });
     } catch (error) {
         res.status(404).json({ msg: error.message });
     }
 }
-

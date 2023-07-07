@@ -71,6 +71,6 @@ export default async function exportDoctor(req, res) {
           }, []);
         res.status(200).json({ dokter:groupedDokter })
     } catch (error) {
-        res.status(404).json({ message: error.message });
+        res.status(404).json({ msg: error.message });
     }
 }

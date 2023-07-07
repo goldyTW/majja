@@ -2,30 +2,27 @@ import excuteQuery from "../../../../lib/db";
 import NextCors from 'nextjs-cors';
 
 export default async function exportDoctor(req, res) {
-    if (req.method !== 'POST') {
+    if (req.method !== 'GET') {
         return res.status(405).json({ message: 'Method Not Allowed' });
     }
-
+    
     await NextCors(req, res, {
         // Options
-        methods: ['POST'],
+        methods: ['GET'],
         origin: '*',
         optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     });
 
-    const { id_dokter, dokter } = req.body;
-    const { nama, posisi, gambar, xp } = dokter;
-
     try {
-        const dokter = await excuteQuery({
-            query: `UPDATE tb_dokter SET nama="${nama}", posisi="${posisi}", gambar="${gambar}", xp=${xp} WHERE id_dokter = ${id_dokter}`,
+        const booking = await excuteQuery({
+            query: `
+                SELECT id_pasien, tanggal, jam, keluhan, status_pembayaran, status_booking, catatan, b.nama AS pasien, c.nama AS dokter, id_record
+                FROM (tb_booking a NATURAL JOIN tb_pasien b), tb_dokter c
+                WHERE a.id_dokter = c.id_dokter LIMIT 20
+            `,
             values:'',
         });
-        if (dokter.error == null){
-            res.status(200).json({ msg:"Success" })
-        } else {
-            res.status(200).json({ msg:dokter.error.sqlMessage })
-        }
+        res.status(200).json({ booking })
     } catch (error) {
         res.status(404).json({ msg: error.message });
     }
