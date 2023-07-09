@@ -2,7 +2,7 @@ import excuteQuery from "../../../../lib/db";
 import NextCors from 'nextjs-cors';
 
 export default async function editPaymentStatus(req, res) {
-    const { id_booking, payment_status } = req.body;
+    const { id_booking, action_status } = req.body;
     await NextCors(req, res, {
         // Options
         methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
@@ -12,8 +12,8 @@ export default async function editPaymentStatus(req, res) {
      
     try {
         const result = await excuteQuery({
-            query: 'UPDATE booking set payment_status = ? WHERE id = ?',
-            values:[payment_status, id_booking],
+            query: 'UPDATE booking set action_status = ? WHERE id = ?',
+            values:[action_status, id_booking],
         });
         res.status(200).json({ status: true })
     } catch (error) {

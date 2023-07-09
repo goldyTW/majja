@@ -9,7 +9,8 @@ import { LockOutlined } from '@ant-design/icons';
 import { Input, Checkbox } from 'antd';
 
 export default function SignInForm({loading, setLoading}) {
-  let url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  // process.env.NEXT_PUBLIC_API_URL || 
+  let url = "http://localhost:3000";
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -45,17 +46,19 @@ export default function SignInForm({loading, setLoading}) {
     else {
       setErrorEmail(false)
       setErrorPass(false)
-      axios.post(`${url}/user/login`,data,{
+      axios.post(`${url}/api/auth/login`,data,{
         headers: {
           'Content-Type': 'application/json',
         },
       })
       .then(res => {
         if(res.status == 200){
+          console.log(res)
           toast.success('Login Berhasil');
-          const { token } = res.data;
+          const { token } = res.data.token;
           Cookies.set('token', token, { expires: 1 })
-          Cookies.set('user-data', JSON.stringify(res.data.result), { expires: 1 })
+          Cookies.set('username', JSON.stringify(res.data.username), { expires: 1 })
+          Cookies.set('is_admin', JSON.stringify(res.data.is_admin), { expires: 1 })
           router.push('/dashboard');
         }
       })
@@ -125,7 +128,7 @@ export default function SignInForm({loading, setLoading}) {
       </div>
       <div className="col-12 pt-2">
         <div className='row'>
-          <div className="col-6 text-end">
+          <div className="col-6 text-start">
             <Checkbox className="forgot-password" onChange={onChangeRemember}>Remember me</Checkbox>
           </div>
           <div className="col-6 text-end">

@@ -13,12 +13,12 @@ export default async function exportDoctor(req, res) {
         optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     });
 
-    const { nama, posisi, gambar, xp } = req.body;
+    const { nama, posisi, gambar, xp, status, phone } = req.body;
     
     try {
         const dokter = await excuteQuery({
-            query: `INSERT INTO tb_dokter(nama, posisi, gambar, xp) VALUE("${nama}", "${posisi}", "${gambar}", ${xp})`,
-            values:'',
+            query: `INSERT INTO tb_dokter(nama, posisi, gambar, xp, status, phone) VALUE(?, ?, ?, ?, ?, ?)`,
+            values:[nama, posisi, gambar, xp, status, phone],
         });
         if (dokter.error == null){
             res.status(200).json({ msg:"Success" })

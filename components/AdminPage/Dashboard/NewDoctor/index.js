@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import styled from "styled-components";
 import { Input, Pagination, Select } from "antd";
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 
 function NewDoctor() {
     const [nama, setnama] = useState();
@@ -16,6 +19,49 @@ function NewDoctor() {
     const [xpText, setxpText] = useState();
     const [status, setstatus] = useState();
     const [email, setemail] = useState();
+    const router = useRouter();
+     // process.env.NEXT_PUBLIC_API_URL || 
+    let url = "http://localhost:3000";
+
+    function addDokter(){
+    axios.post(`${url}/api/doctors/add`, { nama, posisi:spesialis, gambar:'', xp:xpNumber+' '+xpText, phone:phone.toString(), status},{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => {
+        if(res.status == 200){
+            axios.post(`${url}/api/auth/register`,{nama, email, password, is_admin:0},{
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            }).then(res => {
+                console.log(res)
+                if(res.status == 200){
+                    toast.success('Tambah Dokter Berhasil!')
+                    window.location.reload()
+                }
+                else{
+                    toast.success('Tambah Dokter Gagal!')
+                }
+            })
+        }else{
+            toast.success('Tambah Dokter Gagal!')
+        }
+      })
+    }
+
+    function batal(){
+        setnama('');
+        setphone('');
+        setspesialis('');
+        setPassword('');
+        setxpNumber('');
+        setxpText('');
+        setstatus('');
+        setemail('');
+        window.location.reload()
+    }
 
   return (
     <Wrapper className="container-fluid">
@@ -46,6 +92,7 @@ function NewDoctor() {
                 <Input
                 placeholder="+628894848429"
                 value={phone}
+                type='number'
                 onChange={(event) => setphone(event.target.value)}
                 />
                 {
@@ -56,14 +103,25 @@ function NewDoctor() {
         </div>
         <div className="row align-items-center align-self-center">
             <div className="col-md-7 col-12 p-3">
-                <span className="bookingInputLabel py-2">
-                Spesialis<span className='required'>*</span>
-                </span>
-                <Input
+                <span className="bookingInputLabel py-2"> Spesialis<span className='required'>*</span></span><br></br>
+                <Select
+                    placeholder="Pilih Spesialisasi"
+                    style={{width:'100%'}}
+                    onChange={(e) => setspesialis(e)}
+                    value={xpText}>
+                        <Option value="Spesialis Anestesi Konsultan Intensive Care">Spesialis Anestesi Konsultan Intensive Care</Option>
+                        <Option value="Spesialis Obstetri dan Ginekologi">Spesialis Obstetri dan Ginekologi</Option>
+                        <Option value="Spesialis Penyakit Dalam">Spesialis Penyakit Dalam</Option>
+                        <Option value="Spesialis Anak">Spesialis Anak</Option>
+                        <Option value="Dokter Umum">Dokter Umum</Option>
+                        <Option value="Spesialis Gizi">Spesialis Gizi</Option>
+                        <Option value="Psikolog">Psikolog</Option>
+                </Select>
+                {/* <Input
                 placeholder="Input spesialisasi"
                 value={spesialis}
                 onChange={(event) => setspesialis(event.target.value)}
-                />
+                /> */}
                 {
                 errorspesialis &&  
                 <span className='error mt-4'>Spesialisasi harus diisi!</span>
@@ -76,19 +134,19 @@ function NewDoctor() {
                 Pengalaman<span className='required'>*</span>
                 </span>
                 <div className='row align-self-center'>
-                    <div className='col-4 py-1'>
+                    <div className='col-6 py-1'>
                         <Input
-                            className='col-6'
                             placeholder="3"
                             type='number'
+                            style={{width:'100%'}}
                             value={xpNumber}
-                            width="50px"
                             onChange={(event) => setxpNumber(event.target.value)}
                         />
                     </div>
-                    <div className='col-8 py-1'>
+                    <div className='col-6 py-1'>
                         <Select
                         placeholder="Tahun"
+                        style={{width:'100%'}}
                         onChange={(e) => setxpText(e)}
                         value={xpText}>
                             <Option value="tahun">tahun</Option>
@@ -104,7 +162,9 @@ function NewDoctor() {
                 <Select
                     className='py-1'
                     placeholder="Praktek Rutin"
-                    value={xpText}>
+                    style={{width:'100%'}}
+                    onChange={(e) => setstatus(e)}
+                    value={status}>
                         <Option value={1}>Praktek Rutin</Option>
                         <Option value={2}>Dengan Perjanjian</Option>
                   </Select>
@@ -143,8 +203,8 @@ function NewDoctor() {
                 </div>
         </div>
         <div className='text-end'>
-            <button className='button mx-1'>Batalkan</button>
-            <button className='buttonAlt mx-1'>Simpan</button>
+            <button className='button mx-1' onClick={()=> batal()}>Batalkan</button>
+            <button className='buttonAlt mx-1' onClick={() => addDokter()}>Simpan</button>
         </div>
         </BigCard>
     </div>

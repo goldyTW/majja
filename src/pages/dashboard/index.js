@@ -8,6 +8,7 @@ import DashboardSection from "../../../components/AdminPage/Dashboard";
 import DoctorList from "../../../components/AdminPage/Dashboard/DoctorList";
 import NewDoctor from "../../../components/AdminPage/Dashboard/NewDoctor";
 import DoctorSchedule from "../../../components/AdminPage/Dashboard/DoctorSchedule";
+import { useRouter } from "next/router";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -35,6 +36,7 @@ const getKeyDisplayName = (key) => {
 function Dashboard() {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKey, setSelectedKey] = useState(1);
+  const router = useRouter();
 
   const handleMenuSelect = ({ key }) => {
     setSelectedKey(key);
@@ -142,6 +144,15 @@ function Dashboard() {
       />
     ),
   ];
+
+  function logout(){
+    localStorage.clear();
+    Cookies.remove('token');
+    Cookies.remove('username')
+    Cookies.remove('is_admin');
+    router.push('/dashboard');
+  }
+  
   return (
     <>
       <Head>
@@ -157,19 +168,27 @@ function Dashboard() {
           // collapsed={collapsed}
           // onCollapse={(value) => setCollapsed(value)}
           theme="light"
+          style={{ height:"100vh", width:'100px', position:'fixed'}}
         >
           <Logo>
             <img src="/images/Logo.svg" />
           </Logo>
+          
           <Menu
             theme="light"
             defaultSelectedKeys={["1"]}
             mode="inline"
+            
             items={items}
             onSelect={handleMenuSelect}
           />
+          <div className="text-center mx-auto py-1 px-5 my-3" style={{position:'absolute', bottom:'20px'}}>
+            <button className="buttonAlt" onClick={() => logout()}>Logout</button>
+          </div>
         </Sider>
-        <Layout>
+        <Layout
+          style={{width:'100px'}}
+        >
           {/* <Header
             style={{
               padding: 0,
@@ -179,6 +198,7 @@ function Dashboard() {
           <Content
             style={{
               margin: "3rem 3rem",
+              marginLeft:'250px'
             }}
           >
             {selectedKey == 1 ? (

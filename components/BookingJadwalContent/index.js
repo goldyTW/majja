@@ -203,7 +203,7 @@ function BookingJadwalContent({ dokter, id }) {
         headers: {
           'Content-Type': 'application/json', 
         },}).then(res => {
-          // if(res.status==200){
+          if(res.status==200){
             axios.post(`${awsendpoint}/gateway1/snap/checkout`,{booking_id: res.data.result.insertId, amount: 50000, full_name: nama, phone: phone.toString()},{ 
               headers: {
               'Content-Type': 'application/json',
@@ -211,7 +211,10 @@ function BookingJadwalContent({ dokter, id }) {
             then(res => {
               router.push(res.data.url)
             })
-          // }       
+          }      
+          else{
+            toast.error('cek kembali data Anda!')
+          } 
       })
       .catch(function (error) {
         setLoading(true);
@@ -247,10 +250,7 @@ function BookingJadwalContent({ dokter, id }) {
       }
     }  
     return temp
-    // console.log(temp)
   }
-
-  // pecahjam(valuejam)
 
   return (
     <Wrapper id="findUs">

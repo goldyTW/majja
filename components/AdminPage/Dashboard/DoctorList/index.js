@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Table, Tag, Modal, Select } from "antd";
-import { dokter } from "../../../DokterData";
+// import { dokter } from "../../../DokterData";
 import moment from "moment";
 import "moment/locale/id";
 import { Input, Pagination } from "antd";
 import { Icon } from "@iconify/react";
 import NewDoctor from "../NewDoctor";
+import axios from "axios";
 moment.locale("id");
 const { Search } = Input;
 
@@ -15,7 +16,8 @@ const handleStatusChange = (value, record) => {
 };
 
 function DoctorList() {
-  const [DataDokter, setDataDokter] = useState(dokter)
+  const [DataDokter, setDataDokter] = useState()
+  const [DataDokterMaster, setDataDokterMaster] = useState()
   const [modalOpen, setModalOpen] = useState(false);
   const [namaDokter, setNamaDokter] = useState();
   const [posisi, setPosisi] = useState();
@@ -27,14 +29,16 @@ function DoctorList() {
   const [jadwal, setjadwal] = useState();
   const [showpassword, setshowpassword] = useState(false);
   const [showTambahDokter, setShowTambahDokter] = useState(false);
+   // process.env.NEXT_PUBLIC_API_URL || 
+   let url = "http://localhost:3000";
   
   const onChange = (pagination, filters, sorter, extra) => {
     console.log("params", pagination, filters, sorter, extra);
   };
 
   const onSearch = (value) => {
-    const filteredData = dokter.filter(entry =>
-      (entry.name.toLowerCase().includes(value))
+    const filteredData =  DataDokterMaster.filter(entry =>
+      (entry.nama.toLowerCase().includes(value))
     );
     setDataDokter(filteredData);
   }
@@ -51,22 +55,44 @@ function DoctorList() {
     setjadwal(record.jadwal)
   }
 
+  useEffect(() => {
+    axios.get(`${url}/api/doctors/list`,{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => {
+        setDataDokter(res.data.dokter)
+        setDataDokterMaster(res.data.dokter)
+      })
+  }, [])
+
+  function deletedoctor(id){
+    // axios.post(`${url}/api/auth/doctors/delete`, { id_dokter:id },{
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // })
+      // .then(res => {
+        // Toast.success('Delete Dokter Berhasil!')
+        // window.location.reload();
+      // })
+  }
+
   const columns = [
     {
       title: "Nama Dokter",
-      dataIndex: "name",
+      dataIndex: "nama",
       defaultSortOrder: "ascend",
-      sorter: (a, b) => a.name.localeCompare(b.name),
+      sorter: (a, b) => a.nama.localeCompare(b.nama),
       width: 500,
       render: ((_, record) => ( 
-        <span style={{cursor:'pointer'}} onClick={() => openModalDoctor(record)}>{record.name}</span>
+        <span style={{cursor:'pointer'}} onClick={() => openModalDoctor(record)}>{record.nama}</span>
       ))
     },
     {
       title: "Spesialis",
-      dataIndex: "position",
-      // sorter: (a, b) => a.age - b.age,
-      // render: (datetime) => moment(datetime).format("DD MMM, HH.mm"),
+      dataIndex: "posisi",
       filters: [
         {
           text: 'Spesialis Obstetri dan Ginekologi',
@@ -97,13 +123,13 @@ function DoctorList() {
           value: 'Dokter Umum',
         },
       ],
-      onFilter: (value, record) => record.position.indexOf(value) === 0,
+      onFilter: (value, record) => (
+        record.posisi.indexOf(value) === 0),
       width: 500,
     },
     {
       title: "Nomor Telepon",
       dataIndex: "telp",
-      // sorter: (a, b) => a.doctorName.localeCompare(b.doctorName),
       width: 350,
     },
     {
@@ -264,7 +290,7 @@ function DoctorList() {
             </div>
           </div>
           <div className="text-center">
-            <button className='buttonAlt'>Hapus Dari Daftar</button>
+            <button className='buttonAlt' onClick={() => deletedoctor(item.id)}>Hapus Dari Daftar</button>
           </div>
         </div>
     </Modal>
