@@ -27,7 +27,7 @@ export default async function exportDoctor(req, res) {
         }
         
     } catch (error) {
-        res.status(404).json({ message: error.message });
+        res.status(404).json({ msg: error.message });
     }
 }
 

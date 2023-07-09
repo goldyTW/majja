@@ -2,31 +2,25 @@ import excuteQuery from "../../../../lib/db";
 import NextCors from 'nextjs-cors';
 
 export default async function exportDoctor(req, res) {
-    if (req.method !== 'POST') {
+    if (req.method !== 'GET') {
         return res.status(405).json({ message: 'Method Not Allowed' });
     }
-
+    
     await NextCors(req, res, {
         // Options
-        methods: ['POST'],
+        methods: ['GET'],
         origin: '*',
         optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     });
 
-    const { id_dokter } = req.body;
-
     try {
-        const dokter = await excuteQuery({
-            query: `DELETE FROM tb_dokter WHERE id_dokter = ${id_dokter}`,
+        const pasien = await excuteQuery({
+            query: `SELECT * FROM tb_pasien LIMIT 100`,
             values:'',
         });
-        if (dokter.error == null){
-            res.status(200).json({ msg:"Success" })
-        } else {
-            res.status(200).json({ msg:dokter.error.sqlMessage })
-        }
+        res.status(200).json({ pasien })
     } catch (error) {
-        res.status(404).json({ msg: error.message });
+        res.status(404).json({ message: error.message });
     }
 }
 

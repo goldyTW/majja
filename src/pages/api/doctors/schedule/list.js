@@ -15,7 +15,7 @@ export default async function exportDoctor(req, res) {
 
     try {
         const jadwal = await excuteQuery({
-            query: `SELECT * FROM tb_jadwal a NATURAL JOIN tb_dokter b`,
+            query: `SELECT * FROM tb_jadwal a NATURAL JOIN tb_dokter b LIMIT 100`,
             values:'',
         });
         const groupedSched = jadwal.reduce((result, item) => {
@@ -36,7 +36,7 @@ export default async function exportDoctor(req, res) {
           }, []);
         res.status(200).json({ jadwal:groupedSched })
     } catch (error) {
-        res.status(404).json({ message: error.message });
+        res.status(404).json({ msg: error.message });
     }
 }
 

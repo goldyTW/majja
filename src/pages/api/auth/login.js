@@ -48,7 +48,7 @@ export default async function handler(req, res) {
         }
         
     } catch (error) {
-        res.status(404).json({ message: error.message });
+        res.status(404).json({ msg: error.message });
     }
 }
 

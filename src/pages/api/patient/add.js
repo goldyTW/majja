@@ -13,21 +13,23 @@ export default async function exportDoctor(req, res) {
         optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     });
 
-    const { id_dokter, dokter } = req.body;
-    const { nama, posisi, gambar, xp } = dokter;
-
+    const { nama, telp } = req.body;
+    
     try {
-        const dokter = await excuteQuery({
-            query: `UPDATE tb_dokter SET nama="${nama}", posisi="${posisi}", gambar="${gambar}", xp=${xp} WHERE id_dokter = ${id_dokter}`,
-            values:'',
-        });
-        if (dokter.error == null){
-            res.status(200).json({ msg:"Success" })
+        if (nama !== undefined && telp !== undefined){
+            const pasien = await excuteQuery({
+                query: `INSERT INTO tb_pasien (nama, telp, id_record) VALUES("${nama}", "${telp}", null)`,
+                values:'',
+            });
+            if (pasien.error == null){
+                res.status(200).json({ id_pasien:pasien.insertId, mgs:"Success" });
+            } else {
+                res.status(200).json({ msg:pasien.error.sqlMessage })
+            }
         } else {
-            res.status(200).json({ msg:dokter.error.sqlMessage })
+            throw Error("Data not complete")
         }
     } catch (error) {
         res.status(404).json({ msg: error.message });
     }
 }
-
