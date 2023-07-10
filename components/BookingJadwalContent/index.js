@@ -91,11 +91,13 @@ import { toast } from 'react-toastify';
 
 function BookingJadwalContent({ dokter, id }) {
   const router = useRouter();
-  const data = router.query.id ? dokter[router.query.id - 1] : dokter[1];
+  const data = id ? dokter[id - 1] : dokter[1];
   const [selectedDay, setSelectedDay] = useState(utils().getToday());
   var days = ['Minggu','Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
   var d = new Date(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day);
   var dayName = days[d.getDay()];
+  const [today, setToday] = useState(new Date());
+  const [bookingan, setbookingan] = useState([])
   // const [DayofWeek, setDayofWeek] = useState(utils().getDayOfWeek());
   const [filteredDate, setFilteredDate] = useState([]);
   const [valuejam, setValuejam] = useState();
@@ -117,6 +119,20 @@ function BookingJadwalContent({ dokter, id }) {
   const awsendpoint = "http://18.223.239.47:8084";
   const { Option } = Select;
   const { TextArea } = Input;
+
+  useEffect(() => {
+    axios.post(`${url}/api/booking/checkbooking`,{today: moment(today).format('YYYY-MM-DD'), id_dokter:id},{
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(res => {
+      res.data.result.map((item, i) => (
+        bookingan.push({tanggal_booking:new Date(item.tanggal_booking), jam_booking:item.jam_booking.split(':')[0] })
+      ))
+    })
+  }, [])
+  
 
   const onChangeKategori = (e) => {
     setKategoriPasien(e.target.value);
@@ -197,8 +213,9 @@ function BookingJadwalContent({ dokter, id }) {
       //   seterrorrekam(true)
       // }
     }else{
+      const jam = valuejam.split('.');
       axios.post(`${url}/api/booking/add`,{nama, phone:phone.toString(), kategori:kategoriPasien, no_rekam_medis:rekamMedis, keluhan, 
-        tanggal_booking:moment(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day).format("YYYY-MM-DD"), jam_booking: moment(valuejam).format('HH:00:00'), 
+        tanggal_booking:moment(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day).format("YYYY-MM-DD"), jam_booking: moment.utc(jam, "THH Z").format('HH:mm:ss'), 
         id_dokter:router.query.id},{
         headers: {
           'Content-Type': 'application/json', 
@@ -238,6 +255,7 @@ function BookingJadwalContent({ dokter, id }) {
 
   function pecahjam(jam){
     var temp = [];
+    var jamstring
     if(jam){
       jam.split('.')
       var awal = jam[0]+jam[1];
@@ -245,8 +263,18 @@ function BookingJadwalContent({ dokter, id }) {
       var akhir = jam[6]+jam[7];
       var akhirconverted = Number(akhir)
       for(var i = awalconverted; i < akhirconverted; i++){
-        var jamstring = i+'.00'
+        jamstring = i+'.00',
         temp.push(jamstring)
+        // bookingan.map((item, idx) => (
+        //   moment(item.tanggal_booking).format('YYYY-MM-DD') == moment(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day).format("YYYY-MM-DD") ? 
+        //     Number(item.jam_booking) != i &&
+        //       (jamstring = i+'.00',
+        //       temp.push(jamstring))
+              
+        //   :
+        //   (jamstring = i+'.00',
+        //   temp.push(jamstring))
+        // ))
       }
     }  
     return temp
@@ -628,13 +656,3 @@ const StyledButton = styled.button`
 `;
 
 export default BookingJadwalContent;
-
-export async function getServerSideProps({ req, params }) {
-  const { id } = params;
-
-  return {
-    props: {
-      id: id,
-    },
-  };
-}

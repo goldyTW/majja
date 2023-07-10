@@ -6,6 +6,7 @@ import { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import DashboardSection from "../../../components/AdminPage/Dashboard";
 import DoctorList from "../../../components/AdminPage/Dashboard/DoctorList";
+import PatientList from "../../../components/AdminPage/Dashboard/PatientList";
 import NewDoctor from "../../../components/AdminPage/Dashboard/NewDoctor";
 import DoctorSchedule from "../../../components/AdminPage/Dashboard/DoctorSchedule";
 import { useRouter } from "next/router";
@@ -79,7 +80,7 @@ function Dashboard() {
       />
     ),
     getItem(
-      "daftar Pasien",
+      "Daftar Pasien",
       "3",
       <Icon
         icon="fluent:text-bullet-list-square-person-20-filled"
@@ -202,7 +203,7 @@ function Dashboard() {
             }}
           >
             {selectedKey == 1 ? (
-              <DashboardSection />
+              <DashboardSection/>
             ) : selectedKey == 2 ? (
               <>
                 <h1>Appointments</h1>
@@ -217,18 +218,7 @@ function Dashboard() {
                 </div>
               </>
             ) : selectedKey == 3 ? (
-              <>
-                <h1>Patient List</h1>
-                <div
-                  style={{
-                    padding: 24,
-                    minHeight: 360,
-                    background: "#FFFFFF",
-                  }}
-                >
-                  Patient List
-                </div>
-              </>
+              <PatientList></PatientList>
             ) : selectedKey == 4 ? (
               <>
               <DoctorList />

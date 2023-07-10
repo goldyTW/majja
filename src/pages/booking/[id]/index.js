@@ -6,14 +6,14 @@ import FloatingWA from "../../../../components/FloatingWA";
 import BookingJadwalContent from "../../../../components/BookingJadwalContent";
 import { dokter } from "../../../../components/DokterData";
 
-function Booking() {
+function Booking({id}) {
   return (
     <>
       <Head>
         <title>Booking Jadwal</title>
       </Head>
       <Navbar></Navbar>
-      <BookingJadwalContent dokter={dokter} />
+      <BookingJadwalContent dokter={dokter} id={id} />
       <FloatingWA></FloatingWA>
       <Footer></Footer>
     </>
@@ -21,3 +21,13 @@ function Booking() {
 }
 
 export default Booking;
+
+export async function getServerSideProps({ req, params }) {
+  const { id } = params;
+
+  return {
+    props: {
+      id: id,
+    },
+  };
+}

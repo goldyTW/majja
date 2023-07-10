@@ -5,8 +5,6 @@ import styled from "styled-components";
 import { Icon } from "@iconify/react";
 
 function DetailBooking({ value, dateItem, showCalendar, setshowCalendar, bayar,loading }) {
-  // console.log("DetailValue:", value);
-  // console.log("detailDate:", dateItem);
   const getMonthName = (monthNumber) => {
     const date = new Date();
     date.setMonth(monthNumber - 1);

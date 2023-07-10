@@ -17,8 +17,8 @@ export default async function exportDoctor(req, res) {
 
     try {
         const dokter = await excuteQuery({
-            query: `DELETE FROM tb_dokter WHERE id_dokter = ${id_dokter}`,
-            values:'',
+            query: `DELETE FROM tb_dokter WHERE id_dokter = ?`,
+            values:[id_dokter],
         });
         if (dokter.error == null){
             res.status(200).json({ msg:"Success" })

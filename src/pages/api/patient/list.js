@@ -15,7 +15,8 @@ export default async function exportDoctor(req, res) {
 
     try {
         const pasien = await excuteQuery({
-            query: `SELECT * FROM tb_pasien LIMIT 100`,
+            // query: `SELECT * FROM tb_pasien LIMIT 100`,
+            query:'SELECT DISTINCT nama, phone, kategori, no_rekam_medis FROM booking',
             values:'',
         });
         res.status(200).json({ pasien })

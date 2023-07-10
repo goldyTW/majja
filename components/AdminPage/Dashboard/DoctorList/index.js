@@ -8,6 +8,7 @@ import { Input, Pagination } from "antd";
 import { Icon } from "@iconify/react";
 import NewDoctor from "../NewDoctor";
 import axios from "axios";
+import { toast } from "react-toastify";
 moment.locale("id");
 const { Search } = Input;
 
@@ -27,6 +28,7 @@ function DoctorList() {
   const [password, setPassword] = useState();
   const [xp, setxp] = useState();
   const [jadwal, setjadwal] = useState();
+  const [id, setid] = useState();
   const [showpassword, setshowpassword] = useState(false);
   const [showTambahDokter, setShowTambahDokter] = useState(false);
    // process.env.NEXT_PUBLIC_API_URL || 
@@ -45,14 +47,15 @@ function DoctorList() {
 
   const openModalDoctor = (record) => {
     setModalOpen(true)
-    setNamaDokter(record.name)
-    setPosisi(record.position)
-    setTelepon(record.telp)
+    setNamaDokter(record.nama)
+    setPosisi(record.posisi)
+    setTelepon(record.phone)
     setEmail(record.email)
-    setPassword(record.password)
+    setPassword(record.pass)
     setstatus_dokter(record.status)
     setxp(record.xp)
     setjadwal(record.jadwal)
+    setid(record.id_dokter)
   }
 
   useEffect(() => {
@@ -68,15 +71,19 @@ function DoctorList() {
   }, [])
 
   function deletedoctor(id){
-    // axios.post(`${url}/api/auth/doctors/delete`, { id_dokter:id },{
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // })
-      // .then(res => {
-        // Toast.success('Delete Dokter Berhasil!')
-        // window.location.reload();
-      // })
+    axios.post(`${url}/api/doctors/delete`, { id_dokter:id },{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => {
+        if(res.status == 200){
+          toast.success('Delete Dokter Berhasil!')
+          window.location.reload();
+        }else{
+          toast.error('Gagal menghapus dokter')
+        }
+      })
   }
 
   const columns = [
@@ -211,7 +218,7 @@ function DoctorList() {
         footer={null}
         width={650}
         // onOk={() => setModalOpen(false)}
-        onCancel={() => setModalOpen(false)}
+        onCancel={() => (setModalOpen(false), setshowpassword(false))}
       >
         <div className="p-3">
           <h5 className="pb-3 modalDoctorTitle">{namaDokter}</h5>
@@ -260,7 +267,7 @@ function DoctorList() {
                 <Icon
                   icon="mdi:eye"
                   className="ms-2 align-self-center"
-                  onClick={() => setshowpassword(!showpassword)}
+                  onClick={() => setshowpassword(true)}
                   style={{
                     cursor: "pointer",
                     fontSize: "16px",
@@ -271,7 +278,7 @@ function DoctorList() {
             </div>
             <div className="row py-2">
               <div className="col-lg-4 col-12 modalSubtitle">Pengalaman</div>
-              <div className="col-lg-8 col-12 modalSubtitleData">{xp} tahun</div>
+              <div className="col-lg-8 col-12 modalSubtitleData">{xp}</div>
             </div>
             <div className="row py-2">
               <div className="col-lg-4 col-12 modalSubtitle">Jadwal Praktek</div>
@@ -290,7 +297,7 @@ function DoctorList() {
             </div>
           </div>
           <div className="text-center">
-            <button className='buttonAlt' onClick={() => deletedoctor(item.id)}>Hapus Dari Daftar</button>
+            <button className='buttonAlt' onClick={() => deletedoctor(id)}>Hapus Dari Daftar</button>
           </div>
         </div>
     </Modal>

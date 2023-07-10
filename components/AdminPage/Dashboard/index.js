@@ -28,6 +28,7 @@ function Dashboard() {
   const [keluhan, setkeluhan] = useState();
   const [dataBooking, setdataBooking] = useState()
   const [dataBookingMaster, setDataBookingMaster] = useState()
+  const [jumlahpasien, setjumlahpasien] = useState()
   let url = "http://localhost:3000";
 
   const onChange = (pagination, filters, sorter, extra) => {
@@ -70,7 +71,6 @@ function Dashboard() {
       },
     })
     .then(res => {
-      console.log(res)
       setdataBooking(res.data.result)
     })
   }
@@ -149,6 +149,15 @@ function Dashboard() {
         setdataBooking(res.data.result)
         setDataBookingMaster(res.data.result)
       })
+
+      axios.get(`${url}/api/patient/list`,{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => {
+        setjumlahpasien(res.data.pasien.length)
+      })
   }, [])
 
   const onSearch = (value) => {
@@ -186,7 +195,7 @@ function Dashboard() {
         </SmallCard>
         <SmallCard className="col m-2">
           <StyledCardTitle>Total Pasien</StyledCardTitle>
-          <StyledCardContent></StyledCardContent>
+          <StyledCardContent>{jumlahpasien} </StyledCardContent>
           <StyledCardSubTitle>
             Weekly Patients <StyledCardPercent>^ 0%</StyledCardPercent>
           </StyledCardSubTitle>
