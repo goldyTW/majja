@@ -17,8 +17,6 @@ export default async function bookingCheck(req, res) {
             query: "SELECT a.id, a.tanggal_booking, a.jam_booking, a.id_dokter FROM booking a where a.payment_status = 'settlement' and a.tanggal_booking > ? and a.id_dokter = ?",
             values:[today, id_dokter],
         });
-
-        console.log(result)
         res.status(200).json({ result })
     } catch (error) {
         res.status(404).json({ message: error.message });
