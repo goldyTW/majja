@@ -1,5 +1,6 @@
 const utils = require('./utils');
 const midtransClient = require('midtrans-client');
+const axios = require('axios');
 
 const isProduction = JSON.parse(process.env.IS_PRODDUCTION);
 const stage = process.env.STAGE;
@@ -7,6 +8,7 @@ const SERVER_KEY = process.env.SERVER_KEY;
 const CLIENT_KEY = process.env.CLIENT_KEY;
 const DEFAULT_ITEM_NAME = process.env.DEFAULT_ITEM_NAME;
 const DEFAULT_ITEM_QTY  = Number(process.env.DEFAULT_ITEM_QTY);
+const MAJJA_URL = process.env.MAJJA_URL;
 
 console.log(SERVER_KEY)
 module.exports.simpleCheckout = async(
@@ -80,4 +82,35 @@ module.exports.handlerTx = async(obj) =>{
         fraudStatus: fraudStatus
     }
     console.log(result)
+
+    await this.updateId(result)
+}
+
+
+module.exports.updateId = async(obj) =>{
+      let data = JSON.stringify({
+        "id_booking": obj.booking_id,
+        "payment_status": obj.transactionStatus
+      });
+      
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: MAJJA_URL + '/api/booking/update',
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        data : data
+      };
+      
+      let result = await axios.request(config)
+
+      console.log(result.data)
+
+    //   .then((response) => {
+    //     console.log(JSON.stringify(response.data));
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
 }
