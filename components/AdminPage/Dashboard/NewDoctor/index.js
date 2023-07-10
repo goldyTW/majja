@@ -20,8 +20,7 @@ function NewDoctor() {
     const [status, setstatus] = useState();
     const [email, setemail] = useState();
     const router = useRouter();
-     // process.env.NEXT_PUBLIC_API_URL || 
-    let url = "http://localhost:3000";
+     const url = process.env.NEXT_APP_API_URL || "http://localhost:3000";
 
     function addDokter(){
     axios.post(`${url}/api/doctors/add`, { nama, posisi:spesialis, gambar:'', xp:xpNumber+' '+xpText, phone:phone.toString(), status},{
