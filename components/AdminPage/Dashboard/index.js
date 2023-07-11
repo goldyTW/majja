@@ -29,7 +29,7 @@ function Dashboard() {
   const [dataBooking, setdataBooking] = useState()
   const [dataBookingMaster, setDataBookingMaster] = useState()
   const [jumlahpasien, setjumlahpasien] = useState()
-  const url = process.env.NEXT_APP_API_URL || "http://localhost:3000";
+  let url = "http://localhost:3000";
 
   const onChange = (pagination, filters, sorter, extra) => {
     console.log("params", pagination, filters, sorter, extra);
@@ -124,9 +124,9 @@ function Dashboard() {
   
         return (
           <Select
-            defaultValue={record.action_status.toString()}
+            defaultValue={record.action_status && record.action_status.toString()}
             onChange={(value) => handleStatusChange(value, record)}
-            status={record.action_status == 1 ? "warning" : record.action_status == 3 ? "success" : ""}
+            status={record.action_status && record.action_status == 1 ? "warning" : record.action_status && record.action_status == 3 ? "success" : ""}
           >
             {Object.entries(statusLabels).map(([value, label]) => (
               <Option key={value} value={value}>
