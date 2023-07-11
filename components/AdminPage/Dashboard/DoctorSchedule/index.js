@@ -13,7 +13,7 @@ import {
 import { dokter } from "../../../DokterData";
 import moment from "moment";
 import "moment/locale/id";
-import { Input, Pagination } from "antd";
+import { Input, Pagination, Option } from "antd";
 import { Icon } from "@iconify/react";
 import NewDoctor from "../NewDoctor";
 import dayjs from "dayjs";
@@ -215,7 +215,7 @@ function DoctorSchedule() {
                   value={dokterSelected}
                 >
                   {dokter.map((item, i) => (
-                    <Option value={item.name}>{item.name}</Option>
+                    <Option key={i} value={item.name}>{item.name}</Option>
                   ))}
                 </Select>
               </div>

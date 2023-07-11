@@ -52,7 +52,7 @@ export default function SignInForm({loading, setLoading}) {
       .then(res => {
         if(res.status == 200){
           console.log(res)
-          toast.success('Login Berhasil');
+          toast.success("Login Berhasil");
           const { token } = res.data.token;
           Cookies.set('token', token, { expires: 1 })
           Cookies.set('username', JSON.stringify(res.data.username), { expires: 1 })
@@ -103,7 +103,7 @@ export default function SignInForm({loading, setLoading}) {
           errorEmail ?  <p className='error pt-2'>Fill Your Email!</p> : <p>{''}</p>
         }
         {
-          errorEmail2 ?  <p className='error'>User Doesn't Exist!</p> : <p>{''}</p>
+          errorEmail2 ?  <p className='error'>User Doesn&apos;t Exist!</p> : <p>{''}</p>
         }
       </div>
       <div className="col-12 pt-2">

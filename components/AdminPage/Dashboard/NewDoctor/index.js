@@ -23,7 +23,7 @@ function NewDoctor() {
      const url = process.env.NEXT_APP_API_URL || "http://localhost:3000";
 
     function addDokter(){
-    axios.post(`${url}/api/doctors/add`, { nama, posisi:spesialis, gambar:'', xp:xpNumber+' '+xpText, phone:phone.toString(), status},{
+    axios.post(`${url}/api/doctors/add`, { nama, posisi:spesialis, gambar:'', xp:xpNumber+' '+xpText, phone:phone.toString(), status, email},{
         headers: {
           'Content-Type': 'application/json',
         },
@@ -107,14 +107,38 @@ function NewDoctor() {
                     placeholder="Pilih Spesialisasi"
                     style={{width:'100%'}}
                     onChange={(e) => setspesialis(e)}
-                    value={xpText}>
-                        <Option value="Spesialis Anestesi Konsultan Intensive Care">Spesialis Anestesi Konsultan Intensive Care</Option>
-                        <Option value="Spesialis Obstetri dan Ginekologi">Spesialis Obstetri dan Ginekologi</Option>
-                        <Option value="Spesialis Penyakit Dalam">Spesialis Penyakit Dalam</Option>
-                        <Option value="Spesialis Anak">Spesialis Anak</Option>
-                        <Option value="Dokter Umum">Dokter Umum</Option>
-                        <Option value="Spesialis Gizi">Spesialis Gizi</Option>
-                        <Option value="Psikolog">Psikolog</Option>
+                    value={spesialis}
+                    options={[
+                        {
+                          value: "Spesialis Anestesi Konsultan Intensive Care",
+                          label: "Spesialis Anestesi Konsultan Intensive Care",
+                        },
+                        {
+                          value: "Spesialis Obstetri dan Ginekologi",
+                          label: "Spesialis Obstetri dan Ginekologi",
+                        },
+                        {
+                            value: "Spesialis Penyakit Dalam",
+                            label: "Spesialis Penyakit Dalam",
+                        },
+                        {
+                            value: "Spesialis Anak",
+                            label: "Spesialis Anak",
+                        },
+                        {
+                            value: "Dokter Umum",
+                            label: "Dokter Umum",
+                        },
+                        {
+                            value: "Spesialis Gizi",
+                            label: "Spesialis Gizi",
+                        },
+                        {
+                            value: "Psikolog",
+                            label: "Psikolog",
+                        }
+                      ]}
+                    >
                 </Select>
                 {/* <Input
                 placeholder="Input spesialisasi"
@@ -147,9 +171,18 @@ function NewDoctor() {
                         placeholder="Tahun"
                         style={{width:'100%'}}
                         onChange={(e) => setxpText(e)}
-                        value={xpText}>
-                            <Option value="tahun">tahun</Option>
-                            <Option value="bulan">bulan</Option>
+                        value={xpText}
+                        options={[
+                            {
+                                value:"tahun",
+                                label:"tahun"
+                            },
+                            {
+                                value:"bulan",
+                                label:"bulan"
+                            },
+                        ]}
+                        >
                         </Select>
                     </div>
                   </div>
@@ -163,9 +196,17 @@ function NewDoctor() {
                     placeholder="Praktek Rutin"
                     style={{width:'100%'}}
                     onChange={(e) => setstatus(e)}
-                    value={status}>
-                        <Option value={1}>Praktek Rutin</Option>
-                        <Option value={2}>Dengan Perjanjian</Option>
+                    value={status}
+                    options={[
+                        {
+                            value:1,
+                            label:"Praktek Rutin"
+                        },
+                        {
+                            value:2,
+                            label:"Dengan Perjanjian"
+                        },
+                    ]}>
                   </Select>
             </div>
         </div>

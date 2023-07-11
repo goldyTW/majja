@@ -284,7 +284,7 @@ function DoctorList() {
               <div className="col-lg-8 col-12 modalSubtitleData">
                 {
                 jadwal && jadwal.map((item, i) => (
-                    <div className="py-1">
+                    <div className="py-1" key={i}>
                       <span>{item.hari}</span>
                       <span className="ms-2">{item.jam}</span>
                       <span className="ms-2">{item.jam2 && item.jam2}</span>

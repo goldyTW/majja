@@ -1,11 +1,11 @@
+import React, { useEffect, useState } from "react";
 import Head from 'next/head'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
 import SignInForm from '../../../components/SignInForm'
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
-function index() {
+function Index() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -48,4 +48,4 @@ function index() {
   )
 }
 
-export default index;
+export default Index;
