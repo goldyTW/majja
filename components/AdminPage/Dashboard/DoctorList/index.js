@@ -31,7 +31,7 @@ function DoctorList() {
   const [id, setid] = useState();
   const [showpassword, setshowpassword] = useState(false);
   const [showTambahDokter, setShowTambahDokter] = useState(false);
-   const url = process.env.NEXT_APP_API_URL || "http://localhost:3000";
+   const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   
   const onChange = (pagination, filters, sorter, extra) => {
     console.log("params", pagination, filters, sorter, extra);

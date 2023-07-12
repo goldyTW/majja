@@ -14,7 +14,7 @@ const { Search } = Input;
 function PatientList() {
   const [DataPatient, setDataPatient] = useState()
   const [DataPatientMaster, setDataPatientMaster] = useState()
-   const url = process.env.NEXT_APP_API_URL || "http://localhost:3000";
+   const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
   const onSearch = (value) => {
     const filteredData =  DataPatientMaster.filter(entry =>
