@@ -10,6 +10,7 @@ import PatientList from "../../../components/AdminPage/Dashboard/PatientList";
 import NewDoctor from "../../../components/AdminPage/Dashboard/NewDoctor";
 import DoctorSchedule from "../../../components/AdminPage/Dashboard/DoctorSchedule";
 import { useRouter } from "next/router";
+import BookingSchedule from "../../../components/AdminPage/BookingSchedule";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -205,18 +206,7 @@ function Dashboard() {
             {selectedKey == 1 ? (
               <DashboardSection/>
             ) : selectedKey == 2 ? (
-              <>
-                <h1>Appointments</h1>
-                <div
-                  style={{
-                    padding: 24,
-                    minHeight: 360,
-                    background: "#FFFFFF",
-                  }}
-                >
-                  Jadwal Appointments
-                </div>
-              </>
+              <BookingSchedule />
             ) : selectedKey == 3 ? (
               <PatientList></PatientList>
             ) : selectedKey == 4 ? (
