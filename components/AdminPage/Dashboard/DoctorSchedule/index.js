@@ -13,10 +13,11 @@ import {
 import { dokter } from "../../../DokterData";
 import moment from "moment";
 import "moment/locale/id";
-import { Input, Pagination, Option } from "antd";
+import { Input, Pagination } from "antd";
 import { Icon } from "@iconify/react";
 import NewDoctor from "../NewDoctor";
 import dayjs from "dayjs";
+import { Option } from "antd/lib/mentions";
 moment.locale("id");
 const { Search } = Input;
 
@@ -27,6 +28,9 @@ const handleStatusChange = (value, record) => {
 function DoctorSchedule() {
   const [DataDokter, setDataDokter] = useState(dokter);
   const [dokterSelected, setdokterSelected] = useState();
+  const [recurring, setrecurring] = useState();
+  const [jamMulai, setjamMulai] = useState();
+  const [jamSelesai, setjamSelesai] = useState();
   const [date, setDate] = useState();
   const [tanggalpraktek, settanggalpraktek] = useState();
   const [jampraktek, setjampraktek] = useState();
@@ -156,7 +160,7 @@ function DoctorSchedule() {
             <StyledTitle>{moment(today).format("MMMM YYYY")}</StyledTitle>
           </div>
           <div className="col-md-4 col-12 align-self-center">
-            <button
+            {/* <button
               onClick={() => setbtnTab("kalender")}
               className={
                 btnTab == "kalender" ? "buttonTabSelected" : "buttonTab"
@@ -169,7 +173,7 @@ function DoctorSchedule() {
               className={btnTab == "tabel" ? "buttonTabSelected" : "buttonTab"}
             >
               Tabel
-            </button>
+            </button> */}
           </div>
           <div className="col-md-6 col-12 text-end align-self-center">
             <button className="button" onClick={() => openModalJadwal()}>
@@ -210,7 +214,7 @@ function DoctorSchedule() {
               <div className="col-lg-9 col-12 modalSubtitleData align-self-center">
                 <Select
                   placeholder="Nama Dokter"
-                  width="100%"
+                  style={{width:'100%'}}
                   onChange={(e) => setdokterSelected(e)}
                   value={dokterSelected}
                 >
@@ -238,15 +242,27 @@ function DoctorSchedule() {
                 Jam Praktek
               </div>
               <div className="col-lg-5 col-12 modalSubtitleData align-self-center">
-                <TimePicker.RangePicker />
+                  <div className="d-flex">
+                  <Input
+                  placeholder="Mulai"
+                  value={jamMulai}
+                  onChange={(event) => setjamMulai(event.target.value)}
+                  />
+                  <span className="mx-3 align-self-center"> - </span>
+                  <Input
+                  placeholder="Selesai"
+                  value={jamSelesai}
+                  onChange={(event) => setjamSelesai(event.target.value)}
+                  />
+                  </div>
                 {/* <span className="tambahjam">+ Tambahkan jam praktek</span> */}
               </div>
               <div className="col-lg-4 col-12 modalSubtitleData align-self-center">
                 <Select
                   placeholder="Setiap..."
-                  width="100%"
-                  onChange={(e) => setdokterSelected(e)}
-                  value={dokterSelected}
+                  style={{width:'100%'}}
+                  onChange={(e) => setrecurring(e)}
+                  value={recurring}
                 >
                   <Option value={1}>Setiap Hari Selasa</Option>
                   <Option value={2}>Tidak diulang</Option>
