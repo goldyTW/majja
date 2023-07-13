@@ -23,7 +23,7 @@ export default async function exportDoctor(req, res) {
         }
         
         const jadwal = await excuteQuery({
-            query: `SELECT hari FROM tb_jadwal a NATURAL JOIN tb_dokter b WHERE b.id_dokter = ${id_dokter} `, // Add a WHERE clause to filter by id_doctor
+            query: `SELECT hari FROM tb_jadwal a NATURAL JOIN tb_dokter b WHERE b.id_dokter = ${id_dokter} `,
             values: '', 
         });
         const groupedSched = jadwal.reduce((result, item) => {
