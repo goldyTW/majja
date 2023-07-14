@@ -16,20 +16,20 @@ export default async function exportDoctor(req, res) {
     const { id_dokter, hari, jam_mulai, jam_selesai, repeat } = req.body;
     var mHari
     switch (hari){
-        case "1": mHari = "Minggu"; break;
-        case "2": mHari = "Senin"; break;
-        case "3": mHari = "Selasa"; break;
-        case "4": mHari = "Rabu"; break;
-        case "5": mHari = "Kamis"; break;
-        case "6": mHari = "Jumat"; break;
-        case "7": mHari = "Sabtu"; break;
-        case 1: mHari = "Minggu"; break;
-        case 2: mHari = "Senin"; break;
-        case 3: mHari = "Selasa"; break;
-        case 4: mHari = "Rabu"; break;
-        case 5: mHari = "Kamis"; break;
-        case 6: mHari = "Jumat"; break;
-        case 7: mHari = "Sabtu"; break;
+        case "0": mHari = "Minggu"; break;
+        case "1": mHari = "Senin"; break;
+        case "2": mHari = "Selasa"; break;
+        case "3": mHari = "Rabu"; break;
+        case "4": mHari = "Kamis"; break;
+        case "5": mHari = "Jumat"; break;
+        case "6": mHari = "Sabtu"; break;
+        case 0: mHari = "Minggu"; break;
+        case 1: mHari = "Senin"; break;
+        case 2: mHari = "Selasa"; break;
+        case 3: mHari = "Rabu"; break;
+        case 4: mHari = "Kamis"; break;
+        case 5: mHari = "Jumat"; break;
+        case 6: mHari = "Sabtu"; break;
         default: mHari = hari.charAt(0).toUpperCase() + hari.slice(1).toLowerCase(); break;
     }
 

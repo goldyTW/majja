@@ -9,7 +9,7 @@ import { LockOutlined } from '@ant-design/icons';
 import { Input, Checkbox } from 'antd';
 
 export default function SignInForm({loading, setLoading}) {
-  const url = process.env.NEXT_APP_API_URL || "http://localhost:3000";
+  const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorEmail, setErrorEmail] = useState(false);
