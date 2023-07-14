@@ -25,6 +25,6 @@ jobs:
             sudo docker rm frontend_container_dev -f
             sudo docker rmi frontend_dev
             sudo docker build . --no-cache -t frontend_dev
-            sudo docker run --name frontend_container_dev --restart always --network containers_lan -p 3000:3000 -d frontend_dev
+            sudo docker run --name frontend_container_dev --restart always --network containers_lan -p 80:3000 -p 443:3000 -d frontend_dev
             sudo systemctl stop docker
             sudo systemctl start docker
