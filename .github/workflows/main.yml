@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy Using ssh
-        uses: appleboy/ssh-action@master
         with:
           host: 203.161.53.80
           username: root
