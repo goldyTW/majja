@@ -12,19 +12,19 @@ moment.locale("id");
 const { Search } = Input;
 const { TextArea } = Input;
 
-const url = process.env.NEXT_APP_API_URL || "http://localhost:3000";
+const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
 function BookingSchedule() {
   useEffect(() => {
     axios
-      .get(`${url}/api/books/list`, {
+      .get(`${url}/api/booking`, {
         headers: {
           "Content-Type": "application/json",
         },
       })
       .then((res) => {
-        setDataBookingSchedule(res.data.booking);
-        setDataBookingScheduleMaster(res.data.booking);
+        setDataBookingSchedule(res.data.result);
+        setDataBookingScheduleMaster(res.data.result);
       });
   }, []);
 
@@ -38,47 +38,46 @@ function BookingSchedule() {
   const [telepon, settelepon] = useState();
   const [kategori, setkategori] = useState();
   const [keluhan, setkeluhan] = useState();
-  console.log("Jadwal Temu", DataBookingScheduleMaster);
 
   const dateSorter = (a, b) => {
-    const dateA = a.tanggal.valueOf();
-    const dateB = b.tanggal.valueOf();
+    const dateA = a.tanggal_booking.valueOf();
+    const dateB = b.tanggal_booking.valueOf();
     return dateA - dateB;
   };
 
   const columns = [
     {
       title: "Nama Pasien",
-      dataIndex: "pasien",
-      sorter: (a, b) => a.pasien.localeCompare(b.pasien),
-      width: 400,
+      dataIndex: "nama",
+      sorter: (a, b) => a.nama.localeCompare(b.nama),
+      width: 200,
       render: (_, record) => (
         <span
           style={{ cursor: "pointer" }}
           onClick={() => openBookingSchedule(record)}
         >
-          {record.pasien}
+          {record.nama}
         </span>
       ),
     },
     {
       title: "Jadwal Konsultasi",
-      dataIndex: "tanggal",
+      dataIndex: "tanggal_booking",
       defaultSortOrder: "ascend",
       sorter: dateSorter,
       render: (_, record) =>
-        moment(record.tanggal).format("DD MMM YY") + ", " + record.jam,
-      width: 400,
+        moment(record.tanggal_booking).format("DD MMM YY") + ", " + record.jam_booking,
+      width: 300,
     },
     {
       title: "Dokter",
-      dataIndex: "dokter",
+      dataIndex: "nama_dokter",
       width: 400,
     },
     {
       title: "Status",
-      dataIndex: "status_booking",
-      sorter: (a, b) => a.status_booking - b.status_booking,
+      dataIndex: "action_status",
+      sorter: (a, b) => a.action_status - b.action_status,
       render: (text, record) => {
         const statusLabels = {
           1: "New Bookings",
@@ -90,13 +89,13 @@ function BookingSchedule() {
         return (
           <Select
             defaultValue={
-              record.status_booking && record.status_booking.toString()
+              record.action_status && record.action_status.toString()
             }
             onChange={(value) => handleStatusChange(value, record)}
             status={
-              record.status_booking && record.status_booking == 1
+              record.action_status && record.action_status == 1
                 ? "warning"
-                : record.status_booking && record.status_booking == 3
+                : record.action_status && record.action_status == 3
                 ? "success"
                 : ""
             }
@@ -114,16 +113,16 @@ function BookingSchedule() {
     {
       title: "Catatan",
       dataIndex: "catatan",
-      width: 300,
+      width: 400,
     },
   ];
 
   const openBookingSchedule = (record) => {
     setModalOpen(true)
-    setnama(record.pasien)
-    setjadwal(moment(record.tanggal).format('DD MMM YY')+', '+record.jam)
-    setdokter(record.dokter)
-    setstatusbook(record.status_booking)
+    setnama(record.nama)
+    setjadwal(moment(record.tanggal_booking).format('DD MMM YY')+', '+record.jam_booking)
+    setdokter(record.nama_dokter)
+    setstatusbook(record.action_status)
     settelepon(record.phone)
     setkategori(record.kategori)
     setkeluhan(record.keluhan)
