@@ -1,4 +1,4 @@
-import excuteQuery from "../../../../lib/db";
+import excuteQuery from "../../../../../lib/db";
 import NextCors from 'nextjs-cors';
 
 export default async function exportDoctor(req, res) {
@@ -13,17 +13,17 @@ export default async function exportDoctor(req, res) {
         optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     });
 
-    const { nama, posisi, gambar, xp, status, phone, email } = req.body;
-    
+    const { id } = req.body;
+
     try {
-        const dokter = await excuteQuery({
-            query: `INSERT INTO tb_dokter(nama, posisi, gambar, xp, status, phone, email) VALUE(?, ?, ?, ?, ?, ?, ?)`,
-            values:[nama, posisi, gambar, xp, status, phone, email],
+        const jadwal = await excuteQuery({
+            query: `DELETE FROM tb_jadwal_khusus WHERE id_jadwal_khusus = ?`  ,
+            values:[id],
         });
-        if (dokter.error == null){
-            res.status(200).json({ doctor:dokter.insertId, msg:"Success" })
+        if (jadwal.error == null){
+            res.status(200).json({ msg:"Success" })
         } else {
-            res.status(200).json({ msg:dokter.error.sqlMessage })
+            res.status(200).json({ msg:jadwal.error.sqlMessage })
         }
         
     } catch (error) {

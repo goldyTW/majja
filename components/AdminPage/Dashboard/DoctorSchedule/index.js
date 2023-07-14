@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   Table,
@@ -13,10 +13,14 @@ import {
 import { dokter } from "../../../DokterData";
 import moment from "moment";
 import "moment/locale/id";
-import { Input, Pagination, Option } from "antd";
+import { Input, Pagination } from "antd";
 import { Icon } from "@iconify/react";
 import NewDoctor from "../NewDoctor";
 import dayjs from "dayjs";
+import { Option } from "antd/lib/mentions";
+import axios from "axios";
+import dayjsRecur from 'dayjs-recur'
+import { toast } from "react-toastify";
 moment.locale("id");
 const { Search } = Input;
 
@@ -25,8 +29,13 @@ const handleStatusChange = (value, record) => {
 };
 
 function DoctorSchedule() {
-  const [DataDokter, setDataDokter] = useState(dokter);
+  const [DataDokter, setDataDokter] = useState();
+  const [DataDokterMaster, setDataDokterMaster] = useState()
+  const [DataAddDokter, setDataAddDokter] = useState([])
   const [dokterSelected, setdokterSelected] = useState();
+  const [recurring, setrecurring] = useState();
+  const [jamMulai, setjamMulai] = useState();
+  const [jamSelesai, setjamSelesai] = useState();
   const [date, setDate] = useState();
   const [tanggalpraktek, settanggalpraktek] = useState();
   const [jampraktek, setjampraktek] = useState();
@@ -37,6 +46,27 @@ function DoctorSchedule() {
   const [hapusJadwal, sethapusJadwal] = useState();
   const [btnTab, setbtnTab] = useState("tabel");
   const [today, setToday] = useState(new Date());
+  const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+
+  useEffect(() => {
+    axios.get(`${url}/api/doctors/schedule/list`,{
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(res => {
+      setDataDokter(res.data.jadwal)
+    })
+    axios.get(`${url}/api/doctors/list`,{
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(res => {
+      setDataDokterMaster(res.data.dokter)
+    })
+  }, [])
+  
 
   const showModal3 = () => {
     setModalOpen3(true);
@@ -59,81 +89,138 @@ function DoctorSchedule() {
     setDataDokter(filteredData);
   };
 
-  const openModalJadwal = () => {
+  const openModalAddJadwal = () => {
     setModalOpen(true);
   };
 
+  function isiArrayJadwal(){
+    setDataAddDokter([...DataAddDokter, {jamMulai, jamSelesai, recurring}])
+    setjamMulai('')
+    setjamSelesai('')
+    setrecurring('')
+  }
+
+  const addJadwalDokter = () => {
+    // if(DataAddDokter.length > 0){
+    //   DataAddDokter.map((item, i) => (
+    //     axios.post(`${url}/api/doctors/schedule/add`,{id_dokter:dokterSelected, hari:moment(date).day(), jam_mulai:item.jamMulai, jam_selesai:item.jamSelesai, repeat:item.recurring},{
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //     })
+    //     .then(res => {
+    //       console.log(res)
+    //       // if(res.status == 200){
+    //       //   toast.success('Tambah Jadwal Dokter Success!');
+    //       //   window.location.reload()
+    //       // }
+    //       // else{
+    //       //   toast.error('Silahkan Coba Lagi')
+    //       // }
+    //     })
+    //   ))
+    // }
+    // else{
+      axios.post(`${url}/api/doctors/schedule/add`,{id_dokter:dokterSelected, hari:moment(date).day(), jam_mulai:jamMulai, jam_selesai:jamSelesai, repeat:recurring},{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => {
+        if(res.status == 200){
+          toast.success('Tambah Jadwal Dokter Success!');
+          window.location.reload()
+        }
+        else{
+          toast.error('Silahkan Coba Lagi')
+        }
+      })
+    // }
+  }
+
   const openModalDoctor = (record) => {
     setModalOpen2(true);
-    setNamaDokter(record.name);
+    setNamaDokter(record.nama);
+    settanggalpraktek(record.hari);
+    setjampraktek(record.jam_mulai+' - '+record.jam_selesai)
   };
 
   const columns = [
+    { 
+      dataIndex: "no", 
+      title: "No", 
+      width: 70,
+      align:'center',
+      render: ((value, item, index) => index += 1)
+    },
     {
       title: "Nama Dokter",
-      dataIndex: "name",
+      dataIndex: "nama",
       defaultSortOrder: "ascend",
-      sorter: (a, b) => a.name.localeCompare(b.name),
+      // sorter: (a, b) => a.nama.localeCompare(b.nama),
       width: 500,
       render: (_, record) => (
         <span
           style={{ cursor: "pointer" }}
           onClick={() => openModalDoctor(record)}
         >
-          {record.name}
+          {record.nama}
         </span>
       ),
     },
     {
       title: "Spesialis",
-      dataIndex: "position",
+      dataIndex: "posisi",
       // sorter: (a, b) => a.age - b.age,
       // render: (datetime) => moment(datetime).format("DD MMM, HH.mm"),
-      filters: [
-        {
-          text: "Spesialis Obstetri dan Ginekologi",
-          value: "Spesialis Obstetri dan Ginekologi",
-        },
-        {
-          text: "Spesialis Anak",
-          value: "Spesialis Anak",
-        },
-        {
-          text: "Spesialis Penyakit Dalam",
-          value: "Spesialis Penyakit Dalam",
-        },
-        {
-          text: "Spesialis Anestesi Konsultan Intensive Care",
-          value: "Spesialis Anestesi Konsultan Intensive Care",
-        },
-        {
-          text: "Spesialis Gizi",
-          value: "Spesialis Gizi",
-        },
-        {
-          text: "Psikolog",
-          value: "Psikolog",
-        },
-        {
-          text: "Dokter Umum",
-          value: "Dokter Umum",
-        },
-      ],
-      onFilter: (value, record) => record.position.indexOf(value) === 0,
-      width: 500,
+      // filters: [
+      //   {
+      //     text: "Spesialis Obstetri dan Ginekologi",
+      //     value: "Spesialis Obstetri dan Ginekologi",
+      //   },
+      //   {
+      //     text: "Spesialis Anak",
+      //     value: "Spesialis Anak",
+      //   },
+      //   {
+      //     text: "Spesialis Penyakit Dalam",
+      //     value: "Spesialis Penyakit Dalam",
+      //   },
+      //   {
+      //     text: "Spesialis Anestesi Konsultan Intensive Care",
+      //     value: "Spesialis Anestesi Konsultan Intensive Care",
+      //   },
+      //   {
+      //     text: "Spesialis Gizi",
+      //     value: "Spesialis Gizi",
+      //   },
+      //   {
+      //     text: "Psikolog",
+      //     value: "Psikolog",
+      //   },
+      //   {
+      //     text: "Dokter Umum",
+      //     value: "Dokter Umum",
+      //   },
+      // ],
+      // onFilter: (value, record) => record.position.indexOf(value) === 0,
+      width: 400,
     },
     {
       title: "Jadwal Praktek",
-      dataIndex: "jadwal_praktek",
+      dataIndex: "hari",
       defaultSortOrder: "ascend",
-      sorter: (a, b) => a.name.localeCompare(b.name),
-      width: 200,
+      // sorter: (a, b) => a.hari.localeCompare(b.hari),
+      width: 300,
     },
     {
       title: "Jam Praktek",
       dataIndex: "jam_praktek",
       defaultSortOrder: "ascend",
-      sorter: (a, b) => a.name.localeCompare(b.name),
+      render: (_, record) => (
+        record.jam_mulai+(record.jam_selesai != null ? (' - '+record.jam_selesai):'')
+      ),
+      // sorter: (a, b) => a.name.localeCompare(b.name),
       width: 200,
     },
   ];
@@ -148,6 +235,7 @@ function DoctorSchedule() {
 
   const onChangeHapus = () => {};
 
+
   return (
     <>
       <Wrapper className="container-fluid">
@@ -156,7 +244,7 @@ function DoctorSchedule() {
             <StyledTitle>{moment(today).format("MMMM YYYY")}</StyledTitle>
           </div>
           <div className="col-md-4 col-12 align-self-center">
-            <button
+            {/* <button
               onClick={() => setbtnTab("kalender")}
               className={
                 btnTab == "kalender" ? "buttonTabSelected" : "buttonTab"
@@ -169,10 +257,10 @@ function DoctorSchedule() {
               className={btnTab == "tabel" ? "buttonTabSelected" : "buttonTab"}
             >
               Tabel
-            </button>
+            </button> */}
           </div>
           <div className="col-md-6 col-12 text-end align-self-center">
-            <button className="button" onClick={() => openModalJadwal()}>
+            <button className="button" onClick={() => openModalAddJadwal()}>
               + Tambah Jadwal Baru
             </button>
           </div>
@@ -181,7 +269,7 @@ function DoctorSchedule() {
           <BigCard className="col m-2 p-0">
             <Table
               columns={columns}
-              dataSource={dokter}
+              dataSource={DataDokter}
               onChange={onChange}
               pagination={false}
             />
@@ -210,12 +298,12 @@ function DoctorSchedule() {
               <div className="col-lg-9 col-12 modalSubtitleData align-self-center">
                 <Select
                   placeholder="Nama Dokter"
-                  width="100%"
+                  style={{width:'100%'}}
                   onChange={(e) => setdokterSelected(e)}
                   value={dokterSelected}
                 >
-                  {dokter.map((item, i) => (
-                    <Option key={i} value={item.name}>{item.name}</Option>
+                  {DataDokterMaster && DataDokterMaster.map((item, i) => (
+                    <Option key={i} value={item.id_dokter}>{item.nama}</Option>
                   ))}
                 </Select>
               </div>
@@ -237,28 +325,87 @@ function DoctorSchedule() {
               <div className="col-lg-3 col-12 modalSubtitle align-self-center">
                 Jam Praktek
               </div>
-              <div className="col-lg-5 col-12 modalSubtitleData align-self-center">
-                <TimePicker.RangePicker />
-                {/* <span className="tambahjam">+ Tambahkan jam praktek</span> */}
+              
+              <div className="col-lg-9 col-12 modalSubtitle align-self-center">
+                <div className="row">
+                  {/* {
+                    DataAddDokter?.map((item, i) => (
+                      <>
+                      <div className="col-lg-6 col-12 py-1 modalSubtitleData align-self-center">
+                        <div className="d-flex">
+                          <Input
+                            placeholder="Mulai"
+                            value={item.jamMulai}
+                            />
+                            <span className="mx-3 align-self-center"> - </span>
+                            <Input
+                            placeholder="Selesai"
+                            value={item.jamSelesai}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-lg-6 col-12 py-1 modalSubtitleData align-self-center">
+                      <Select
+                      placeholder="Setiap..."
+                      style={{width:'100%'}}
+                      value={item.recurring == 1 ?
+                        'Setiap Hari '+moment(date).format('dddd')
+                        :
+                        item.recurring == 2 ? 
+                        'Tidak Diulang'
+                        :
+                        item.recurring == 3 ?
+                        "Setiap Hari"
+                        :
+                        item.recurring == 4 ?
+                        "Senin sampai Jumat"
+                        :
+                        "Preferensi"
+                        }
+                    >
+                    </Select>
+                          
+                        </div>
+                        </>
+                    ))
+                  } */}
+                  <div className="col-6 modalSubtitleData py-1 align-self-center">
+                      <div className="d-flex">
+                      <Input
+                      placeholder="Mulai"
+                      value={jamMulai}
+                      onChange={(event) => setjamMulai(event.target.value)}
+                      />
+                      <span className="mx-3 align-self-center"> - </span>
+                      <Input
+                      placeholder="Selesai"
+                      value={jamSelesai}
+                      onChange={(event) => setjamSelesai(event.target.value)}
+                      />
+                      </div>
+                  </div>
+                  <div className="col-6 modalSubtitleData py-1 align-self-center">
+                    <Select
+                      placeholder="Setiap..."
+                      style={{width:'100%'}}
+                      onChange={(e) => setrecurring(e)}
+                      value={recurring}
+                    >
+                      <Option value={1}>Setiap Hari {moment(date).format('dddd')}</Option>
+                      <Option value={2}>Tidak diulang</Option>
+                      <Option value={3}>Setiap Hari</Option>
+                      <Option value={4}>Senin sampai Jumat</Option>
+                      <Option value={5}>Preferensi</Option>
+                    </Select>
+                  </div>
+                  {/* <span className="tambahjam py-2"  style={{cursor:'pointer'}} onClick={() => isiArrayJadwal()}>+ Tambahkan jam praktek</span> */}
+                </div>
               </div>
-              <div className="col-lg-4 col-12 modalSubtitleData align-self-center">
-                <Select
-                  placeholder="Setiap..."
-                  width="100%"
-                  onChange={(e) => setdokterSelected(e)}
-                  value={dokterSelected}
-                >
-                  <Option value={1}>Setiap Hari Selasa</Option>
-                  <Option value={2}>Tidak diulang</Option>
-                  <Option value={3}>Setiap Hari</Option>
-                  <Option value={4}>Senin sampai Jumat</Option>
-                  <Option value={5}>Preferensi</Option>
-                </Select>
-              </div>
+              
             </div>
           </div>
           <div className="text-end">
-            <button className="button px-3 py-1">Simpan</button>
+            <button className="button px-3 py-1" onClick={() => addJadwalDokter()}>Simpan</button>
           </div>
         </div>
       </Modal>
