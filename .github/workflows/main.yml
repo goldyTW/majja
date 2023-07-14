@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy Using ssh
+        uses: goldyTW/majja@dev
         with:
           host: 203.161.53.80
           username: root
