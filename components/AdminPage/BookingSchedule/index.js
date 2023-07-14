@@ -10,6 +10,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 moment.locale("id");
 const { Search } = Input;
+const { Option } = Select;
 const { TextArea } = Input;
 
 const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
