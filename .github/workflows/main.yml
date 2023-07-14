@@ -6,17 +6,19 @@ on:
       - dev
 
 jobs:
-  cd:
+
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy Using ssh
-        uses: goldyTW/majja@dev
-        with:
-          host: 203.161.53.80
-          username: root
-          password: Majj@clinic2023
-          port: 22
-          script: |
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: 203.161.53.80
+        username: root
+        password: Majj@clinic2023
+        port: 22
+        script: |
             cd ~/frontend/dev/majja
             git pull origin dev
             git status
