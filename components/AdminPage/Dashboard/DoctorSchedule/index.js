@@ -101,26 +101,26 @@ function DoctorSchedule() {
   }
 
   const addJadwalDokter = () => {
-    // if(DataAddDokter.length > 0){
-    //   DataAddDokter.map((item, i) => (
-    //     axios.post(`${url}/api/doctors/schedule/add`,{id_dokter:dokterSelected, hari:moment(date).day(), jam_mulai:item.jamMulai, jam_selesai:item.jamSelesai, repeat:item.recurring},{
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //     })
-    //     .then(res => {
-    //       console.log(res)
-    //       // if(res.status == 200){
-    //       //   toast.success('Tambah Jadwal Dokter Success!');
-    //       //   window.location.reload()
-    //       // }
-    //       // else{
-    //       //   toast.error('Silahkan Coba Lagi')
-    //       // }
-    //     })
-    //   ))
-    // }
-    // else{
+    if(DataAddDokter.length > 0){
+      DataAddDokter.map((item, i) => (
+        axios.post(`${url}/api/doctors/schedule/add`,{id_dokter:dokterSelected, hari:moment(date).day(), jam_mulai:item.jamMulai, jam_selesai:item.jamSelesai, repeat:item.recurring},{
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(res => {
+          console.log(res)
+          // if(res.status == 200){
+          //   toast.success('Tambah Jadwal Dokter Success!');
+          //   window.location.reload()
+          // }
+          // else{
+          //   toast.error('Silahkan Coba Lagi')
+          // }
+        })
+      ))
+    }
+    else{
       axios.post(`${url}/api/doctors/schedule/add`,{id_dokter:dokterSelected, hari:moment(date).day(), jam_mulai:jamMulai, jam_selesai:jamSelesai, repeat:recurring},{
         headers: {
           'Content-Type': 'application/json',
@@ -135,7 +135,7 @@ function DoctorSchedule() {
           toast.error('Silahkan Coba Lagi')
         }
       })
-    // }
+    }
   }
 
   const openModalDoctor = (record) => {
@@ -328,7 +328,7 @@ function DoctorSchedule() {
               
               <div className="col-lg-9 col-12 modalSubtitle align-self-center">
                 <div className="row">
-                  {/* {
+                  {
                     DataAddDokter?.map((item, i) => (
                       <>
                       <div className="col-lg-6 col-12 py-1 modalSubtitleData align-self-center">
@@ -368,7 +368,7 @@ function DoctorSchedule() {
                         </div>
                         </>
                     ))
-                  } */}
+                  }
                   <div className="col-6 modalSubtitleData py-1 align-self-center">
                       <div className="d-flex">
                       <Input
@@ -398,7 +398,7 @@ function DoctorSchedule() {
                       <Option value={5}>Preferensi</Option>
                     </Select>
                   </div>
-                  {/* <span className="tambahjam py-2"  style={{cursor:'pointer'}} onClick={() => isiArrayJadwal()}>+ Tambahkan jam praktek</span> */}
+                  <span className="tambahjam py-2"  style={{cursor:'pointer'}} onClick={() => isiArrayJadwal()}>+ Tambahkan jam praktek</span>
                 </div>
               </div>
               

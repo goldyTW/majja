@@ -63,7 +63,7 @@ function PatientList() {
           Pasien Baru
         </Tag>
         :
-        <Tag color="violet">
+        <Tag color="magenta">
           Pasien Lama
         </Tag>
     )),

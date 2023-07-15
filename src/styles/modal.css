@@ -93,3 +93,6 @@
     line-height: 100%;
     color: #DF3034;
 }
+.ant-tag{
+    border-radius: 20px !important;
+}

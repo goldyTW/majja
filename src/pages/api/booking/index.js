@@ -12,7 +12,7 @@ export default async function exportCustomer(req, res) {
      
     try {
         const result = await excuteQuery({
-            query: "SELECT a.id, a.nama, a.tanggal_booking, a.jam_booking, a.kategori, a.no_rekam_medis, a.keluhan, a.phone, a.payment_status, a.action_status, b.nama as nama_dokter FROM `booking` a, tb_dokter b where a.id_dokter = b.id_dokter and a.payment_status = 'settlement'",
+            query: "SELECT a.id, a.nama, a.tanggal_booking, a.jam_booking, a.kategori, a.no_rekam_medis, a.keluhan, a.phone, a.payment_status, a.action_status, a.catatan, b.nama as nama_dokter FROM `booking` a, tb_dokter b where a.id_dokter = b.id_dokter and a.payment_status = 'settlement'",
             values:'',
         });
         res.status(200).json({ result })

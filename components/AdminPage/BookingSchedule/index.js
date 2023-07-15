@@ -12,10 +12,23 @@ moment.locale("id");
 const { Search } = Input;
 const { Option } = Select;
 const { TextArea } = Input;
-
-const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+// process.env.NEXT_PUBLIC_API_URL ||
+const url =  "http://localhost:3000";
 
 function BookingSchedule() {
+  const [DataBookingSchedule, setDataBookingSchedule] = useState();
+  const [DataBookingScheduleMaster, setDataBookingScheduleMaster] = useState();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [nama, setnama] = useState();
+  const [jadwal, setjadwal] = useState();
+  const [dokter, setdokter] = useState();
+  const [statusbook, setstatusbook] = useState();
+  const [telepon, settelepon] = useState();
+  const [kategori, setkategori] = useState();
+  const [keluhan, setkeluhan] = useState();
+  const [catatan, setCatatan] = useState();
+  const [idBooking, setidBooking] = useState();
+
   useEffect(() => {
     axios
       .get(`${url}/api/booking`, {
@@ -29,16 +42,22 @@ function BookingSchedule() {
       });
   }, []);
 
-  const [DataBookingSchedule, setDataBookingSchedule] = useState();
-  const [DataBookingScheduleMaster, setDataBookingScheduleMaster] = useState();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [nama, setnama] = useState();
-  const [jadwal, setjadwal] = useState();
-  const [dokter, setdokter] = useState();
-  const [statusbook, setstatusbook] = useState();
-  const [telepon, settelepon] = useState();
-  const [kategori, setkategori] = useState();
-  const [keluhan, setkeluhan] = useState();
+  const handleStatusChange = (value) => {
+    axios.post(`${url}/api/booking/update_actionstatus`,{id_booking:idBooking, action_status:value, catatan},{
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(res => {
+      if(res.status == 200){
+        toast.success('Edit Action Status Success!');
+        window.location.reload()
+      }
+      else{
+        toast.error('Silahkan Coba Lagi')
+      }
+    })
+  };  
 
   const dateSorter = (a, b) => {
     const dateA = a.tanggal_booking.valueOf();
@@ -68,7 +87,7 @@ function BookingSchedule() {
       sorter: dateSorter,
       render: (_, record) =>
         moment(record.tanggal_booking).format("DD MMM YY") + ", " + record.jam_booking,
-      width: 300,
+      width: 200,
     },
     {
       title: "Dokter",
@@ -79,37 +98,49 @@ function BookingSchedule() {
       title: "Status",
       dataIndex: "action_status",
       sorter: (a, b) => a.action_status - b.action_status,
-      render: (text, record) => {
-        const statusLabels = {
-          1: "New Bookings",
-          2: "Reminded",
-          3: "Completed",
-          4: "Not Shown",
-        };
-
-        return (
-          <Select
-            defaultValue={
-              record.action_status && record.action_status.toString()
-            }
-            onChange={(value) => handleStatusChange(value, record)}
-            status={
-              record.action_status && record.action_status == 1
-                ? "warning"
-                : record.action_status && record.action_status == 3
-                ? "success"
-                : ""
-            }
-          >
-            {Object.entries(statusLabels).map(([value, label]) => (
-              <Option key={value} value={value}>
-                {label}
-              </Option>
-            ))}
-          </Select>
-        );
-      },
-      width: 300,
+      render: ((_, record) =>
+      (
+        record.action_status == 1 ?
+        <Tag color="geekblue">
+          New Bookings
+        </Tag>
+        :
+        record.action_status == 2 ?
+        <Tag color="yellow">
+         Reminded
+        </Tag>
+        :
+        record.action_status == 3 ?
+        <Tag color="green">
+         Completed
+        </Tag>
+        :
+        <Tag>
+         Not Shown
+        </Tag>
+      ))
+      // render: (text, record) => {
+      //   const statusLabels = {
+      //     1: "New Bookings",
+      //     2: "Reminded",
+      //     3: "Completed",
+      //     4: "Not Shown",
+      //   };
+  
+      //   return (
+      //     <Select
+      //       defaultValue={record.action_status && record.action_status.toString()}
+      //       onChange={(value) => handleStatusChange(value)}
+      //       status={record.action_status && record.action_status == 1 ? "warning" : record.action_status && record.action_status == 3 ? "success" : ""}
+      //     >
+      //       {Object.entries(statusLabels).map(([value, label]) => (
+      //         <Option key={value} value={value}>
+      //           {label}
+      //         </Option>
+      //       ))}
+      //     </Select>
+      //   );
+      // },
     },
     {
       title: "Catatan",
@@ -127,6 +158,9 @@ function BookingSchedule() {
     settelepon(record.phone)
     setkategori(record.kategori)
     setkeluhan(record.keluhan)
+    setidBooking(record.id)
+    setCatatan(record.catatan)
+    
   }
 
   const onChange = (pagination, filters, sorter, extra) => {
@@ -135,7 +169,7 @@ function BookingSchedule() {
 
   const onSearch = (value) => {
     const filteredData = DataBookingScheduleMaster.filter((entry) =>
-      entry.pasien.toLowerCase().includes(value)
+      entry.nama.toLowerCase().includes(value)
     );
     setDataBookingSchedule(filteredData);
   };
@@ -221,6 +255,7 @@ function BookingSchedule() {
             <Icon
                 icon="solar:copy-bold"
                 className="ms-1 align-self-center"
+                onClick={() => (navigator.clipboard.writeText(telepon), toast.success('Copied to Clipboard!'))}
                 style={{
                   cursor: "pointer",
                   fontSize: "16px",
@@ -232,7 +267,7 @@ function BookingSchedule() {
           <div className="row py-2">
             <div className="col-lg-4 col-12 modalSubtitle">Kategori Pasien</div>
             <div className="col-lg-8 col-12 modalSubtitleData">
-                {kategori}
+                {kategori == "baru" ? 'Pasien Baru' : "Pasien Lama"}
             </div>
           </div>
           <div className="row py-2">
@@ -241,18 +276,21 @@ function BookingSchedule() {
           </div>
           <div className="row py-2">
             <div className="col-lg-4 col-12 modalSubtitle">Catatan</div>
-            <div className="col-lg-8 col-12 modalSubtitleData"><TextArea rows={4} placeholder="maxLength is 6" maxLength={6} /></div>
+            <div className="col-lg-8 col-12 modalSubtitleData">
+              <TextArea rows={2} placeholder="Tulis Disini" value={catatan} 
+                onChange={(e)=> setCatatan(e.target.value)}
+              /></div>
           </div>
         </div>
         <div className="text-end">
           {
             statusbook == 1 ?
-            <button className='buttonModalReminded'>Reminded</button>
+            <button className='buttonModalReminded' onClick={() => handleStatusChange(2)}>Reminded</button>
             :
             statusbook == 2 ?
             <div className="text-end">
-              <button className='buttonModalNot mx-1'>Not Shown</button>
-              <button className='buttonModalComplete mx-1'>Completed</button>
+             <button className='buttonModalNot mx-1' onClick={() => handleStatusChange(4)}>Not Shown</button>
+              <button className='buttonModalComplete mx-1' onClick={() => handleStatusChange(3)}>Completed</button>
             </div>
             :
             ''
