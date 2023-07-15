@@ -13,7 +13,8 @@ const { Search } = Input;
 
 function PatientList() {
   const [DataPatient, setDataPatient] = useState()
-  const [DataPatientMaster, setDataPatientMaster] = useState()
+  const [DataPatientMaster, setDataPatientMaster] = useState();
+  const [loading, setLoading] = useState(false);
    const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
   const onSearch = (value) => {
@@ -24,12 +25,14 @@ function PatientList() {
   }
 
   useEffect(() => {
+    setLoading(true)
     axios.get(`${url}/api/patient/list`,{
         headers: {
           'Content-Type': 'application/json',
         },
       })
       .then(res => {
+        setLoading(false)
         setDataPatient(res.data.pasien)
         setDataPatientMaster(res.data.pasien)
       })
@@ -87,11 +90,23 @@ function PatientList() {
         />
         </div>
           <div>
+          {
+           !loading ?
             <Table
               columns={columns}
               dataSource={DataPatient}
               pagination={false}
             />
+            :
+            <div className="loader">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            }
           </div>
         </BigCard>
       </div>

@@ -184,9 +184,9 @@ function Dashboard() {
             items={items}
             onSelect={handleMenuSelect}
           />
-          <div className="text-center mx-auto py-1 px-5 my-3" style={{position:'absolute', bottom:'20px'}}>
+          {/* <div className="text-center mx-auto py-1 px-5 my-3" style={{position:'absolute', bottom:'20px'}}>
             <button className="buttonAlt" onClick={() => logout()}>Logout</button>
-          </div>
+          </div> */}
         </Sider>
         <Layout
           style={{width:'100px'}}
