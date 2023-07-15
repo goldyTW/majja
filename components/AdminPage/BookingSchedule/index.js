@@ -12,8 +12,7 @@ moment.locale("id");
 const { Search } = Input;
 const { Option } = Select;
 const { TextArea } = Input;
-// process.env.NEXT_PUBLIC_API_URL ||
-const url =  "http://localhost:3000";
+const url =  process.env.NEXT_PUBLIC_API_URL ||  "http://localhost:3000";
 
 function BookingSchedule() {
   const [DataBookingSchedule, setDataBookingSchedule] = useState();

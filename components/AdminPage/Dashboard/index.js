@@ -32,8 +32,7 @@ function Dashboard() {
   const [dataBookingMaster, setDataBookingMaster] = useState()
   const [jumlahpasien, setjumlahpasien] = useState()
   const [catatan, setCatatan] = useState();
-  // process.env.NEXT_PUBLIC_API_URL || 
-  const url = "http://localhost:3000";
+  const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   
   const onChange = (pagination, filters, sorter, extra) => {
     console.log("params", pagination, filters, sorter, extra);
