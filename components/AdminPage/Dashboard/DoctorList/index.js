@@ -31,7 +31,7 @@ function DoctorList() {
   const [id, setid] = useState();
   const [showpassword, setshowpassword] = useState(false);
   const [showTambahDokter, setShowTambahDokter] = useState(false);
-   const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+   const url =process.env.NEXT_PUBLIC_API_URL ||   "http://localhost:3000";
   
   const onChange = (pagination, filters, sorter, extra) => {
     console.log("params", pagination, filters, sorter, extra);
@@ -44,6 +44,18 @@ function DoctorList() {
     setDataDokter(filteredData);
   }
 
+  function getJadwal(idnya){
+    axios.get(`${url}/api/doctors/schedule/`+idnya,{
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(res => {
+      setjadwal(res.data.jadwaldokter)
+    })
+  }
+
+  console.log(jadwal)
   const openModalDoctor = (record) => {
     setModalOpen(true)
     setNamaDokter(record.nama)
@@ -53,8 +65,8 @@ function DoctorList() {
     setPassword(record.pass)
     setstatus_dokter(record.status)
     setxp(record.xp)
-    setjadwal(record.jadwal)
     setid(record.id_dokter)
+    getJadwal(record.id_dokter)
   }
 
   useEffect(() => {
@@ -234,6 +246,7 @@ function DoctorList() {
                 <Icon
                   icon="solar:copy-bold"
                   className="ms-1 align-self-center"
+                  onClick={() => (navigator.clipboard.writeText(telepon), toast.success('Copied to Clipboard!'))}
                   style={{
                     cursor: "pointer",
                     fontSize: "16px",
@@ -283,11 +296,10 @@ function DoctorList() {
               <div className="col-lg-4 col-12 modalSubtitle">Jadwal Praktek</div>
               <div className="col-lg-8 col-12 modalSubtitleData">
                 {
-                jadwal && jadwal.map((item, i) => (
+                jadwal?.map((item, i) => (
                     <div className="py-1" key={i}>
                       <span>{item.hari}</span>
-                      <span className="ms-2">{item.jam}</span>
-                      <span className="ms-2">{item.jam2 && item.jam2}</span>
+                      <span className="ms-2">{item.jam_mulai+(item.jam_selesai != null ? (' - '+item.jam_selesai):'')}</span>
                       <br></br>
                     </div>
                 ))

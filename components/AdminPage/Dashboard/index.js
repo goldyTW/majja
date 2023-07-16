@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 moment.locale("id");
 const { Option } = Select;
 const { Search } = Input;
+const { TextArea } = Input;
 
 function Dashboard() {
   const [today, setToday] = useState(new Date()); // Save the current date to be able to trigger an update
@@ -20,6 +21,7 @@ function Dashboard() {
   const [range, setrange] = useState("365");
   const [modalOpen, setModalOpen] = useState(false);
   const [nama, setnama] = useState();
+  const [idBooking, setidBooking] = useState();
   const [jadwal, setjadwal] = useState();
   const [dokter, setdokter] = useState();
   const [statusbook, setstatusbook] = useState();
@@ -29,6 +31,7 @@ function Dashboard() {
   const [dataBooking, setdataBooking] = useState()
   const [dataBookingMaster, setDataBookingMaster] = useState()
   const [jumlahpasien, setjumlahpasien] = useState()
+  const [catatan, setCatatan] = useState();
   const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   
   const onChange = (pagination, filters, sorter, extra) => {
@@ -44,10 +47,12 @@ function Dashboard() {
     settelepon(record.phone)
     setkategori(record.kategori)
     setkeluhan(record.keluhan)
+    setidBooking(record.id)
+    setCatatan(record.catatan)
   }
 
-  const handleStatusChange = (value, record) => {
-    axios.post(`${url}/api/booking/update_actionstatus`,{id_booking:record.id, action_status:value},{
+  const handleStatusChange = (value) => {
+    axios.post(`${url}/api/booking/update_actionstatus`,{id_booking:idBooking, action_status:value, catatan},{
       headers: {
         'Content-Type': 'application/json',
       },
@@ -113,28 +118,54 @@ function Dashboard() {
       title: "Status",
       dataIndex: "action_status",
       sorter: (a, b) => a.action_status - b.action_status,
-      render: (text, record) => {
-        const statusLabels = {
-          1: "New Bookings",
-          2: "Reminded",
-          3: "Completed",
-          4: "Not Shown",
-        };
+      render: ((_, record) =>
+      (
+        record.action_status == 1 ?
+        <Tag color="geekblue">
+          New Bookings
+        </Tag>
+        :
+        record.action_status == 2 ?
+        <Tag color="yellow">
+         Reminded
+        </Tag>
+        :
+        record.action_status == 3 ?
+        <Tag color="green">
+         Completed
+        </Tag>
+        :
+        <Tag>
+         Not Shown
+        </Tag>
+      ))
+      // render: (text, record) => {
+      //   const statusLabels = {
+      //     1: "New Bookings",
+      //     2: "Reminded",
+      //     3: "Completed",
+      //     4: "Not Shown",
+      //   };
   
-        return (
-          <Select
-            defaultValue={record.action_status && record.action_status.toString()}
-            onChange={(value) => handleStatusChange(value, record)}
-            status={record.action_status && record.action_status == 1 ? "warning" : record.action_status && record.action_status == 3 ? "success" : ""}
-          >
-            {Object.entries(statusLabels).map(([value, label]) => (
-              <Option key={value} value={value}>
-                {label}
-              </Option>
-            ))}
-          </Select>
-        );
-      },
+      //   return (
+      //     <Select
+      //       defaultValue={record.action_status && record.action_status.toString()}
+      //       onChange={(value) => handleStatusChange(value)}
+      //       status={record.action_status && record.action_status == 1 ? "warning" : record.action_status && record.action_status == 3 ? "success" : ""}
+      //     >
+      //       {Object.entries(statusLabels).map(([value, label]) => (
+      //         <Option key={value} value={value}>
+      //           {label}
+      //         </Option>
+      //       ))}
+      //     </Select>
+      //   );
+      // },
+    },
+    {
+      title: "Catatan",
+      dataIndex: "catatan",
+      width: 300,
     },
   ];
 
@@ -294,6 +325,7 @@ function Dashboard() {
             <Icon
                 icon="solar:copy-bold"
                 className="ms-1 align-self-center"
+                onClick={() => (navigator.clipboard.writeText(telepon), toast.success('Copied to Clipboard!'))}
                 style={{
                   cursor: "pointer",
                   fontSize: "16px",
@@ -312,16 +344,23 @@ function Dashboard() {
             <div className="col-lg-4 col-12 modalSubtitle">Keluhan</div>
             <div className="col-lg-8 col-12 modalSubtitleData">{keluhan}</div>
           </div>
+          <div className="row py-2">
+            <div className="col-lg-4 col-12 modalSubtitle">Catatan</div>
+            <div className="col-lg-8 col-12 modalSubtitleData">
+              <TextArea rows={2} placeholder="Tulis Disini" value={catatan} 
+                onChange={(e)=> setCatatan(e.target.value)}
+              /></div>
+          </div>
         </div>
         <div className="text-end">
           {
             statusbook == 1 ?
-            <button className='buttonModalReminded'>Reminded</button>
+            <button className='buttonModalReminded' onClick={() => handleStatusChange(2)}>Reminded</button>
             :
             statusbook == 2 ?
             <div className="text-end">
-              <button className='buttonModalNot mx-1'>Not Shown</button>
-              <button className='buttonModalComplete mx-1'>Completed</button>
+              <button className='buttonModalNot mx-1' onClick={() => handleStatusChange(4)}>Not Shown</button>
+              <button className='buttonModalComplete mx-1' onClick={() => handleStatusChange(3)}>Completed</button>
             </div>
             :
             ''
