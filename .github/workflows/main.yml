@@ -61,6 +61,3 @@ jobs:
             -e NEXT_PUBLIC_MYSQL_USER=${{ env.NEXT_PUBLIC_MYSQL_USER }} \
             -e NEXT_PUBLIC_MYSQL_PASSWORD=${{ env.NEXT_PUBLIC_MYSQL_PASSWORD }} \
             -d frontend_dev
-
-            sudo systemctl stop docker
-            sudo systemctl start docker
