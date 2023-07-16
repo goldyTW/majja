@@ -39,7 +39,7 @@ jobs:
             echo NEXT_PUBLIC_DATABASE_HOST=${{ env.NEXT_PUBLIC_DATABASE_HOST }} >> .env
             echo NEXT_PUBLIC_DATABASE_PORT=${{ env.NEXT_PUBLIC_DATABASE_PORT }} >> .env
             echo NEXT_PUBLIC_MYSQL_DATABASE=${{ env.NEXT_PUBLIC_MYSQL_DATABASE }} >> .env
-            echo NEXT_PUBLIC_MYSQL_USER={{ env.NEXT_PUBLIC_MYSQL_USER }} >> .env
+            echo NEXT_PUBLIC_MYSQL_USER=${{ env.NEXT_PUBLIC_MYSQL_USER }} >> .env
             echo NEXT_PUBLIC_MYSQL_PASSWORD=${{ env.NEXT_PUBLIC_MYSQL_PASSWORD }} >> .env
             
             echo "cat .env"
