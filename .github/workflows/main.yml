@@ -38,13 +38,13 @@ jobs:
             --restart always \
             --network containers_lan \
             -p 3000:3000 \
-            -e NEXT_PUBLIC_API_URL= ${{ env.NEXT_PUBLIC_API_URL }} \
-            -e NEXT_PUBLIC_AWSENDPOINT= ${{ env.NEXT_PUBLIC_AWSENDPOINT }} \
-            -e NEXT_PUBLIC_DATABASE_HOST= ${{ env.NEXT_PUBLIC_DATABASE_HOST }} \
-            -e NEXT_PUBLIC_DATABASE_PORT= ${{ env.NEXT_PUBLIC_DATABASE_PORT }} \
-            -e NEXT_PUBLIC_MYSQL_DATABASE= ${{ env.NEXT_PUBLIC_MYSQL_DATABASE }} \
-            -e NEXT_PUBLIC_MYSQL_USER= ${{ env.NEXT_PUBLIC_MYSQL_USER }} \
-            -e NEXT_PUBLIC_MYSQL_PASSWORD= ${{ env.NEXT_PUBLIC_MYSQL_PASSWORD }} \
+            -e NEXT_PUBLIC_API_URL=${{ env.NEXT_PUBLIC_API_URL }} \
+            -e NEXT_PUBLIC_AWSENDPOINT=${{ env.NEXT_PUBLIC_AWSENDPOINT }} \
+            -e NEXT_PUBLIC_DATABASE_HOST=${{ env.NEXT_PUBLIC_DATABASE_HOST }} \
+            -e NEXT_PUBLIC_DATABASE_PORT=${{ env.NEXT_PUBLIC_DATABASE_PORT }} \
+            -e NEXT_PUBLIC_MYSQL_DATABASE=${{ env.NEXT_PUBLIC_MYSQL_DATABASE }} \
+            -e NEXT_PUBLIC_MYSQL_USER=${{ env.NEXT_PUBLIC_MYSQL_USER }} \
+            -e NEXT_PUBLIC_MYSQL_PASSWORD=${{ env.NEXT_PUBLIC_MYSQL_PASSWORD }} \
             -d frontend_dev
             sudo systemctl stop docker
             sudo systemctl start docker
