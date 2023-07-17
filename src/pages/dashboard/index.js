@@ -59,7 +59,7 @@ function Dashboard() {
       "1",
       <Icon
         icon="ant-design:home-filled"
-        className="me-2"
+        className="iconDashboard me-2"
         style={{
           cursor: "pointer",
           fontSize: "18px",
@@ -72,7 +72,7 @@ function Dashboard() {
       "2",
       <Icon
         icon="ion:calendar"
-        className="me-2"
+        className="iconDashboard me-2"
         style={{
           cursor: "pointer",
           fontSize: "18px",
@@ -85,7 +85,7 @@ function Dashboard() {
       "3",
       <Icon
         icon="fluent:text-bullet-list-square-person-20-filled"
-        className="me-2"
+        className="iconDashboard me-2"
         style={{
           cursor: "pointer",
           fontSize: "18px",
@@ -98,7 +98,7 @@ function Dashboard() {
       "4",
       <Icon
         icon="fa6-solid:user-doctor"
-        className="me-2"
+        className="iconDashboard me-2"
         style={{
           cursor: "pointer",
           fontSize: "18px",
@@ -111,7 +111,7 @@ function Dashboard() {
       "5",
       <Icon
         icon="ion:calendar"
-        className="me-2"
+        className="iconDashboard me-2"
         style={{
           cursor: "pointer",
           fontSize: "18px",
@@ -124,7 +124,7 @@ function Dashboard() {
       "6",
       <Icon
         icon="ant-design:home-filled"
-        className="me-2"
+        className="iconDashboard me-2"
         style={{
           cursor: "pointer",
           fontSize: "18px",
@@ -137,7 +137,7 @@ function Dashboard() {
       "7",
       <Icon
         icon="ant-design:setting-filled"
-        className="me-2"
+        className="iconDashboard me-2"
         style={{
           cursor: "pointer",
           fontSize: "18px",
@@ -180,7 +180,6 @@ function Dashboard() {
             theme="light"
             defaultSelectedKeys={["1"]}
             mode="inline"
-            
             items={items}
             onSelect={handleMenuSelect}
           />
