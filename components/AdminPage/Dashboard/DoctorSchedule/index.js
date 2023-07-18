@@ -22,6 +22,7 @@ const { Option } = Select;
 function DoctorSchedule() {
   const [DataDokter, setDataDokter] = useState();
   const [DataDokterMaster, setDataDokterMaster] = useState()
+  const [DataAddJadwalDokter, setDataAddJadwalDokter] = useState([])
   const [DataAddDokter, setDataAddDokter] = useState([])
   const [dokterSelected, setdokterSelected] = useState();
   const [recurring, setrecurring] = useState();
@@ -93,47 +94,39 @@ function DoctorSchedule() {
   };
 
   function isiArrayJadwal(){
-    setDataAddDokter([...DataAddDokter, {jamMulai, jamSelesai, recurring}])
+    setDataAddJadwalDokter([...DataAddJadwalDokter, {jamMulai, jamSelesai, recurring}])
     setjamMulai('')
     setjamSelesai('')
     setrecurring('')
   }
 
+  function addDokterAPI(start, end, rep){
+    axios.post(`${url}/api/doctors/schedule/add`,{id_dokter:dokterSelected, hari:moment(date).day(), jam_mulai:start, jam_selesai:end, repeat:rep},{
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(res => {
+      if(res.status == 200){
+        toast.success('Tambah Jadwal Dokter Success!');
+      }
+      else{
+        toast.error('Silahkan Coba Lagi')
+      }
+    })
+  }
+
   const addJadwalDokter = () => {
-    if(DataAddDokter.length > 0){
-      DataAddDokter.map((item, i) => (
-        axios.post(`${url}/api/doctors/schedule/add`,{id_dokter:dokterSelected, hari:moment(date).day(), jam_mulai:item.jamMulai, jam_selesai:item.jamSelesai, repeat:item.recurring},{
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        .then(res => {
-          console.log(res)
-          // if(res.status == 200){
-          //   toast.success('Tambah Jadwal Dokter Success!');
-          //   window.location.reload()
-          // }
-          // else{
-          //   toast.error('Silahkan Coba Lagi')
-          // }
-        })
+    if(DataAddJadwalDokter.length > 0){
+      DataAddJadwalDokter.map((item, i) => (
+        addDokterAPI(item.jamMulai, item.jamSelesai, item.recurring)
       ))
+      addDokterAPI(jamMulai, jamSelesai, recurring)
+      window.location.reload()
     }
     else{
-      axios.post(`${url}/api/doctors/schedule/add`,{id_dokter:dokterSelected, hari:moment(date).day(), jam_mulai:jamMulai, jam_selesai:jamSelesai, repeat:recurring},{
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(res => {
-        if(res.status == 200){
-          toast.success('Tambah Jadwal Dokter Success!');
-          window.location.reload()
-        }
-        else{
-          toast.error('Silahkan Coba Lagi')
-        }
-      })
+      addDokterAPI(jamMulai, jamSelesai, recurring)
+      window.location.reload()
     }
   }
 
@@ -447,7 +440,7 @@ function DoctorSchedule() {
               <div className="col-lg-9 col-12 modalSubtitle align-self-center">
                 <div className="row">
                   {
-                    DataAddDokter?.map((item, i) => (
+                    DataAddJadwalDokter?.map((item, i) => (
                       <>
                       <div className="col-lg-6 col-12 py-1 modalSubtitleData align-self-center">
                         <div className="d-flex">
