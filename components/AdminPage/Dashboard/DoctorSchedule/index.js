@@ -6,49 +6,55 @@ import {
   Modal,
   Select,
   DatePicker,
-  TimePicker,
   Radio,
   Space,
 } from "antd";
-import { dokter } from "../../../DokterData";
 import moment from "moment";
 import "moment/locale/id";
 import { Input, Pagination } from "antd";
 import { Icon } from "@iconify/react";
-import NewDoctor from "../NewDoctor";
-import dayjs from "dayjs";
-import { Option } from "antd/lib/mentions";
+import dayjs, { recur } from "dayjs";
 import axios from "axios";
-import dayjsRecur from 'dayjs-recur'
 import { toast } from "react-toastify";
 moment.locale("id");
-const { Search } = Input;
-
-const handleStatusChange = (value, record) => {
-  console.log(`Status changed to ${value} for record:`, record);
-};
+const { Option } = Select;
 
 function DoctorSchedule() {
   const [DataDokter, setDataDokter] = useState();
   const [DataDokterMaster, setDataDokterMaster] = useState()
+  const [DataAddJadwalDokter, setDataAddJadwalDokter] = useState([])
   const [DataAddDokter, setDataAddDokter] = useState([])
   const [dokterSelected, setdokterSelected] = useState();
   const [recurring, setrecurring] = useState();
   const [jamMulai, setjamMulai] = useState();
   const [jamSelesai, setjamSelesai] = useState();
+  const [angkaUlang, setAngkaUlang] = useState();
+  const [textUlang, setTextUlang] = useState();
+  const [ulangHari, setulangHari] = useState();
+  const [berakhirpada, setberakhirpada] = useState();
   const [date, setDate] = useState();
+  const [prefdate, setPrefDate] = useState();
+  const [tglPref, settglPref] = useState();
   const [tanggalpraktek, settanggalpraktek] = useState();
   const [jampraktek, setjampraktek] = useState();
+  const [namaDokter, setNamaDokter] = useState();
+  const [idDokter, setidDokter] = useState();
+  const [jamMulaiPraktek, setjamMulaiPraktek] = useState();
+  const [jamSelesaiPraktek, setjamSelesaiPraktek] = useState();
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalPreferensiOpen, setModalPreferensiOpen] = useState(false);
   const [modalOpen2, setModalOpen2] = useState(false);
   const [modalOpen3, setModalOpen3] = useState(false);
-  const [namaDokter, setNamaDokter] = useState();
-  const [hapusJadwal, sethapusJadwal] = useState();
+  const [hapusJadwal, sethapusJadwal] = useState(null);
+  const [jadwalkhusus, setjadwalkhusus] = useState([]);
+  const [idjadwal, setidjadwal] = useState();
   const [btnTab, setbtnTab] = useState("tabel");
   const [today, setToday] = useState(new Date());
+  const [loading, setLoading] = useState(false);
   const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
   useEffect(() => {
+    setLoading(true)
     axios.get(`${url}/api/doctors/schedule/list`,{
       headers: {
         'Content-Type': 'application/json',
@@ -65,84 +71,78 @@ function DoctorSchedule() {
     .then(res => {
       setDataDokterMaster(res.data.dokter)
     })
+    axios.get(`${url}/api/doctors/schedule/list_khusus`,{
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(res => {
+      setLoading(false)
+      setjadwalkhusus(res.data.jadwal)
+    })
+    
   }, [])
-  
 
-  const showModal3 = () => {
-    setModalOpen3(true);
-  };
-  const handleModal3Ok = () => {
-    setModalOpen3(false);
-  };
-  const handleModal3Cancel = () => {
-    setModalOpen3(false);
-  };
-
-  const onChange = (pagination, filters, sorter, extra) => {
-    console.log("params", pagination, filters, sorter, extra);
-  };
-
-  const onSearch = (value) => {
-    const filteredData = dokter.filter((entry) =>
-      entry.name.toLowerCase().includes(value)
-    );
-    setDataDokter(filteredData);
-  };
+  useEffect(() => {
+    if(recurring == 5){
+      setModalPreferensiOpen(true)
+    }
+  }, [recurring])
 
   const openModalAddJadwal = () => {
     setModalOpen(true);
   };
 
   function isiArrayJadwal(){
-    setDataAddDokter([...DataAddDokter, {jamMulai, jamSelesai, recurring}])
+    setDataAddJadwalDokter([...DataAddJadwalDokter, {jamMulai, jamSelesai, recurring}])
     setjamMulai('')
     setjamSelesai('')
     setrecurring('')
   }
 
+  function addDokterAPI(start, end, rep){
+    axios.post(`${url}/api/doctors/schedule/add`,{id_dokter:dokterSelected, hari:moment(date).day(), jam_mulai:start, jam_selesai:end, repeat:rep},{
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(res => {
+      if(res.status == 200){
+        toast.success('Tambah Jadwal Dokter Success!');
+      }
+      else{
+        toast.error('Silahkan Coba Lagi')
+      }
+    })
+  }
+
   const addJadwalDokter = () => {
-    if(DataAddDokter.length > 0){
-      DataAddDokter.map((item, i) => (
-        axios.post(`${url}/api/doctors/schedule/add`,{id_dokter:dokterSelected, hari:moment(date).day(), jam_mulai:item.jamMulai, jam_selesai:item.jamSelesai, repeat:item.recurring},{
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        .then(res => {
-          console.log(res)
-          // if(res.status == 200){
-          //   toast.success('Tambah Jadwal Dokter Success!');
-          //   window.location.reload()
-          // }
-          // else{
-          //   toast.error('Silahkan Coba Lagi')
-          // }
-        })
+    if(DataAddJadwalDokter.length > 0){
+      DataAddJadwalDokter.map((item, i) => (
+        addDokterAPI(item.jamMulai, item.jamSelesai, item.recurring)
       ))
+      addDokterAPI(jamMulai, jamSelesai, recurring)
+      window.location.reload()
     }
     else{
-      axios.post(`${url}/api/doctors/schedule/add`,{id_dokter:dokterSelected, hari:moment(date).day(), jam_mulai:jamMulai, jam_selesai:jamSelesai, repeat:recurring},{
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(res => {
-        if(res.status == 200){
-          toast.success('Tambah Jadwal Dokter Success!');
-          window.location.reload()
-        }
-        else{
-          toast.error('Silahkan Coba Lagi')
-        }
-      })
+      addDokterAPI(jamMulai, jamSelesai, recurring)
+      window.location.reload()
     }
+  }
+
+  function addPreferensi(){
+
   }
 
   const openModalDoctor = (record) => {
     setModalOpen2(true);
     setNamaDokter(record.nama);
     settanggalpraktek(record.hari);
-    setjampraktek(record.jam_mulai+' - '+record.jam_selesai)
+    setjampraktek(record.jam_mulai+(record.jam_selesai != null ? (' - '+record.jam_selesai):''))
+    setjamMulaiPraktek(record.jam_mulai)
+    setjamSelesaiPraktek(record.jam_selesai)
+    setidjadwal(record.id_jadwal)
+    setidDokter(record.id_dokter)
   };
 
   const columns = [
@@ -233,15 +233,112 @@ function DoctorSchedule() {
     setDate(dateChosen);
   };
 
-  const onChangeHapus = () => {};
+  const onChangePrefDate = (dateChosen, dateString) => {
+    setPrefDate(dateChosen);
+  };
 
+  const onChangeHapus = () => {
+    //semua
+    if(hapusJadwal == 0){
+      axios.post(`${url}/api/doctors/schedule/delete`,{id:idjadwal},{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => {
+        if(res.status == 200){
+          toast.success('Seluruh Jadwal Berhasil Dihapus!');
+          window.location.reload()
+          setModalOpen3(false);
+        }
+        else{
+          toast.error('Silahkan Coba Lagi')
+          setModalOpen3(false);
+        }
+      })
+    }
+    //harian
+    else if(hapusJadwal == null){
+      toast.error('Hapus Jadwal Gagal! Pilih Pilihan Hapus Jadwal!')
+      setModalOpen3(false);
+    }
+    else{
+      axios.post(`${url}/api/doctors/schedule/add_once`,{id_dokter: idDokter, hari: tanggalpraktek, jam_mulai:moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss'), 
+        jam_selesai:moment.utc(jamSelesaiPraktek, "THH Z").format('HH:mm:ss'), tanggal:moment(hapusJadwal).format('YYYY-MM-DD'), hapus:1},{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => {
+        if(res.status == 200){
+          toast.success('Jadwal tanggal '+hapusJadwal+' berhasil dihapus!');
+          window.location.reload()
+          setModalOpen3(false);
+        }
+        else{
+          toast.error('Silahkan Coba Lagi')
+          setModalOpen3(false);
+        }
+      })
+    }
+  };
+
+  function generateDate(hari, isRadio){
+    let jarakHari = Number(moment(today).daysInMonth())-Number(moment(today).format('DD'));
+    let i = 0;
+    let newdate;
+    let tglpraktek = [];
+    for(i = 0; i<=jarakHari; i++){
+      newdate = new Date(today.getFullYear(), today.getMonth(), today.getDate()+i)
+      if(newdate.getDay() == hari){
+        jadwalkhusus?.map((item, i) => (
+          item.id_dokter == idDokter && item.jam_mulai == moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD') ?
+              tglpraktek.push(moment(newdate).format('DD MMMM YYYY'))
+          :
+          item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') == moment(newdate).format('YYYY-MM-DD') ?
+            tglpraktek.push(moment(newdate).format('DD MMMM YYYY'))
+          :
+          item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD') ?
+           tglpraktek.indexOf(moment(newdate).format('DD MMMM YYYY')) > -1 ? '' : tglpraktek.push(moment(newdate).format('DD MMMM YYYY'))
+          :
+           moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD') && item.id_dokter != idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') ?
+          tglpraktek.indexOf(moment(newdate).format('DD MMMM YYYY')) > -1 ? '' : tglpraktek.push(moment(newdate).format('DD MMMM YYYY'))
+           // :
+          // item.id_dokter != idDokter && item.jam_mulai = moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD') ?
+          //  tglpraktek.indexOf(moment(newdate).format('DD MMMM YYYY')) > -1 ? '' : tglpraktek.push(moment(newdate).format('DD MMMM YYYY'))
+          // :
+          // item.id_dokter != idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') == moment(newdate).format('YYYY-MM-DD') ?
+          //  tglpraktek.indexOf(moment(newdate).format('DD MMMM YYYY')) > -1 ? '' : tglpraktek.push(moment(newdate).format('DD MMMM YYYY'))
+          :
+          ''
+        ))
+      }
+    }
+
+    if(!isRadio){
+      return tglpraktek.map((item, i) => (
+        <div key={i}>
+        <span>{item}</span>
+        <br></br><br></br>
+        </div>
+      ))
+    }else{
+      return tglpraktek.map((item, i) => (
+        <div key={i}>
+        <Radio value={item}>Jadwal {item}</Radio>
+        </div>
+      ))
+    }
+  }
 
   return (
     <>
       <Wrapper className="container-fluid">
         <div className="row">
           <div className="col-md-2 col-12">
-            <StyledTitle>{moment(today).format("MMMM YYYY")}</StyledTitle>
+            <StyledTitle>
+              {moment(today).format("MMMM YYYY")}
+            </StyledTitle>
           </div>
           <div className="col-md-4 col-12 align-self-center">
             {/* <button
@@ -267,15 +364,28 @@ function DoctorSchedule() {
         </div>
         <div className="row">
           <BigCard className="col m-2 p-0">
+          {
+            !loading ?
             <Table
               columns={columns}
               dataSource={DataDokter}
-              onChange={onChange}
+              // onChange={onChange}
               pagination={false}
             />
+            :
+            <div className="loader">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          }
           </BigCard>
         </div>
       </Wrapper>
+      {/* tambah jadwal dokter */}
       <Modal
         centered
         open={modalOpen}
@@ -318,6 +428,7 @@ function DoctorSchedule() {
                   placeholder="Pilih Tanggal"
                   format="DD-MM-YY"
                   onChange={onChangeDate}
+                  disabledDate={disabledDate}
                 />
               </div>
             </div>
@@ -329,7 +440,7 @@ function DoctorSchedule() {
               <div className="col-lg-9 col-12 modalSubtitle align-self-center">
                 <div className="row">
                   {
-                    DataAddDokter?.map((item, i) => (
+                    DataAddJadwalDokter?.map((item, i) => (
                       <>
                       <div className="col-lg-6 col-12 py-1 modalSubtitleData align-self-center">
                         <div className="d-flex">
@@ -409,13 +520,113 @@ function DoctorSchedule() {
           </div>
         </div>
       </Modal>
+      {/* Preferensi */}
+      <Modal
+        centered
+        open={modalPreferensiOpen}
+        footer={null}
+        width={450}
+        // onOk={() => setModalOpen(false)}
+        onCancel={() => setModalPreferensiOpen(false)}>
+          <div className="p-3">
+            <h5 className="pb-3 modalDoctorTitle">Preferensi</h5>
+            <div className="row my-3">
+              <div className="col-lg-4 col-12 modalSubtitle align-self-center">
+                Ulangi Setiap
+              </div>
+              <div className="col-lg-3 col-12 modalSubtitle">
+                <Input
+                  placeholder="3"
+                  type="number"
+                  value={angkaUlang}
+                  onChange={(event) => setAngkaUlang(event.target.value)}
+                />
+              </div>
+              <div className="col-lg-4 col-12 modalSubtitle">
+                <Select
+                  placeholder="Setiap..."
+                  style={{width:'100%'}}
+                  onChange={(e) => setTextUlang(e)}
+                  value={textUlang}
+                >
+                  <Option value="Minggu">Minggu</Option>
+                  <Option value="Bulan">Bulan</Option>
+                </Select>
+              </div>
+            </div>
+            <div className="row my-3">
+              <div className="col-12 modalSubtitle">
+                Ulangi Pada Hari
+              </div>
+              <div className="col-12 my-3 modalSubtitle">
+                <span className={ulangHari == 0 ? "buletSelected" : "bulet"} onClick={() => setulangHari(0)}>M</span>
+                <span className={ulangHari == 1 ? "buletSelected" : "bulet"} onClick={() => setulangHari(1)}>S</span>
+                <span className={ulangHari == 2 ? "buletSelected" : "bulet"} onClick={() => setulangHari(2)}>S</span>
+                <span className={ulangHari == 3 ? "buletSelected" : "bulet"} onClick={() => setulangHari(3)}>R</span>
+                <span className={ulangHari == 4 ? "buletSelected" : "bulet"} onClick={() => setulangHari(4)}>K</span>
+                <span className={ulangHari == 5 ? "buletSelected" : "bulet"} onClick={() => setulangHari(5)}>J</span>
+                <span className={ulangHari == 6 ? "buletSelected" : "bulet"} onClick={() => setulangHari(6)}>S</span>
+              </div>
+            </div>
+            <div className="row my-3">
+              <div className="col-12 modalSubtitle">
+                Berakhir Pada
+              </div>
+              <div className="col-12 modalSubtitle">
+                <Radio.Group 
+                  onChange={(e) => setberakhirPada(e.target.value)} 
+                  value={berakhirpada}
+                >
+                <Space direction="vertical">
+                  <Radio className="my-2" value={1}>Tidak Pernah</Radio>
+                  <Radio className="my-2" value={2}>
+                    <div className="d-flex">
+                      Pada Tanggal
+                      <DatePicker
+                        className="ms-3"
+                        placeholder="Pilih Tanggal"
+                        format="DD-MM-YY"
+                        onChange={onChangePrefDate}
+                        disabledDate={disabledDate}
+                      />
+                    </div>
+                  </Radio>
+                  <Radio className="my-2" value={3}>
+                    <div className="d-flex">
+                    Setelah Tanggal
+                    <Input
+                      placeholder="3"
+                      type="number"
+                      className="ms-3"
+                      style={{width:'50%'}}
+                      value={tglPref}
+                      onChange={(event) => settglPref(event.target.value)}
+                    />
+                    </div>
+                  </Radio>
+                </Space>
+              </Radio.Group>
+                </div>
+            </div>
+            <div className="text-end">
+                <ModalButtonCancel className="batalkan me-3" onClick={() => setModalPreferensiOpen(false)}>
+                  Batalkan
+                </ModalButtonCancel>
+                <ModalButtonOk className="ok" onClick={() => addPreferensi()}>
+                  Ok
+                </ModalButtonOk>
+              </div>
+          </div>
+      </Modal>
+
+      {/* keterangan per dokter */}
       <Modal
         centered
         open={modalOpen2}
         footer={null}
         width={650}
         // onOk={() => setModalOpen(false)}
-        onCancel={() => setModalOpen2(false)}
+        onCancel={() => (setModalOpen2(false))}
       >
         <div className="p-3">
           <h5 className="pb-3 modalDoctorTitle">Jadwal Dokter</h5>
@@ -437,10 +648,27 @@ function DoctorSchedule() {
                 Tanggal Praktek
               </div>
               <div className="col-lg-8 col-12 modalSubtitleData">
-                {tanggalpraktek}
+                {
+                  tanggalpraktek == "Senin" ? 
+                  generateDate(1, false)
+                  :
+                  tanggalpraktek == "Selasa" ?
+                  generateDate(2, false)
+                  :
+                  tanggalpraktek == "Rabu" ?
+                  generateDate(3, false)
+                  :
+                  tanggalpraktek == "Kamis" ?
+                  generateDate(4, false)
+                  :
+                  tanggalpraktek == "Jumat" ?
+                  generateDate(5, false)
+                  :
+                  generateDate(6, false)
+                }
               </div>
             </div>
-            <div className="row py-3">
+            <div className="row pt-0 pb-3">
               <div className="col-lg-4 col-12 modalSubtitle">Jam Praktek</div>
               <div className="col-lg-8 col-12 modalSubtitleData">
                 {jampraktek}
@@ -448,36 +676,52 @@ function DoctorSchedule() {
             </div>
           </div>
           <div className="text-end">
-            <button className="buttonAlt py-1 px-3" onClick={showModal3}>
-              Hapus Dari Daftar
+            <button className="buttonAlt py-1 px-3" onClick={() => setModalOpen3(true)}>
+              Hapus Jadwal
             </button>
           </div>
         </div>
       </Modal>
+      {/* konfirmasi hapus dokter */}
       <Modal
         centered
         open={modalOpen3}
         footer={null}
         width={350}
         closable={false}
-        // onOk={handleModal3Ok}
-        // onCancel={handleModal3Cancel}
       >
         <div className="p-3">
-          <h5 className="pb-3 modalDoctorTitle">Hapus Jadwal Berulang</h5>
+          <h5 className="pb-3 modalDoctorTitle">Hapus Jadwal</h5>
           <div className="">
-            <Radio.Group onChange={onChangeHapus} value={hapusJadwal}>
+            <Radio.Group onChange={(e) => sethapusJadwal(e.target.value)} value={hapusJadwal}>
               <Space direction="vertical">
-                <Radio value={1}>Jadwal hari ini saja</Radio>
-                <Radio value={2}>Semua Jadwal</Radio>
+                <Radio value={0}>Semua Jadwal</Radio>
+                {
+                  tanggalpraktek == "Senin" ? 
+                  generateDate(1, true)
+                  :
+                  tanggalpraktek == "Selasa" ?
+                  generateDate(2, true)
+                  :
+                  tanggalpraktek == "Rabu" ?
+                  generateDate(3, true)
+                  :
+                  tanggalpraktek == "Kamis" ?
+                  generateDate(4, true)
+                  :
+                  tanggalpraktek == "Jumat" ?
+                  generateDate(5, true)
+                  :
+                  generateDate(6, true)
+                }
               </Space>
             </Radio.Group>
           </div>
           <div className="text-end">
-            <ModalButtonCancel className="batalkan me-3" onClick={handleModal3Cancel}>
+            <ModalButtonCancel className="batalkan me-3" onClick={() => setModalOpen3(false)}>
               Batalkan
             </ModalButtonCancel>
-            <ModalButtonOk className="ok" onClick={handleModal3Ok}>
+            <ModalButtonOk className="ok" onClick={() => onChangeHapus()}>
               Ok
             </ModalButtonOk>
           </div>

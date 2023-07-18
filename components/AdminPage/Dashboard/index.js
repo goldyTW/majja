@@ -32,6 +32,7 @@ function Dashboard() {
   const [dataBookingMaster, setDataBookingMaster] = useState()
   const [jumlahpasien, setjumlahpasien] = useState()
   const [catatan, setCatatan] = useState();
+  const [loading, setLoading] = useState(false);
   const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   
   const onChange = (pagination, filters, sorter, extra) => {
@@ -170,6 +171,7 @@ function Dashboard() {
   ];
 
   useEffect(() => {
+    setLoading(true)
     axios.get(`${url}/api/booking`,{
         headers: {
           'Content-Type': 'application/json',
@@ -186,6 +188,7 @@ function Dashboard() {
         },
       })
       .then(res => {
+        setLoading(false)
         setjumlahpasien(res.data.pasien.length)
       })
   }, [])
@@ -215,62 +218,76 @@ function Dashboard() {
           </Select>
         </div>
       </div>
-      <div className="row">
-        <SmallCard className="col m-2">
-          <StyledCardTitle>Total Pasien Booking</StyledCardTitle>
-          <StyledCardContent>{dataBooking && dataBooking.length}</StyledCardContent>
-          <StyledCardSubTitle>
-            Weekly Bookings <StyledCardPercent>^ 0%</StyledCardPercent>
-          </StyledCardSubTitle>
-        </SmallCard>
-        <SmallCard className="col m-2">
-          <StyledCardTitle>Total Pasien</StyledCardTitle>
-          <StyledCardContent>{jumlahpasien} </StyledCardContent>
-          <StyledCardSubTitle>
-            Weekly Patients <StyledCardPercent>^ 0%</StyledCardPercent>
-          </StyledCardSubTitle>
-        </SmallCard>
-        <SmallCard className="col m-2">
-          <StyledCardTitle>Pemasukan Booking</StyledCardTitle>
-          <StyledCardContent>Rp {dataBooking && (dataBooking.length*50000).toLocaleString('id')},00</StyledCardContent>
-          <StyledCardSubTitle>
-            Weekly Earning <StyledCardPercent>^ 0%</StyledCardPercent>
-          </StyledCardSubTitle>
-        </SmallCard>
-        <SmallCard className="col m-2">
-          <StyledCardTitle>Pengunjung Website</StyledCardTitle>
-          <StyledCardContent>Google Analytics</StyledCardContent>
-          <StyledCardSubTitle>
-            Weekly Visitors <StyledCardPercent>^ 0%</StyledCardPercent>
-          </StyledCardSubTitle>
-        </SmallCard>
-      </div>
-      <div className="row">
-        <BigCard className="col m-2">
-          <div className="row justify-content-center">
-            <div className="col-lg-9 col-12">
-              <StyledTitle>Jadwal Booking Konsultasi</StyledTitle>
-            </div>
-            <div className="col-lg-3 col-12">
-              <Search
-                className="py-2"
-                placeholder="Cari Pasien"
-                allowClear
-                onSearch={onSearch}
-              />
-            </div>
+      {
+        !loading ?
+        <>
+          <div className="row">
+            <SmallCard className="col m-2">
+              <StyledCardTitle>Total Pasien Booking</StyledCardTitle>
+              <StyledCardContent>{dataBooking && dataBooking.length}</StyledCardContent>
+              <StyledCardSubTitle>
+                Weekly Bookings <StyledCardPercent>^ 0%</StyledCardPercent>
+              </StyledCardSubTitle>
+            </SmallCard>
+            <SmallCard className="col m-2">
+              <StyledCardTitle>Total Pasien</StyledCardTitle>
+              <StyledCardContent>{jumlahpasien} </StyledCardContent>
+              <StyledCardSubTitle>
+                Weekly Patients <StyledCardPercent>^ 0%</StyledCardPercent>
+              </StyledCardSubTitle>
+            </SmallCard>
+            <SmallCard className="col m-2">
+              <StyledCardTitle>Pemasukan Booking</StyledCardTitle>
+              <StyledCardContent>Rp {dataBooking && (dataBooking.length*50000).toLocaleString('id')},00</StyledCardContent>
+              <StyledCardSubTitle>
+                Weekly Earning <StyledCardPercent>^ 0%</StyledCardPercent>
+              </StyledCardSubTitle>
+            </SmallCard>
+            <SmallCard className="col m-2">
+              <StyledCardTitle>Pengunjung Website</StyledCardTitle>
+              <StyledCardContent>Google Analytics</StyledCardContent>
+              <StyledCardSubTitle>
+                Weekly Visitors <StyledCardPercent>^ 0%</StyledCardPercent>
+              </StyledCardSubTitle>
+            </SmallCard>
           </div>
-          
-          <div>
-            <Table
-              columns={columns}
-              dataSource={dataBooking}
-              onChange={onChange}
-              pagination={false}
-            />
+          <div className="row">
+            <BigCard className="col m-2">
+              <div className="row justify-content-center">
+                <div className="col-lg-9 col-12">
+                  <StyledTitle>Jadwal Booking Konsultasi</StyledTitle>
+                </div>
+                <div className="col-lg-3 col-12">
+                  <Search
+                    className="py-2"
+                    placeholder="Cari Pasien"
+                    allowClear
+                    onSearch={onSearch}
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <Table
+                  columns={columns}
+                  dataSource={dataBooking}
+                  onChange={onChange}
+                  pagination={false}
+                />
+              </div>
+            </BigCard>
           </div>
-        </BigCard>
+        </> 
+        :
+        <div className="loader">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
       </div>
+    }
     </Wrapper>
     <Modal
       centered

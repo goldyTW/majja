@@ -31,7 +31,8 @@ function DoctorList() {
   const [id, setid] = useState();
   const [showpassword, setshowpassword] = useState(false);
   const [showTambahDokter, setShowTambahDokter] = useState(false);
-   const url =process.env.NEXT_PUBLIC_API_URL ||   "http://localhost:3000";
+  const [loading, setLoading] = useState(false);
+  const url =process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   
   const onChange = (pagination, filters, sorter, extra) => {
     console.log("params", pagination, filters, sorter, extra);
@@ -55,7 +56,6 @@ function DoctorList() {
     })
   }
 
-  console.log(jadwal)
   const openModalDoctor = (record) => {
     setModalOpen(true)
     setNamaDokter(record.nama)
@@ -70,12 +70,14 @@ function DoctorList() {
   }
 
   useEffect(() => {
+    setLoading(true)
     axios.get(`${url}/api/doctors/list`,{
         headers: {
           'Content-Type': 'application/json',
         },
       })
       .then(res => {
+        setLoading(false)
         setDataDokter(res.data.dokter)
         setDataDokterMaster(res.data.dokter)
       })
@@ -212,12 +214,24 @@ function DoctorList() {
         />
         </div>
           <div>
+          {
+            !loading ?
             <Table
               columns={columns}
               dataSource={DataDokter}
               onChange={onChange}
               pagination={false}
             />
+            :
+            <div className="loader">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+          </div>
+          }
           </div>
         </BigCard>
       </div>
