@@ -204,19 +204,19 @@ function Dashboard() {
             }}
           >
             {selectedKey == 1 ? (
-              <DashboardSection/>
+              <DashboardSection updateRes={setSelectedKey} />
             ) : selectedKey == 2 ? (
-              <BookingSchedule />
+              <BookingSchedule updateRes={setSelectedKey} />
             ) : selectedKey == 3 ? (
-              <PatientList></PatientList>
+              <PatientList updateRes={setSelectedKey} />
             ) : selectedKey == 4 ? (
               <>
-              <DoctorList />
+              <DoctorList updateRes={setSelectedKey} />
               </>
             ) : selectedKey == 5 ? (
-              <DoctorSchedule></DoctorSchedule>
+              <DoctorSchedule updateRes={setSelectedKey} />
                ) : selectedKey == 6 ? (
-                <ArticleDashboard></ArticleDashboard>
+                <ArticleDashboard updateRes={setSelectedKey} />
             ) : selectedKey == 7 ? (
               <>
                 <h1>Pengaturan</h1>

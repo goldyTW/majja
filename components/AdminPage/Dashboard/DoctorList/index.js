@@ -16,7 +16,7 @@ const handleStatusChange = (value, record) => {
   console.log(`Status changed to ${value} for record:`, record);
 };
 
-function DoctorList() {
+function DoctorList({ updateRes }) {
   const [DataDokter, setDataDokter] = useState()
   const [DataDokterMaster, setDataDokterMaster] = useState()
   const [modalOpen, setModalOpen] = useState(false);
@@ -92,7 +92,8 @@ function DoctorList() {
       .then(res => {
         if(res.status == 200){
           toast.success('Delete Dokter Berhasil!')
-          window.location.reload();
+          // window.location.reload();
+          updateRes(4)
         }else{
           toast.error('Gagal menghapus dokter')
         }

@@ -19,7 +19,7 @@ import { toast } from "react-toastify";
 moment.locale("id");
 const { Option } = Select;
 
-function DoctorSchedule() {
+function DoctorSchedule({ updateRes }) {
   const [DataDokter, setDataDokter] = useState();
   const [DataDokterMaster, setDataDokterMaster] = useState()
   const [DataAddJadwalDokter, setDataAddJadwalDokter] = useState([])
@@ -133,11 +133,13 @@ function DoctorSchedule() {
         addDokterAPI(item.jamMulai, item.jamSelesai, item.recurring, item.rep, item.onDate, item.afterDate)
       ))
       addDokterAPI(jamMulai, jamSelesai, recurring, repetisi, onDate, afterDate)
-      window.location.reload()
+      // window.location.reload()
+      updateRes(5)
     }
     else{
       addDokterAPI(jamMulai, jamSelesai, recurring, repetisi, onDate, afterDate)
-      window.location.reload()
+      // window.location.reload()
+      updateRes(5)
     }
   }
 
@@ -259,7 +261,8 @@ function DoctorSchedule() {
       .then(res => {
         if(res.status == 200){
           toast.success('Seluruh Jadwal Berhasil Dihapus!');
-          window.location.reload()
+          // window.location.reload()
+          updateRes(5)
           setModalOpen3(false);
         }
         else{
@@ -283,7 +286,8 @@ function DoctorSchedule() {
       .then(res => {
         if(res.status == 200){
           toast.success('Jadwal tanggal '+hapusJadwal+' berhasil dihapus!');
-          window.location.reload()
+          // window.location.reload()
+          updateRes(5)
           setModalOpen3(false);
         }
         else{

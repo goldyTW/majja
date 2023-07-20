@@ -85,7 +85,7 @@ const GET_ARTICLES = gql`
   }
 }`
 
-function ArticleDashboard() {
+function ArticleDashboard({ updateRes }) {
   // const { register, handleSubmit, watch, formState: { errors }, reset } = useForm();
   const [addTodo, test] = useMutation(ADD_CONTENT);
   const { data, error } = useQuery(GET_ARTICLES)

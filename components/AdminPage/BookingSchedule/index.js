@@ -14,7 +14,7 @@ const { Option } = Select;
 const { TextArea } = Input;
 const url =  process.env.NEXT_PUBLIC_API_URL ||  "http://localhost:3000";
 
-function BookingSchedule() {
+function BookingSchedule({ updateRes }) {
   const [DataBookingSchedule, setDataBookingSchedule] = useState();
   const [DataBookingScheduleMaster, setDataBookingScheduleMaster] = useState();
   const [modalOpen, setModalOpen] = useState(false);
@@ -50,7 +50,8 @@ function BookingSchedule() {
     .then(res => {
       if(res.status == 200){
         toast.success('Edit Action Status Success!');
-        window.location.reload()
+        // window.location.reload()
+        updateRes(2)
       }
       else{
         toast.error('Silahkan Coba Lagi')
