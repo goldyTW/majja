@@ -21,7 +21,7 @@ function ArticleSlugContent({ data }) {
           )}
         </StyledSubTitle>
         <StyledSubTitle>
-          Ditinjau oleh: {data && data[0] && data[0].data.creator.iv}
+          Ditinjau oleh: {data && data[0] && data[0].data.creator && data[0].data.creator.iv}
         </StyledSubTitle>
       </SubTitleWrapper>
       <ContentWrapper>
