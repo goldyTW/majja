@@ -286,7 +286,7 @@ function BookingJadwalContent({ dokter, id }) {
       <Config>
         {/* <PC> */}
         <div className="container-fluid">
-          <div className="row">
+          <div className="row flex-reverse-column-sm ">
             <div className="col-lg-9 col-12 my-2">
               <Card
                 // title={<p>&nbsp;</p>}
@@ -303,7 +303,7 @@ function BookingJadwalContent({ dokter, id }) {
                 {/* <ChooseBooking /> */}
                 {showCalendar ? (
                   <div className="row justify-content-center">
-                    <div className="col-lg-5 col-12">
+                    <div className="col-lg-5 p-0">
                       <Calendar
                         value={selectedDay}
                         onChange={setSelectedDay}
@@ -330,16 +330,16 @@ function BookingJadwalContent({ dokter, id }) {
                         )}
                       />
                     </div>
-                    <div className="col-lg-7 col-12 pt-4">
+                    <div className="col-lg-7 pt-4">
                       <div className="row">
-                        <div className="col-lg-3 col-12">
+                        <div className="col-lg-3 col-4">
                           <img
                             src={"/" + data.image}
                             alt="doctor1"
                             width="100%"
                           />
                         </div>
-                        <div className="col-lg-9 col-12">
+                        <div className="col-lg-9 col-8">
                           <StyledTitle>{data.name}</StyledTitle>
                           <StyledText>{data.position}</StyledText>
                           <StyledTextWIcon>
@@ -375,9 +375,8 @@ function BookingJadwalContent({ dokter, id }) {
                         </RenderJamWrapper> */}
                         <span className="waktuTemu pt-5">Waktu Temu</span><br></br>
                          <Select
-                          style={{width: '40%'}}
                           showSearch
-                          className='py-1'
+                          className='py-1 waktuTemuSelector'
                           placeholder="Pilih jam"
                           optionFilterProp="children"
                           onChange={(e) => setValuejam(e)}
@@ -519,6 +518,10 @@ const Wrapper = styled.div`
   background-position: center;
 
   padding-top: 10%;
+
+  @media(max-width:576px){
+    padding-top: 40%;
+  }
 `;
 
 const Config = styled.div`

@@ -33,8 +33,8 @@ function DoctorSchedule() {
   const [ulangHari, setulangHari] = useState();
   const [berakhirpada, setberakhirpada] = useState();
   const [date, setDate] = useState();
-  const [prefdate, setPrefDate] = useState();
-  const [tglPref, settglPref] = useState();
+  const [onDate, setOnDate] = useState();
+  const [afterDate, setAfterDate] = useState();
   const [tanggalpraktek, settanggalpraktek] = useState();
   const [jampraktek, setjampraktek] = useState();
   const [namaDokter, setNamaDokter] = useState();
@@ -94,19 +94,28 @@ function DoctorSchedule() {
   };
 
   function isiArrayJadwal(){
-    setDataAddJadwalDokter([...DataAddJadwalDokter, {jamMulai, jamSelesai, recurring}])
+    var rep = angkaUlang+' '+textUlang;
+    setDataAddJadwalDokter([...DataAddJadwalDokter, {jamMulai, jamSelesai, recurring, rep, onDate, afterDate}])
     setjamMulai('')
     setjamSelesai('')
     setrecurring('')
+    setAngkaUlang()
+    setTextUlang('')
+    setulangHari()
+    setberakhirpada()
+    setOnDate('')
+    setAfterDate('')
   }
 
-  function addDokterAPI(start, end, rep){
-    axios.post(`${url}/api/doctors/schedule/add`,{id_dokter:dokterSelected, hari:moment(date).day(), jam_mulai:start, jam_selesai:end, repeat:rep},{
+  function addDokterAPI(start, end, recur, rep, on, after){
+    axios.post(`${url}/api/doctors/schedule/add`,{id_dokter:dokterSelected, hari:moment(date).day(), jam_mulai:start, jam_selesai:end, 
+      recurring:recur, repeat:rep, berakhir_pada:on, berakhir_setelah:after},{
       headers: {
         'Content-Type': 'application/json',
       },
     })
     .then(res => {
+      console.log(res)
       if(res.status == 200){
         toast.success('Tambah Jadwal Dokter Success!');
       }
@@ -117,21 +126,19 @@ function DoctorSchedule() {
   }
 
   const addJadwalDokter = () => {
+    var repetisi = angkaUlang+' '+textUlang;
+
     if(DataAddJadwalDokter.length > 0){
       DataAddJadwalDokter.map((item, i) => (
-        addDokterAPI(item.jamMulai, item.jamSelesai, item.recurring)
+        addDokterAPI(item.jamMulai, item.jamSelesai, item.recurring, item.rep, item.onDate, item.afterDate)
       ))
-      addDokterAPI(jamMulai, jamSelesai, recurring)
+      addDokterAPI(jamMulai, jamSelesai, recurring, repetisi, onDate, afterDate)
       window.location.reload()
     }
     else{
-      addDokterAPI(jamMulai, jamSelesai, recurring)
+      addDokterAPI(jamMulai, jamSelesai, recurring, repetisi, onDate, afterDate)
       window.location.reload()
     }
-  }
-
-  function addPreferensi(){
-
   }
 
   const openModalDoctor = (record) => {
@@ -226,15 +233,19 @@ function DoctorSchedule() {
   ];
 
   const disabledDate = (current) => {
-    return current && current <= dayjs().endOf("day");
+    return current && current < dayjs().endOf("day");
   };
 
   const onChangeDate = (dateChosen, dateString) => {
     setDate(dateChosen);
   };
 
-  const onChangePrefDate = (dateChosen, dateString) => {
-    setPrefDate(dateChosen);
+  const onChangeOnDate = (dateChosen, dateString) => {
+    setOnDate(dateChosen);
+  };
+
+  const onChangeAfterDate = (dateChosen, dateString) => {
+    setAfterDate(dateChosen);
   };
 
   const onChangeHapus = () => {
@@ -329,6 +340,16 @@ function DoctorSchedule() {
         </div>
       ))
     }
+  }
+
+  function cancelModalPreferensi(){
+    setModalPreferensiOpen(false)
+    setAngkaUlang()
+    setTextUlang('')
+    setulangHari()
+    setberakhirpada()
+    setOnDate()
+    setAfterDate()
   }
 
   return (
@@ -436,7 +457,6 @@ function DoctorSchedule() {
               <div className="col-lg-3 col-12 modalSubtitle align-self-center">
                 Jam Praktek
               </div>
-              
               <div className="col-lg-9 col-12 modalSubtitle align-self-center">
                 <div className="row">
                   {
@@ -456,28 +476,27 @@ function DoctorSchedule() {
                         </div>
                       </div>
                       <div className="col-lg-6 col-12 py-1 modalSubtitleData align-self-center">
-                      <Select
-                      placeholder="Setiap..."
-                      style={{width:'100%'}}
-                      value={item.recurring == 1 ?
-                        'Setiap Hari '+moment(date).format('dddd')
-                        :
-                        item.recurring == 2 ? 
-                        'Tidak Diulang'
-                        :
-                        item.recurring == 3 ?
-                        "Setiap Hari"
-                        :
-                        item.recurring == 4 ?
-                        "Senin sampai Jumat"
-                        :
-                        "Preferensi"
-                        }
-                    >
-                    </Select>
-                          
-                        </div>
-                        </>
+                        <Select
+                          placeholder="Setiap..."
+                          style={{width:'100%'}}
+                          value={item.recurring == 1 ?
+                            'Setiap Hari '+moment(date).format('dddd')
+                            :
+                            item.recurring == 2 ? 
+                            'Tidak Diulang'
+                            :
+                            item.recurring == 3 ?
+                            "Setiap Hari"
+                            :
+                            item.recurring == 4 ?
+                            "Senin sampai Jumat"
+                            :
+                            "Preferensi"
+                            }
+                        >
+                        </Select>
+                      </div>
+                      </>
                     ))
                   }
                   <div className="col-6 modalSubtitleData py-1 align-self-center">
@@ -512,7 +531,6 @@ function DoctorSchedule() {
                   <span className="tambahjam py-2"  style={{cursor:'pointer'}} onClick={() => isiArrayJadwal()}>+ Tambahkan jam praktek</span>
                 </div>
               </div>
-              
             </div>
           </div>
           <div className="text-end">
@@ -527,7 +545,7 @@ function DoctorSchedule() {
         footer={null}
         width={450}
         // onOk={() => setModalOpen(false)}
-        onCancel={() => setModalPreferensiOpen(false)}>
+        onCancel={() => cancelModalPreferensi()}>
           <div className="p-3">
             <h5 className="pb-3 modalDoctorTitle">Preferensi</h5>
             <div className="row my-3">
@@ -539,6 +557,7 @@ function DoctorSchedule() {
                   placeholder="3"
                   type="number"
                   value={angkaUlang}
+                  max={3}
                   onChange={(event) => setAngkaUlang(event.target.value)}
                 />
               </div>
@@ -554,7 +573,7 @@ function DoctorSchedule() {
                 </Select>
               </div>
             </div>
-            <div className="row my-3">
+            <div className="row my-3 mt-4">
               <div className="col-12 modalSubtitle">
                 Ulangi Pada Hari
               </div>
@@ -574,45 +593,53 @@ function DoctorSchedule() {
               </div>
               <div className="col-12 modalSubtitle">
                 <Radio.Group 
-                  onChange={(e) => setberakhirPada(e.target.value)} 
-                  value={berakhirpada}
-                >
+                  onChange={(e) => setberakhirpada(e.target.value)} 
+                  value={berakhirpada}>
                 <Space direction="vertical">
-                  <Radio className="my-2" value={1}>Tidak Pernah</Radio>
-                  <Radio className="my-2" value={2}>
-                    <div className="d-flex">
+                  <Radio className="my-1" value={1}>Tidak Pernah</Radio>
+                  <Radio className="my-1" value={2}>
+                    <div className="d-flex align-self-center">
                       Pada Tanggal
                       <DatePicker
                         className="ms-3"
                         placeholder="Pilih Tanggal"
                         format="DD-MM-YY"
-                        onChange={onChangePrefDate}
+                        value={onDate}
+                        onChange={onChangeOnDate}
                         disabledDate={disabledDate}
                       />
                     </div>
                   </Radio>
-                  <Radio className="my-2" value={3}>
-                    <div className="d-flex">
+                  <Radio className="my-1" value={3}>
+                    <div className="d-flex align-self-center">
                     Setelah Tanggal
-                    <Input
+                    <DatePicker
+                        className="ms-3"
+                        placeholder="Pilih Tanggal"
+                        format="DD-MM-YY"
+                        value={afterDate}
+                        onChange={onChangeAfterDate}
+                        disabledDate={disabledDate}
+                      />
+                    {/* <Input
                       placeholder="3"
                       type="number"
                       className="ms-3"
                       style={{width:'50%'}}
                       value={tglPref}
                       onChange={(event) => settglPref(event.target.value)}
-                    />
+                    /> */}
                     </div>
                   </Radio>
                 </Space>
               </Radio.Group>
                 </div>
             </div>
-            <div className="text-end">
-                <ModalButtonCancel className="batalkan me-3" onClick={() => setModalPreferensiOpen(false)}>
+            <div className="text-end mt-5">
+                <ModalButtonCancel className="batalkan me-3" onClick={() => cancelModalPreferensi()}>
                   Batalkan
                 </ModalButtonCancel>
-                <ModalButtonOk className="ok" onClick={() => addPreferensi()}>
+                <ModalButtonOk className="ok" onClick={() => setModalPreferensiOpen(false)}>
                   Ok
                 </ModalButtonOk>
               </div>

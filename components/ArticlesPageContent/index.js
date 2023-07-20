@@ -87,8 +87,13 @@ function ArticlesPageContent() {
 }
 
 const Wrapper = styled.div`
-  padding: 0 5%;
+  padding: 0% 5%;
+
+  @media(max-width:576px){
+    padding: 30% 5%;
+  }
 `;
+
 
 const SearchWrapper = styled.div`
   /* font-family: "Poppins";

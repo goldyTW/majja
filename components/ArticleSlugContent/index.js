@@ -60,7 +60,11 @@ function ArticleSlugContent({ data }) {
 }
 
 const Wrapper = styled.div`
-  padding: 0 10%;
+  padding: 0% 10%;
+
+  @media(max-width:576px){
+    padding: 30% 10%;
+  }
 `;
 
 const SubTitleWrapper = styled.div`
