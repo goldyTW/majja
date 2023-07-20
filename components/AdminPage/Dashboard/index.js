@@ -12,7 +12,7 @@ const { Option } = Select;
 const { Search } = Input;
 const { TextArea } = Input;
 
-function Dashboard() {
+function Dashboard({ updateRes }) {
   const [today, setToday] = useState(new Date()); // Save the current date to be able to trigger an update
   const [sevendays, setsevendays] = useState(new Date(today.getFullYear(), today.getMonth(), today.getDate()-7)); 
   const [thirtydays, setthirtydays] = useState(new Date(today.getFullYear(), today.getMonth(), today.getDate()-30)); 
@@ -61,7 +61,8 @@ function Dashboard() {
     .then(res => {
       if(res.status == 200){
         toast.success('Edit Action Status Success!');
-        window.location.reload()
+        // window.location.reload()
+        updateRes(1)
       }
       else{
         toast.error('Silahkan Coba Lagi')
