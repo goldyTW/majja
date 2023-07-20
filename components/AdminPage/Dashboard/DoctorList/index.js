@@ -193,7 +193,7 @@ function DoctorList() {
     <>
     {
       showTambahDokter ?
-      <NewDoctor></NewDoctor>
+      <NewDoctor updateBatal={setShowTambahDokter} updateSimpan={setShowTambahDokter}></NewDoctor>
       :
       <Wrapper className="container-fluid">
       <div className="row">
