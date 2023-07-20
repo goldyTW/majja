@@ -11,6 +11,7 @@ import NewDoctor from "../../../components/AdminPage/Dashboard/NewDoctor";
 import DoctorSchedule from "../../../components/AdminPage/Dashboard/DoctorSchedule";
 import { useRouter } from "next/router";
 import BookingSchedule from "../../../components/AdminPage/BookingSchedule";
+import ArticleDashboard from "../../../components/AdminPage/Dashboard/ArticleDashboard";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -215,18 +216,7 @@ function Dashboard() {
             ) : selectedKey == 5 ? (
               <DoctorSchedule></DoctorSchedule>
                ) : selectedKey == 6 ? (
-                <>
-                  <h1>Artikel</h1>
-                  <div
-                    style={{
-                      padding: 24,
-                      minHeight: 360,
-                      background: "#FFFFFF",
-                    }}
-                  >
-                    Artikel
-                  </div>
-                </>
+                <ArticleDashboard></ArticleDashboard>
             ) : selectedKey == 7 ? (
               <>
                 <h1>Pengaturan</h1>

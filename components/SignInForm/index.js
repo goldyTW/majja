@@ -51,7 +51,6 @@ export default function SignInForm({loading, setLoading}) {
       })
       .then(res => {
         if(res.status == 200){
-          console.log(res)
           toast.success("Login Berhasil");
           const { token } = res.data.token;
           Cookies.set('token', token, { expires: 1 })

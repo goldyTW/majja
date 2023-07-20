@@ -13,7 +13,7 @@ export default async function exportDoctor(req, res) {
         optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     });
 
-    const { id_dokter, hari, jam_mulai, jam_selesai, repeat } = req.body;
+    const { id_dokter, hari, jam_mulai, jam_selesai, recurring, repeat, berakhir_pada, berakhir_setelah } = req.body;
     var mHari
     switch (hari){
         case "0": mHari = "Minggu"; break;
@@ -34,16 +34,16 @@ export default async function exportDoctor(req, res) {
     }
 
     try {
-        if (repeat < 1){
-            throw new Error("Repeat harus lebih dari sama dengan 1");
-        }
+        // if (repeat < 1){
+        //     throw new Error("Repeat harus lebih dari sama dengan 1");
+        // }
         if (mHari !== "Senin" && mHari !== "Selasa" && mHari !== "Rabu" && mHari !== "Kamis" && mHari !== "Jumat" && mHari !== "Sabtu" && mHari !== "Minggu") {
             throw new Error("Invalid hari")
         }
         const jadwal = await excuteQuery({
-            query: `INSERT INTO tb_jadwal (id_dokter, hari, jam_mulai, jam_selesai, \`repeat\`) VALUES
-            (?, ?, ?, ?, ?)`,
-            values:[id_dokter, mHari, jam_mulai, jam_selesai, repeat],
+            query: `INSERT INTO tb_jadwal (id_dokter, hari, jam_mulai, jam_selesai, recurring, \`repeat\`, berakhir_pada, berakhir_setelah) VALUES
+            (?, ?, ?, ?, ?, ?, ?, ?)`,
+            values:[id_dokter, mHari, jam_mulai, jam_selesai, recurring, repeat, berakhir_pada, berakhir_setelah],
         });
         if (jadwal.error == null){
             res.status(200).json({ jadwal:jadwal.insertId, msg:"Success" })

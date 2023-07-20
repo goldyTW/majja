@@ -12,46 +12,46 @@ function ArticleSlugContent({ data }) {
   }, []);
   return (
     <Wrapper>
-      <StyledTitle>{data && data[0] && data[0].title}</StyledTitle>
+      <StyledTitle>{data && data[0] && data[0].data.judul.iv}</StyledTitle>
       <SubTitleWrapper>
         <StyledSubTitle>
           Terakhir diperharui:{" "}
-          {moment(data && data[0] && data[0].created).format(
-            "DD MMMM YYYY - HH:mm"
+          {moment(data && data[0] && data[0].data.date.iv).format(
+            "DD MMMM YYYY"
           )}
         </StyledSubTitle>
         <StyledSubTitle>
-          Ditinjau oleh: {data && data[0] && data[0].creator}
+          Ditinjau oleh: {data && data[0] && data[0].data.creator.iv}
         </StyledSubTitle>
       </SubTitleWrapper>
       <ContentWrapper>
-        <StyledContentText
+        {/* <StyledContentText
           dangerouslySetInnerHTML={{
             __html: data && data[0] && data[0].contentFirst,
           }}
-        ></StyledContentText>
+        ></StyledContentText> */}
         <ImgWrapper>
           <img
-            src={data && data[0] && data[0].image}
-            alt={data && data[0] && data[0].title}
+            src={data && data[0] && data[0].data.photo.iv}
+            alt={data && data[0] && data[0].data.judul.iv}
             width="100%"
             height="100%"
           />
         </ImgWrapper>
         <StyledContentText
           dangerouslySetInnerHTML={{
-            __html: data && data[0] && data[0].contentSecond,
+            __html: data && data[0] && data[0].data.content.iv,
           }}
         ></StyledContentText>
       </ContentWrapper>
-      <ReferenceWrapper>
+      {/* <ReferenceWrapper>
         <StyledReference>Referensi</StyledReference>
         <StyledReferenceList
           dangerouslySetInnerHTML={{
             __html: data && data[0] && data[0].referensi,
           }}
         ></StyledReferenceList>
-      </ReferenceWrapper>
+      </ReferenceWrapper> */}
       {/* <RelatedDocWrapper>
         <DokterTerkait />
       </RelatedDocWrapper> */}
@@ -60,7 +60,11 @@ function ArticleSlugContent({ data }) {
 }
 
 const Wrapper = styled.div`
-  padding: 0 10%;
+  padding: 0% 10%;
+
+  @media(max-width:576px){
+    padding: 30% 10%;
+  }
 `;
 
 const SubTitleWrapper = styled.div`
