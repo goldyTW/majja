@@ -54,7 +54,6 @@ function NewDoctor({ updateBatal, updateSimpan }) {
               }
             )
             .then((res) => {
-              console.log(res);
               if (res.status == 200) {
                 toast.success("Tambah Dokter Berhasil!");
                 // window.location.reload()

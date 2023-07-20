@@ -29,7 +29,8 @@ mutation add(
   $link:String,
   $photo:String
   $date:String,
-  $content:String){
+  $content:String
+  $creator:String){
   createArtikelContent(
     data:{
       judul:{
@@ -131,7 +132,7 @@ function ArticleDashboard({ updateRes }) {
           photo: "https://cloud.squidex.io/api/assets/artikel/"+dataRes.id,
           date: moment(date).format('DD MMMM YYYY'),
           content: editorRef.current.getContent(),
-          creator:creator
+          creator: creator
         }
       }).then(dataRes => {
         if(dataRes.data.createArtikelContent.id){
@@ -143,6 +144,9 @@ function ArticleDashboard({ updateRes }) {
           setImage(''),
           setImagePreview('')
           window.location.reload()
+        }
+        else{
+          toast.error("Gagal Menambahkan Artikel")
         }
         }
       )
@@ -158,7 +162,8 @@ function ArticleDashboard({ updateRes }) {
     .then(res => {
       if(res.status == 204){
         toast.success('Hapus Artikel Berhasil!')
-        window.location.reload()
+        // window.location.reload()
+        updateRes(6)
       }
       else{
         toast.success('Gagal Hapus Artikel')

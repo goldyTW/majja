@@ -115,7 +115,6 @@ function DoctorSchedule({ updateRes }) {
       },
     })
     .then(res => {
-      console.log(res)
       if(res.status == 200){
         toast.success('Tambah Jadwal Dokter Success!');
       }
