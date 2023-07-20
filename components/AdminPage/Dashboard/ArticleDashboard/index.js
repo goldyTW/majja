@@ -6,7 +6,6 @@ import "moment/locale/id";
 import { useForm } from "react-hook-form";
 import { Input, Pagination, DatePicker } from "antd";
 import { useQuery, gql, useMutation } from '@apollo/client';
-import { addApolloState, initializeApollo } from "../../../../lib/apolloClient";
 import { Icon } from "@iconify/react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -17,6 +16,7 @@ import { Editor } from '@tinymce/tinymce-react';
 moment.locale("id");
 import { useRouter } from 'next/router';
 import Image from "next/image";
+import Cookies from "js-cookie";
 
 // const Editor = dynamic(
 //   () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
@@ -47,6 +47,9 @@ mutation add(
       content:{
         iv:$content
       }
+      creator:{
+        iv:$creator
+      }
     },
     status:"Published"
   ){
@@ -65,6 +68,7 @@ mutation add(
 const GET_ARTICLES = gql`
 {
   queryArtikelContents{
+    id
     data{
       judul{
         iv
@@ -102,10 +106,7 @@ function ArticleDashboard() {
   const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   const urlsquidex = "https://cloud.squidex.io/api/apps/artikel/assets";
   const editorRef = useRef(null);
-
-  useEffect(() => {
-    // setLoading(true)
-  }, [])
+  const creator = Cookies.get('username');
 
   const disabledDate = (current) => {
     return current && current > dayjs().endOf("day");
@@ -129,29 +130,50 @@ function ArticleDashboard() {
           link: link,
           photo: "https://cloud.squidex.io/api/assets/artikel/"+dataRes.id,
           date: moment(date).format('DD MMMM YYYY'),
-          content: editorRef.current.getContent()
+          content: editorRef.current.getContent(),
+          creator:creator
         }
-      }).then(
-        toast.success('Upload Artikel Sukses'),
-        setEditArticle(true),
-        setjudul(''),
-        setDate(),
-        setlink(''),
-        setImage(''),
-        setImagePreview('')
+      }).then(dataRes => {
+        if(dataRes.data.createArtikelContent.id){
+          toast.success('Upload Artikel Sukses'),
+          setEditArticle(true),
+          setjudul(''),
+          setDate(),
+          setlink(''),
+          setImage(''),
+          setImagePreview('')
+          window.location.reload()
+        }
+        }
       )
       })
   }
+
+  const deleteArticle = (id) => {
+    axios.delete(`https://cloud.squidex.io/api/content/artikel/artikel/`+id,{
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(res => {
+      if(res.status == 204){
+        toast.success('Hapus Artikel Berhasil!')
+        window.location.reload()
+      }
+      else{
+        toast.success('Gagal Hapus Artikel')
+      }
+    })
+  }
   
-  console.log(data)
   return (
     <Wrapper className="container-fluid">
       <div className="row">
         <div className="col-md-6 col-12"><StyledTitle>Articles</StyledTitle></div>
         <div className="col-md-6 col-12 text-end align-self-center">
-            <button className="button py-2 px-4" onClick={() => setEditArticle(true)}>
+            {!editArticle ? <button className="button py-2 px-4" onClick={() => setEditArticle(true)}>
               + Artikel Baru
-            </button>
+            </button> : ''}
           </div>
       </div>
       <div className="row">
@@ -162,7 +184,7 @@ function ArticleDashboard() {
             <div className="row my-3">
               {
                 data?.queryArtikelContents.map((item, i) => (
-                  <div className="col-lg-3 col-md-4 col-12" key={i}>
+                  <div className="col-lg-3 col-md-4 col-12 py-2" key={i}>
                      <img src={item.data.photo != null ? item.data.photo.iv : ""} width="100%"></img>  
                      <div className="cardArticle p-4" >
                         <h1 className="cardArticleTitle">{item.data.judul.iv}</h1>
@@ -170,7 +192,7 @@ function ArticleDashboard() {
                         <div className="cardArticleText mb-1">
                           <div dangerouslySetInnerHTML={{__html: item.data.content.iv}}/>
                         </div>
-                        <div className="row">
+                        <div className="row pt-3">
                           <div className="col-lg-6">
                           <Icon
                             icon="mdi:eye"
@@ -182,11 +204,8 @@ function ArticleDashboard() {
                             }}
                           />
                           </div>
-                          <div className="col-lg-6 align-self-center text-end" style={{
-                                cursor: "pointer",
-                                fontSize: "16px",
-                                color: "#8D8D8D"
-                              }}>
+                          <div className="col-lg-6 align-self-center text-end" style={{cursor: "pointer",fontSize: "16px", color: "#8D8D8D"}}
+                          onClick={()=> deleteArticle(item.id)}>
                             <Icon
                               icon="material-symbols:delete"
                               className="ms-1 align-self-center"
@@ -322,24 +341,3 @@ const BigCard = styled.div`
 `;
 
 export default ArticleDashboard;
-
-export async function getServerSideProps(context){
-  const apolloClient = initializeApollo()
-  
-  let {data} = await apolloClient.query({
-      query: GET_ARTICLES,
-  });
-
-  if(data.queryArtikelContents.length < 1){
-    return {
-      notFound: true,
-    }
-  }
-
-  return addApolloState(apolloClient, {
-    props: {
-      data:data.queryArtikelContents
-    }
-  })
-}
-
