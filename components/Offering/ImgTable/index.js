@@ -12,120 +12,82 @@ function ImgTable() {
     <Wrapper>
       <StyledText>
         <table>
-          <TbodyWrapper>
-            <tbody>
-              <tr>
-                <td
-                  data-aos="fade-up"
-                  style={{ padding: ".5rem 3rem .25rem 0" }}
-                >
-                  <Icon
-                    icon="ion:medkit"
-                    className=""
-                    style={{
-                      cursor: "pointer",
-                      fontSize: "36px",
-                      color: "#DF3034",
-                    }}
-                  />
-                </td>
-                <td
-                  data-aos="fade-up"
-                  style={{ padding: ".5rem 3rem .25rem 0" }}
-                >
-                  <Icon
-                    icon="mdi:heart"
-                    className=""
-                    style={{
-                      cursor: "pointer",
-                      fontSize: "36px",
-                      color: "#DF3034",
-                    }}
-                  />
-                </td>
-                <td
-                  data-aos="fade-up"
-                  style={{ padding: ".5rem 3rem .25rem 0" }}
-                >
-                  <Icon
-                    icon="ph:stethoscope-bold"
-                    className=""
-                    style={{
-                      cursor: "pointer",
-                      fontSize: "36px",
-                      color: "#DF3034",
-                    }}
-                  />
-                </td>
-                <td
-                  data-aos="fade-up"
-                  style={{ padding: ".5rem 3rem .25rem 0" }}
-                >
-                  <Icon
-                    icon="fa6-solid:hand-holding-medical"
-                    className=""
-                    style={{
-                      cursor: "pointer",
-                      fontSize: "36px",
-                      color: "#DF3034",
-                    }}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td
-                  data-aos="fade-up"
-                  style={{ padding: ".5rem 3rem .25rem 0" }}
-                >
-                  <StyledNumberTable>20+</StyledNumberTable>
-                </td>
-                <td
-                  data-aos="fade-up"
-                  style={{ padding: ".5rem 3rem .25rem 0" }}
-                >
-                  <StyledNumberTable>8,500+</StyledNumberTable>
-                </td>
-                <td
-                  data-aos="fade-up"
-                  style={{ padding: ".5rem 3rem .25rem 0" }}
-                >
-                  <StyledNumberTable>10+</StyledNumberTable>
-                </td>
-                <td
-                  data-aos="fade-up"
-                  style={{ padding: ".5rem 3rem .25rem 0" }}
-                >
-                  <StyledNumberTable>10+</StyledNumberTable>
-                </td>
-              </tr>
-              <tr>
-                <td
-                  data-aos="fade-up"
-                  style={{ padding: ".5rem 3rem .25rem 0" }}
-                >
-                  <StyledTextTable>Years of Experiences</StyledTextTable>
-                </td>
-                <td
-                  data-aos="fade-up"
-                  style={{ padding: ".5rem 3rem .25rem 0" }}
-                >
-                  <StyledTextTable>Happy Patients</StyledTextTable>
-                </td>
-                <td
-                  data-aos="fade-up"
-                  style={{ padding: ".5rem 3rem .25rem 0" }}
-                >
-                  <StyledTextTable>Qualified Doctors & Staffs</StyledTextTable>
-                </td>
-                <td
-                  data-aos="fade-up"
-                  style={{ padding: ".5rem 3rem .25rem 0" }}
-                >
-                  <StyledTextTable>Services</StyledTextTable>
-                </td>
-              </tr>
-            </tbody>
-          </TbodyWrapper>
+          <tbody>
+            <tr>
+              <td data-aos="fade-up" style={{ padding: ".5rem 3rem .25rem 0" }}>
+                <Icon
+                  icon="ion:medkit"
+                  className=""
+                  style={{
+                    cursor: "pointer",
+                    fontSize: "36px",
+                    color: "#DF3034",
+                  }}
+                />
+              </td>
+              <td data-aos="fade-up" style={{ padding: ".5rem 3rem .25rem 0" }}>
+                <Icon
+                  icon="mdi:heart"
+                  className=""
+                  style={{
+                    cursor: "pointer",
+                    fontSize: "36px",
+                    color: "#DF3034",
+                  }}
+                />
+              </td>
+              <td data-aos="fade-up" style={{ padding: ".5rem 3rem .25rem 0" }}>
+                <Icon
+                  icon="ph:stethoscope-bold"
+                  className=""
+                  style={{
+                    cursor: "pointer",
+                    fontSize: "36px",
+                    color: "#DF3034",
+                  }}
+                />
+              </td>
+              <td data-aos="fade-up" style={{ padding: ".5rem 3rem .25rem 0" }}>
+                <Icon
+                  icon="fa6-solid:hand-holding-medical"
+                  className=""
+                  style={{
+                    cursor: "pointer",
+                    fontSize: "36px",
+                    color: "#DF3034",
+                  }}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td data-aos="fade-up" style={{ padding: ".5rem 3rem .25rem 0" }}>
+                <StyledNumberTable>20+</StyledNumberTable>
+              </td>
+              <td data-aos="fade-up" style={{ padding: ".5rem 3rem .25rem 0" }}>
+                <StyledNumberTable>8,500+</StyledNumberTable>
+              </td>
+              <td data-aos="fade-up" style={{ padding: ".5rem 3rem .25rem 0" }}>
+                <StyledNumberTable>10+</StyledNumberTable>
+              </td>
+              <td data-aos="fade-up" style={{ padding: ".5rem 3rem .25rem 0" }}>
+                <StyledNumberTable>10+</StyledNumberTable>
+              </td>
+            </tr>
+            <tr>
+              <td data-aos="fade-up" style={{ padding: ".5rem 3rem .25rem 0" }}>
+                <StyledTextTable>Years of Experiences</StyledTextTable>
+              </td>
+              <td data-aos="fade-up" style={{ padding: ".5rem 3rem .25rem 0" }}>
+                <StyledTextTable>Happy Patients</StyledTextTable>
+              </td>
+              <td data-aos="fade-up" style={{ padding: ".5rem 3rem .25rem 0" }}>
+                <StyledTextTable>Qualified Doctors & Staffs</StyledTextTable>
+              </td>
+              <td data-aos="fade-up" style={{ padding: ".5rem 3rem .25rem 0" }}>
+                <StyledTextTable>Services</StyledTextTable>
+              </td>
+            </tr>
+          </tbody>
         </table>
       </StyledText>
     </Wrapper>
@@ -143,11 +105,9 @@ const Wrapper = styled.div`
   background: #ffffff;
   box-shadow: 0px 0px 2rem rgba(192, 192, 192, 0.25);
   border-radius: 5%;
-`;
 
-const TbodyWrapper = styled.div`
   @media (max-width: 1121px) {
-    margin: 0 0 0 6%;
+    box-shadow: none;
   }
 `;
 
