@@ -120,18 +120,18 @@ function BookingJadwalContent({ dokter, id }) {
   const { Option } = Select;
   const { TextArea } = Input;
 
-  useEffect(() => {
-    axios.post(`${url}/api/booking/checkbooking`,{today: moment(today).format('YYYY-MM-DD'), id_dokter:id},{
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(res => {
-      res.data.result.map((item, i) => (
-        bookingan.push({tanggal_booking:new Date(item.tanggal_booking), jam_booking:item.jam_booking.split(':')[0] })
-      ))
-    })
-  }, [])
+  // useEffect(() => {
+  //   axios.post(`${url}/api/booking/checkbooking`,{today: moment(today).format('YYYY-MM-DD'), id_dokter:id},{
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   })
+  //   .then(res => {
+  //     res.data.result && res.data.result.map((item, i) => (
+  //       bookingan.push({tanggal_booking:new Date(item.tanggal_booking), jam_booking:item.jam_booking.split(':')[0] })
+  //     ))
+  //   })
+  // }, [])
   
 
   const onChangeKategori = (e) => {
