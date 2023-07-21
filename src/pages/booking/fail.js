@@ -8,6 +8,7 @@ import { Card } from "antd";
 import styled from "styled-components";
 import Lottie from "lottie-react";
 import * as animationData from '../../../public/images/fail.json'
+import moment from 'moment';
 
 function BookingSuccess() {
   const defaultOptions = {
@@ -82,7 +83,7 @@ function BookingSuccess() {
                     Nomor Rekam Medis
                   </div>
                   <div className="col-xl-9 col-12 py-2 successSectionRight">
-                    {typeof window !== 'undefined' && localStorage.getItem('rekamMedis_booking')}
+                  {typeof window !== 'undefined' && (localStorage.getItem('rekamMedis_booking') != '' ? localStorage.getItem('rekamMedis_booking') : '')}
                   </div>
                   <div className="col-xl-3 col-12 py-2 successSectionLeft">
                     Jenis Booking
@@ -94,9 +95,9 @@ function BookingSuccess() {
                     Tanggal
                   </div>
                   <div className="col-xl-9 col-12 py-2 successSectionRight">
-                  {typeof window !== 'undefined' && localStorage.getItem('tanggal_booking')}
+                  {typeof window !== 'undefined' && moment(localStorage.getItem('tanggal_booking')).format('dddd, DD MMMM YYYY  ')}
                   </div>
-                  <div className="col-xl-3 col-12 py-2 successSectionLeft">
+                  <div className="col-xl-3 col-12 py-2 successSectionLeft align-self-start">
                     Waktu
                   </div>
                   <div className="col-xl-9 col-12 py-2 successSectionRight">

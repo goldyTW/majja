@@ -103,7 +103,7 @@ function BookingJadwalContent({ dokter, id }) {
   const [valuejam, setValuejam] = useState();
   const [nama, setnama] = useState();
   const [phone, setphone] = useState();
-  const [rekamMedis, setrekamMedis] = useState();
+  const [rekamMedis, setrekamMedis] = useState('');
   const [showRekamMedis, setshowrekamMedis] = useState(false);
   const [showCalendar, setshowCalendar] = useState(true);
   const [kategoriPasien, setKategoriPasien] = useState();
@@ -270,7 +270,7 @@ function BookingJadwalContent({ dokter, id }) {
       const jam = valuejam.split('.');
       axios.post(`${url}/api/booking/add`,{nama, phone:phone.toString(), kategori:kategoriPasien, no_rekam_medis:rekamMedis, keluhan, 
         tanggal_booking:moment(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day).format("YYYY-MM-DD"), jam_booking: moment.utc(jam, "THH Z").format('HH:mm:ss'), 
-        id_dokter:router.query.id},{
+        id_dokter:router.query.id, action_status:1},{
         headers: {
           'Content-Type': 'application/json', 
         },}).then(res => {

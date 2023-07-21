@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Head from "next/head";
 import { Icon } from "@iconify/react";
@@ -44,6 +44,15 @@ function Dashboard() {
   const handleMenuSelect = ({ key }) => {
     setSelectedKey(key);
   };
+
+  useEffect(() => {
+   if(typeof window !== 'undefined'){
+    if(localStorage.getItem('halamandash')){
+      setSelectedKey(localStorage.getItem('halamandash'))
+    }
+   }
+  }, [])
+  
 
   function getItem(label, key, icon, children) {
     return {
@@ -153,7 +162,7 @@ function Dashboard() {
     Cookies.remove('token');
     Cookies.remove('username')
     Cookies.remove('is_admin');
-    router.push('/dashboard');
+    router.push('/login');
   }
   
   return (

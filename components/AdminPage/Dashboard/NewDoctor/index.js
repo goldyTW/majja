@@ -20,12 +20,10 @@ function NewDoctor({ updateBatal, updateSimpan }) {
   const [status, setstatus] = useState();
   const [email, setemail] = useState();
   const router = useRouter();
-  const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const url = process.env.NEXT_PUBLIC_API_URL ||  "http://localhost:3000";
 
   function addDokter() {
-    axios
-      .post(
-        `${url}/api/doctors/add`,
+    axios.post(`${url}/api/doctors/add`,
         {
           nama,
           posisi: spesialis,
@@ -56,7 +54,8 @@ function NewDoctor({ updateBatal, updateSimpan }) {
             .then((res) => {
               if (res.status == 200) {
                 toast.success("Tambah Dokter Berhasil!");
-                // window.location.reload()
+                localStorage.setItem('halamandash', 4)
+                window.location.reload()
                 updateSimpan(false);
               } else {
                 toast.success("Tambah Dokter Gagal!");
@@ -77,7 +76,6 @@ function NewDoctor({ updateBatal, updateSimpan }) {
     setxpText("");
     setstatus("");
     setemail("");
-    // window.location.reload()
     updateBatal(false);
   }
 
