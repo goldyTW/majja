@@ -26,7 +26,6 @@ import Cookies from "js-cookie";
 const ADD_CONTENT = gql`
 mutation add(
   $judul:String,
-  $link:String,
   $photo:String
   $date:String,
   $content:String
@@ -35,9 +34,6 @@ mutation add(
     data:{
       judul:{
         iv:$judul
-      }
-      slug:{
-        iv:$link
       }
       photo:{
         iv:$photo
@@ -57,7 +53,6 @@ mutation add(
     id
     flatData{
       judul
-      slug
       photo
       date
       content
@@ -99,7 +94,7 @@ function ArticleDashboard({ updateRes }) {
   const [contentState, setcontentState] = useState()
   const [image, setImage] = useState();
   const [imagePreview, setImagePreview] = useState(null);
-  const [date, setDate] = useState()
+  const [date, setDate] = useState(new Date())
   const [judul, setjudul] = useState()
   const [link, setlink] = useState()
   const [loading, setLoading] = useState(false);
@@ -128,21 +123,22 @@ function ArticleDashboard({ updateRes }) {
       addTodo({
         variables: {
           judul: judul,
-          link: link,
+          // link: link,
           photo: "https://cloud.squidex.io/api/assets/artikel/"+dataRes.id,
-          date: moment(date).format('DD MMMM YYYY'),
+          date: moment(date).format('DD MMMM YYYY HH:mm'),
           content: editorRef.current.getContent(),
           creator: creator
         }
       }).then(dataRes => {
         if(dataRes.data.createArtikelContent.id){
           toast.success('Upload Artikel Sukses'),
-          setEditArticle(true),
-          setjudul(''),
+          setjudul(),
           setDate(),
-          setlink(''),
-          setImage(''),
-          setImagePreview('')
+          setlink(),
+          setImage(),
+          setImagePreview()
+          setEditArticle(false),
+          localStorage.setItem('halamandash', 6)
           window.location.reload()
         }
         else{
@@ -162,8 +158,8 @@ function ArticleDashboard({ updateRes }) {
     .then(res => {
       if(res.status == 204){
         toast.success('Hapus Artikel Berhasil!')
-        // window.location.reload()
-        updateRes(6)
+        localStorage.setItem('halamandash', 6)
+        window.location.reload()
       }
       else{
         toast.success('Gagal Hapus Artikel')
@@ -235,12 +231,12 @@ function ArticleDashboard({ updateRes }) {
                  
                 </div>
                 <div className="row">
-                  <div className="col-lg-6 p-2">
+                  <div className="col-lg-7 p-2">
                       <label><b>Judul Artikel</b></label>
                       <Input placeholder="Judul Artikel Anda" onChange={(e) => setjudul(e.target.value)}/>
-                      <label className="mt-3"><b>Link</b></label>
-                      <Input placeholder="judul-artikel-yang-anda-tulis" onChange={(e) => setlink(e.target.value)}/>
-                      <label className="mt-3"><b>Tanggal</b></label><br></br>
+                      {/* <label className="mt-3"><b>Link</b></label>
+                      <Input placeholder="judul-artikel-yang-anda-tulis" onChange={(e) => setlink(e.target.value)}/> */}
+                      {/* <label className="mt-3"><b>Tanggal</b></label><br></br>
                       <DatePicker
                       className=""
                       style={{width:'100%'}}
@@ -248,17 +244,17 @@ function ArticleDashboard({ updateRes }) {
                       format="DD-MM-YY"
                       onChange={onChangeDate}
                       disabledDate={disabledDate}
-                    />
+                    /> */}
                   </div>
-                  <div className="col-lg-6 p-2">
+                  <div className="col-lg-5 p-2">
                     <div className="image-upload text-center">
                       <label htmlFor="avatar">
                         {imagePreview ? 
-                          <img src={imagePreview} width={300} height={150} className="img-upload" alt="uploaRd" style={{objectFit:'cover'}} /> 
+                          <img src={imagePreview} width={250} height={125} className="img-upload" alt="uploaRd" style={{objectFit:'cover'}} /> 
                           : 
                           <>
-                          <Image src="/images/upload.svg" width={300} height={150} alt="upload" />
-                          <div className="text-center mt-3 tap">Tap to Upload Photo</div>
+                          <Image src="/images/upload.svg" width={250} height={125} alt="upload" />
+                          <div className="text-center mt-2 tap">Tap to Upload Photo</div>
                           </>
                           }
                       </label>

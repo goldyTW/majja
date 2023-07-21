@@ -92,8 +92,9 @@ function DoctorList({ updateRes }) {
       .then(res => {
         if(res.status == 200){
           toast.success('Delete Dokter Berhasil!')
-          // window.location.reload();
-          updateRes(4)
+          localStorage.setItem('halamandash', 4)
+          window.location.reload()
+          // updateRes(4)
         }else{
           toast.error('Gagal menghapus dokter')
         }
@@ -150,7 +151,7 @@ function DoctorList({ updateRes }) {
     },
     {
       title: "Nomor Telepon",
-      dataIndex: "telp",
+      dataIndex: "phone",
       width: 350,
     },
     {

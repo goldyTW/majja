@@ -15,7 +15,7 @@ export default async function exportDoctor(req, res) {
 
     try {
         const dokter = await excuteQuery({
-            query: `SELECT a.*, b.pass FROM tb_dokter a LEFT JOIN tb_user b ON a.email = b.email`,
+            query: `SELECT a.*, b.pass FROM tb_dokter a LEFT JOIN tb_user b ON a.email = b.email order by a.modified_at DESC`,
             values:'',
         });
         res.status(200).json({ dokter })
