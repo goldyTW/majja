@@ -280,7 +280,7 @@ function BookingJadwalContent({ dokter, id }) {
               'Content-Type': 'application/json',
             },}).
             then(res => {
-              router.push(res.data.url)
+              router.push(res.data.url+"&output=embed")
             })
           }      
           else{
