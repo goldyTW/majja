@@ -121,6 +121,7 @@ function BookingJadwalContent({ dokter, id }) {
   const { TextArea } = Input;
   const [availableTimes, setAvailableTimes] = useState([]);
 
+  //fix midtrans 3
   useEffect(() => {
     axios
       .post(`${url}/api/booking/checkbooking`, {
