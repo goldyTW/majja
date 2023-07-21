@@ -280,7 +280,18 @@ function BookingJadwalContent({ dokter, id }) {
               'Content-Type': 'application/json',
             },}).
             then(res => {
-              router.push(res.data.url+"&output=embed")
+              if(res.status == 200){
+                localStorage.setItem('nama_booking', nama)
+                localStorage.setItem('phone_booking', phone.toString())
+                localStorage.setItem('kategori_booking',kategoriPasien)
+                localStorage.setItem('rekamMedis_booking', rekamMedis)
+                localStorage.setItem('keluhan_booking', keluhan)
+                localStorage.setItem('tanggal_booking', moment(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day).format("dddd, YYYY-MM-DD"))
+                localStorage.setItem('jam_booking', moment.utc(jam, "THH Z").format('HH:mm:ss'))
+                localStorage.setItem('idDokter_booking', router.query.id)
+                var url = res.data.url + "&output=embed";
+                window.location.replace(url)
+              }
             })
           }      
           else{
