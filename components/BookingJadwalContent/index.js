@@ -121,7 +121,6 @@ function BookingJadwalContent({ dokter, id }) {
   const { TextArea } = Input;
   const [availableTimes, setAvailableTimes] = useState([]);
 
-  //fix midtrans 3
   useEffect(() => {
     axios
       .post(`${url}/api/booking/checkbooking`, {
@@ -291,7 +290,7 @@ function BookingJadwalContent({ dokter, id }) {
                 localStorage.setItem('tanggal_booking', moment(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day).format("dddd, YYYY-MM-DD"))
                 localStorage.setItem('jam_booking', moment.utc(jam, "THH Z").format('HH:mm:ss'))
                 localStorage.setItem('idDokter_booking', router.query.id)}
-                var url = res.data.url + "&output=embed";
+                var url = res.data.url;
                 window.location.replace(url)
               }
             })
