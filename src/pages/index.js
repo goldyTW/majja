@@ -50,6 +50,7 @@ export default function Home({data}) {
        <meta property="og:description" content="majja" />
        <meta property="og:image" content="/images/LogoRounded.png" />
        <meta property="og:url" content="https://majja.com" />
+       <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
      </Head>
      <Navbar></Navbar>
      <Hero></Hero>
