@@ -71,19 +71,19 @@ function BookingSuccess() {
                     Nama Pasien
                   </div>
                   <div className="col-xl-9 col-12 py-2 successSectionRight">
-                    {localStorage.getItem('nama_booking')}
+                    {typeof window !== 'undefined' && localStorage.getItem('nama_booking')}
                   </div>
                   <div className="col-xl-3 col-12 py-2 successSectionLeft">
                     Kategori Pasien
                   </div>
                   <div className="col-xl-9 col-12 py-2 successSectionRight">
-                    {"Pasien "+localStorage.getItem('kategori_booking')}
+                    {"Pasien "+(typeof window !== 'undefined' && localStorage.getItem('kategori_booking'))}
                   </div>
                   <div className="col-xl-3 col-12 py-2 successSectionLeft">
                     Nomor Rekam Medis
                   </div>
                   <div className="col-xl-9 col-12 py-2 successSectionRight">
-                    {localStorage.getItem('rekamMedis_booking')}
+                    {typeof window !== 'undefined' && localStorage.getItem('rekamMedis_booking')}
                   </div>
                   <div className="col-xl-3 col-12 py-2 successSectionLeft">
                     Jenis Booking
@@ -95,13 +95,13 @@ function BookingSuccess() {
                     Tanggal
                   </div>
                   <div className="col-xl-9 col-12 py-2 successSectionRight">
-                  {localStorage.getItem('tanggal_booking')}
+                  {typeof window !== 'undefined' && localStorage.getItem('tanggal_booking')}
                   </div>
                   <div className="col-xl-3 col-12 py-2 successSectionLeft">
                     Waktu
                   </div>
                   <div className="col-xl-9 col-12 py-2 successSectionRight">
-                  {localStorage.getItem('jam_booking')}<br></br>
+                  {typeof window !== 'undefined' && localStorage.getItem('jam_booking')}<br></br>
                     <span className='disclaimer'>Harap datang tepat waktu. Keterlambatan akan ditoleransi max. 30 menit.</span>
                   </div>
                   <div className='col-12 pt-3 successSectionTitle'>
@@ -123,7 +123,7 @@ function BookingSuccess() {
                     Tanggal
                   </div>
                   <div className="col-xl-9 col-12 py-2 successSectionRight">
-                  {localStorage.getItem('jam_booking')}
+                  {typeof window !== 'undefined' && localStorage.getItem('jam_booking')}
                   </div>
                 </div>
                 </Card>

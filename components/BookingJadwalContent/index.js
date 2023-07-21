@@ -281,6 +281,7 @@ function BookingJadwalContent({ dokter, id }) {
             },}).
             then(res => {
               if(res.status == 200){
+                if (typeof window !== 'undefined') {
                 localStorage.setItem('nama_booking', nama)
                 localStorage.setItem('phone_booking', phone.toString())
                 localStorage.setItem('kategori_booking',kategoriPasien)
@@ -288,7 +289,7 @@ function BookingJadwalContent({ dokter, id }) {
                 localStorage.setItem('keluhan_booking', keluhan)
                 localStorage.setItem('tanggal_booking', moment(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day).format("dddd, YYYY-MM-DD"))
                 localStorage.setItem('jam_booking', moment.utc(jam, "THH Z").format('HH:mm:ss'))
-                localStorage.setItem('idDokter_booking', router.query.id)
+                localStorage.setItem('idDokter_booking', router.query.id)}
                 var url = res.data.url + "&output=embed";
                 window.location.replace(url)
               }
