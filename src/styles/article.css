@@ -16,3 +16,12 @@
     line-height: 24px;
     color: #A5090C;
 }
+.image-upload > input {
+    visibility:hidden;
+    width:0;
+    height:0
+}
+
+.image-upload > label{
+    cursor: pointer;
+}

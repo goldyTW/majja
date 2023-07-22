@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Head from "next/head";
 import { Icon } from "@iconify/react";
@@ -11,6 +11,7 @@ import NewDoctor from "../../../components/AdminPage/Dashboard/NewDoctor";
 import DoctorSchedule from "../../../components/AdminPage/Dashboard/DoctorSchedule";
 import { useRouter } from "next/router";
 import BookingSchedule from "../../../components/AdminPage/BookingSchedule";
+import ArticleDashboard from "../../../components/AdminPage/Dashboard/ArticleDashboard";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -43,6 +44,15 @@ function Dashboard() {
   const handleMenuSelect = ({ key }) => {
     setSelectedKey(key);
   };
+
+  useEffect(() => {
+   if(typeof window !== 'undefined'){
+    if(localStorage.getItem('halamandash')){
+      setSelectedKey(localStorage.getItem('halamandash'))
+    }
+   }
+  }, [])
+  
 
   function getItem(label, key, icon, children) {
     return {
@@ -152,7 +162,7 @@ function Dashboard() {
     Cookies.remove('token');
     Cookies.remove('username')
     Cookies.remove('is_admin');
-    router.push('/dashboard');
+    router.push('/login');
   }
   
   return (
@@ -203,30 +213,19 @@ function Dashboard() {
             }}
           >
             {selectedKey == 1 ? (
-              <DashboardSection/>
+              <DashboardSection updateRes={setSelectedKey} />
             ) : selectedKey == 2 ? (
-              <BookingSchedule />
+              <BookingSchedule updateRes={setSelectedKey} />
             ) : selectedKey == 3 ? (
-              <PatientList></PatientList>
+              <PatientList updateRes={setSelectedKey} />
             ) : selectedKey == 4 ? (
               <>
-              <DoctorList />
+              <DoctorList updateRes={setSelectedKey} />
               </>
             ) : selectedKey == 5 ? (
-              <DoctorSchedule></DoctorSchedule>
+              <DoctorSchedule updateRes={setSelectedKey} />
                ) : selectedKey == 6 ? (
-                <>
-                  <h1>Artikel</h1>
-                  <div
-                    style={{
-                      padding: 24,
-                      minHeight: 360,
-                      background: "#FFFFFF",
-                    }}
-                  >
-                    Artikel
-                  </div>
-                </>
+                <ArticleDashboard updateRes={setSelectedKey} />
             ) : selectedKey == 7 ? (
               <>
                 <h1>Pengaturan</h1>

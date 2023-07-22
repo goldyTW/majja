@@ -103,7 +103,7 @@ function BookingJadwalContent({ dokter, id }) {
   const [valuejam, setValuejam] = useState();
   const [nama, setnama] = useState();
   const [phone, setphone] = useState();
-  const [rekamMedis, setrekamMedis] = useState();
+  const [rekamMedis, setrekamMedis] = useState('');
   const [showRekamMedis, setshowrekamMedis] = useState(false);
   const [showCalendar, setshowCalendar] = useState(true);
   const [kategoriPasien, setKategoriPasien] = useState();
@@ -119,20 +119,51 @@ function BookingJadwalContent({ dokter, id }) {
   const awsendpoint = process.env.NEXT_PUBLIC_AWSENDPOINT ;
   const { Option } = Select;
   const { TextArea } = Input;
+  const [availableTimes, setAvailableTimes] = useState([]);
 
   useEffect(() => {
-    axios.post(`${url}/api/booking/checkbooking`,{today: moment(today).format('YYYY-MM-DD'), id_dokter:id},{
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(res => {
-      res.data.result.map((item, i) => (
-        bookingan.push({tanggal_booking:new Date(item.tanggal_booking), jam_booking:item.jam_booking.split(':')[0] })
-      ))
-    })
-  }, [])
+    axios
+      .post(`${url}/api/booking/checkbooking`, {
+        today: moment(today).format("YYYY-MM-DD"),
+        id_dokter: id,
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        const bookinganData = res.data.result.map((item) => ({
+          tanggal_booking: new Date(item.tanggal_booking),
+          jam_booking: item.jam_booking.split(":")[0],
+        }));
+        setbookingan(bookinganData);
   
+        // Ambil data jam_booking dari tabel booking untuk dokter dan tanggal tertentu
+        const getBookedTimes = async () => {
+          try {
+            const response = await axios.post(
+              `${url}/api/booking/getBookedTimes`,
+              {
+                id_dokter: router.query.id,
+                tanggal_booking: moment(selectedDay).format("YYYY-MM-DD"),
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            // Menyimpan jam_booking yang telah dipesan dalam state availableTimes
+            setAvailableTimes(response.data.bookedTimes);
+          } catch (error) {
+            console.error("Error fetching booked times: ", error);
+          }
+        };
+  
+        getBookedTimes();
+      });
+      setValuejam(null);
+  }, [selectedDay]); // Jalankan hanya saat selectedDay berubah
 
   const onChangeKategori = (e) => {
     setKategoriPasien(e.target.value);
@@ -185,6 +216,29 @@ function BookingJadwalContent({ dokter, id }) {
   // Jadwal Days on Jam on
   const availableDaysDynamic = transformDatesToFormatDaysOn(AllHariOnInThisYear);
 
+  // Memfilter waktu yang telah dipesan dari pilihan waktu yang akan ditampilkan
+  const filteredTimes = (availableTimes, allTimes) => {
+    return allTimes.filter((time) => !availableTimes.includes(time));
+  };
+
+  // Membuat array dari 00:00:00 hingga 23:59:59
+  const allTimes = Array.from({ length: 24 }, (_, i) =>
+    moment(i, "H").format("HH:mm:ss")
+  );
+
+  const handleSelectedTime = (e) => {
+    setValuejam(e);
+  };
+
+  const isFutureTime = (time) => {
+    const selectedDateTime = moment(
+      `${selectedDay.year}-${selectedDay.month}-${selectedDay.day} ${time}`,
+      "YYYY-M-D HH:mm"
+    );
+    return selectedDateTime.isAfter(moment());
+  };
+
+
   function bayar(){
     setLoading(true);
     seterrornama(false)
@@ -216,7 +270,7 @@ function BookingJadwalContent({ dokter, id }) {
       const jam = valuejam.split('.');
       axios.post(`${url}/api/booking/add`,{nama, phone:phone.toString(), kategori:kategoriPasien, no_rekam_medis:rekamMedis, keluhan, 
         tanggal_booking:moment(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day).format("YYYY-MM-DD"), jam_booking: moment.utc(jam, "THH Z").format('HH:mm:ss'), 
-        id_dokter:router.query.id},{
+        id_dokter:router.query.id, action_status:1},{
         headers: {
           'Content-Type': 'application/json', 
         },}).then(res => {
@@ -226,7 +280,19 @@ function BookingJadwalContent({ dokter, id }) {
               'Content-Type': 'application/json',
             },}).
             then(res => {
-              router.push(res.data.url)
+              if(res.status == 200){
+                if (typeof window !== 'undefined') {
+                localStorage.setItem('nama_booking', nama)
+                localStorage.setItem('phone_booking', phone.toString())
+                localStorage.setItem('kategori_booking',kategoriPasien)
+                localStorage.setItem('rekamMedis_booking', rekamMedis)
+                localStorage.setItem('keluhan_booking', keluhan)
+                localStorage.setItem('tanggal_booking', moment(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day).format("dddd, YYYY-MM-DD"))
+                localStorage.setItem('jam_booking', moment.utc(jam, "THH Z").format('HH:mm:ss'))
+                localStorage.setItem('idDokter_booking', router.query.id)}
+                var url = res.data.url;
+                window.location.replace(url)
+              }
             })
           }      
           else{
@@ -286,7 +352,7 @@ function BookingJadwalContent({ dokter, id }) {
       <Config>
         {/* <PC> */}
         <div className="container-fluid">
-          <div className="row">
+          <div className="row flex-reverse-column-sm ">
             <div className="col-lg-9 col-12 my-2">
               <Card
                 // title={<p>&nbsp;</p>}
@@ -303,7 +369,7 @@ function BookingJadwalContent({ dokter, id }) {
                 {/* <ChooseBooking /> */}
                 {showCalendar ? (
                   <div className="row justify-content-center">
-                    <div className="col-lg-5 col-12">
+                    <div className="col-lg-5 p-0">
                       <Calendar
                         value={selectedDay}
                         onChange={setSelectedDay}
@@ -330,16 +396,16 @@ function BookingJadwalContent({ dokter, id }) {
                         )}
                       />
                     </div>
-                    <div className="col-lg-7 col-12 pt-4">
+                    <div className="col-lg-7 pt-4">
                       <div className="row">
-                        <div className="col-lg-3 col-12">
+                        <div className="col-lg-3 col-4">
                           <img
                             src={"/" + data.image}
                             alt="doctor1"
                             width="100%"
                           />
                         </div>
-                        <div className="col-lg-9 col-12">
+                        <div className="col-lg-9 col-8">
                           <StyledTitle>{data.name}</StyledTitle>
                           <StyledText>{data.position}</StyledText>
                           <StyledTextWIcon>
@@ -373,36 +439,48 @@ function BookingJadwalContent({ dokter, id }) {
                             </BtnWrapper>
                           ))}
                         </RenderJamWrapper> */}
+
+                        {/* Render pilihan waktu temu yang telah difilter */}
                         <span className="waktuTemu pt-5">Waktu Temu</span><br></br>
                          <Select
-                          style={{width: '40%'}}
                           showSearch
-                          className='py-1'
+                          className='py-1 waktuTemuSelector'
                           placeholder="Pilih jam"
                           optionFilterProp="children"
-                          onChange={(e) => setValuejam(e)}
+                          onChange={handleSelectedTime}
                           value={valuejam}
-                            >
-                              {
-                                data.jadwal && data.jadwal.map((item, i) => (
-                                  dayName == item.hari && 
-                                    pecahjam(item.jam).map((item2, i2) => (
-                                      <Option key={i2} value={item2}>{item2}</Option>
-                                    ))
-                                  
-                                  
-                                ))
-                              }
-                               {
-                                data.jadwal && data.jadwal.map((item, i) => (
-                                  dayName == item.hari && item.jam2 && 
-                                    pecahjam(item.jam2).map((item3, i3) => (
-                                      <Option key={i3} value={item3}>{item3}</Option>
-                                    ))
-                                  
-                                ))
-                              }
-                      </Select>
+                        >
+                          {data.jadwal &&
+                            data.jadwal.map((item, i) =>
+                              dayName === item.hari &&
+                              // Pecah jam item.jam menjadi array jam_booking yang telah dipesan
+                              filteredTimes(
+                                availableTimes,
+                                pecahjam(item.jam).map((item2, i2) => item2)
+                              )
+                              .filter((time) => isFutureTime(time)) // Filter only future times
+                              .map((time, i3) => (
+                                <Option key={i3} value={time}>
+                                  {time}
+                                </Option>
+                              ))
+                            )}
+                          {data.jadwal &&
+                            data.jadwal.map((item, i) =>
+                              dayName === item.hari &&
+                              item.jam2 &&
+                              filteredTimes(
+                                availableTimes,
+                                pecahjam(item.jam2).map((item3, i3) => item3)
+                              )
+                              .filter((time) => isFutureTime(time)) // Filter only future times
+                              .map((time, i3) => (
+                                <Option key={i3} value={time}>
+                                  {time}
+                                </Option>
+                              ))
+                            )}
+                        </Select>
                       </div>
                     </div>
                   </div>
@@ -519,6 +597,10 @@ const Wrapper = styled.div`
   background-position: center;
 
   padding-top: 10%;
+
+  @media(max-width:576px){
+    padding-top: 40%;
+  }
 `;
 
 const Config = styled.div`

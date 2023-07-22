@@ -25,7 +25,7 @@ function DetailBooking({ value, dateItem, showCalendar, setshowCalendar, bayar,l
           fontFamily: "Poppins",
           fontStyle: "normal",
           fontWeight: "600",
-          fontSize: "var(--fs-20)",
+          fontSize: "22px",
           color: "#433B3B",
           paddingTop:'35px'
         }}

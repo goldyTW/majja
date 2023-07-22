@@ -25,6 +25,10 @@ function Services() {
 const StyledSection = styled.section`
   background: #f9fcff;
   padding-top: 10%;
+
+  /* @media (max-width: 1120px) {
+    padding-top: 30%;
+  } */
 `;
 
 export default Services;

@@ -39,7 +39,7 @@ function Offering() {
         </PC>
 
         <MOBILE>
-          <div className="container-fluid text-center">
+          <div className="container text-center">
             <div className="row align-items-center">
               <div className="col-12">
                 <ImgCarousel />
@@ -97,7 +97,7 @@ const AboutConfig = styled.div`
   overflow: hidden;
 
   @media (max-width: 1121px) {
-    padding: 5%;
+    /* padding: 5%; */
   }
 `;
 

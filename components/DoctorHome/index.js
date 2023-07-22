@@ -2,53 +2,56 @@ import React from 'react'
 import BacaSelengkapnya from '../BacaSelengkapnya'
 import { Icon } from '@iconify/react'
 import ButtonAlt from '../ButtonAlt'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
+
+const dokter = [
+    {
+        id:3,
+        name:'Dr. Cindy Rani Wirasti, SpOG-KFER',
+        position:'Endocrinology Consultant',
+        image:'images/doctor1.png',
+        xp:'Pengalaman: 10 tahun',
+    },
+    {
+        id:2,
+        name:'Dr. Harianto Wijaya, SpOG-KFER',
+        position:'Endocrinology Consultant',
+        image:'images/doctor2.png',
+        xp:'Pengalaman: 13 tahun',
+    },
+    {
+        id:14,
+        name:'Dr. Surya Tjahyadi, SpOG-KFER',
+        position:'Endocrinology Consultant',
+        image:'images/doctor3.png',
+        xp:'Pengalaman: 7 tahun',
+    },
+    {
+        id:15,
+        name:'Dr. Viviana Agustina, SpOG-KFER',
+        position:'Endocrinology Consultant',
+        image:'images/doctor5.png',
+        xp:'Pengalaman: 10 tahun',
+    },
+    {
+        id:16,
+        name:'Dr. Reza Adisatria, SpOG-KFER',
+        position:'Endocrinology Consultant',
+        image:'images/doctor4.png',
+        xp:'Pengalaman: 10 tahun',
+    },
+    {
+        id:17,
+        name:'Dr. Herlina Pertiwi, SpOG-KFER',
+        position:'Endocrinology Consultant',
+        image:'images/doctor6.png',
+        xp:'Pengalaman: 5 tahun',
+    }
+]
 
 function DoctorHome() {
-    const dokter = [
-        {
-            id:3,
-            name:'Dr. Cindy Rani Wirasti, SpOG-KFER',
-            position:'Endocrinology Consultant',
-            image:'images/doctor1.png',
-            xp:'Pengalaman: 10 tahun',
-        },
-        {
-            id:2,
-            name:'Dr. Harianto Wijaya, SpOG-KFER',
-            position:'Endocrinology Consultant',
-            image:'images/doctor2.png',
-            xp:'Pengalaman: 13 tahun',
-        },
-        {
-            id:14,
-            name:'Dr. Surya Tjahyadi, SpOG-KFER',
-            position:'Endocrinology Consultant',
-            image:'images/doctor3.png',
-            xp:'Pengalaman: 7 tahun',
-        },
-        {
-            id:15,
-            name:'Dr. Viviana Agustina, SpOG-KFER',
-            position:'Endocrinology Consultant',
-            image:'images/doctor5.png',
-            xp:'Pengalaman: 10 tahun',
-        },
-        {
-            id:16,
-            name:'Dr. Reza Adisatria, SpOG-KFER',
-            position:'Endocrinology Consultant',
-            image:'images/doctor4.png',
-            xp:'Pengalaman: 10 tahun',
-        },
-        {
-            id:17,
-            name:'Dr. Herlina Pertiwi, SpOG-KFER',
-            position:'Endocrinology Consultant',
-            image:'images/doctor6.png',
-            xp:'Pengalaman: 5 tahun',
-        }
-    ]
+    const router = useRouter();
+    
   return (
     <section className='doctorwrapper py-5' id='doctor'>
     <div className="container my-5">
@@ -62,9 +65,8 @@ function DoctorHome() {
                 <div className="row justify-content-center">
                     {
                         dokter.map((item, i) => (
-                            <div className='col-xl-5 col-md-5 col-9 m-md-4 ms-4 me-0 my-3' key={i} data-aos="fade-up">
+                            <div className='col-xl-5 col-md-5 col-9 m-md-4 ms-4 me-0 my-3' key={i} data-aos="fade-up" onClick={()=> router.push('/doctor')}>
                                 <img className='doctorImg align-self-center' src={item.image}></img>
-                                {/* <Link href={`/booking/`+item.id} style={{textDecoration:'none'}}> */}
                                 <div className='cardDokter'>
                                     <div className='row'>
                                         <div className='col-2'></div>
@@ -79,11 +81,10 @@ function DoctorHome() {
                                                 />
                                                 <p className='cardDokterText'>{item.xp}</p>
                                             </div>
-                                            <BacaSelengkapnya link={`/booking/`+item.id} text="Booking Jadwal"></BacaSelengkapnya>
+                                            <BacaSelengkapnya link={`/doctor`} text="Booking Jadwal"></BacaSelengkapnya>
                                         </div>
                                     </div>
                                 </div>
-                                {/* </Link> */}
                             </div>
                         ))
                     }

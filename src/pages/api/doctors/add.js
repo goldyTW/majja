@@ -6,14 +6,14 @@ export default async function exportDoctor(req, res) {
         return res.status(405).json({ message: 'Method Not Allowed' });
     }
 
+    const { nama, posisi, gambar, xp, status, phone, email } = req.body;
+
     await NextCors(req, res, {
         // Options
         methods: ['POST'],
         origin: '*',
         optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     });
-
-    const { nama, posisi, gambar, xp, status, phone, email } = req.body;
     
     try {
         const dokter = await excuteQuery({

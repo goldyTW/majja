@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Link2 from 'react-scroll/modules/components/Link';
+import Link2 from "react-scroll/modules/components/Link";
 
 const HeaderWrapper = styled.header`
   background: transparent;
@@ -23,7 +23,7 @@ const Nav = styled.nav`
   align-items: center;
 
   @media (max-width: 768px) {
-    display: block;
+    display: flex;
     text-align: center;
   }
 `;
@@ -98,7 +98,7 @@ const Menu = styled.ul`
 
 const LoginButton = styled.button`
   /* background: #df3034; */
-  margin-bottom:15px;
+  margin-bottom: 15px;
   border: 0.2rem solid #df3034;
   // padding: 0.65rem 1.3rem;
   // border-radius: 0.5rem;
@@ -134,8 +134,8 @@ const LoginButton = styled.button`
     // background-position: 100%;
     color: white;
     // transform: scaleX(1.05);
-    border: 0.2rem solid #A5090C;
-    background-color: #A5090C;
+    border: 0.2rem solid #a5090c;
+    background-color: #a5090c;
   }
 
   @media (max-width: 768px) {
@@ -207,7 +207,10 @@ const Header = () => {
         style={{
           backgroundColor: "rgba(250, 250, 250, 0.8)",
           backdropFilter: "blur(5px)",
-          boxShadow: router.pathname != "/" ? " 0px 0px 2rem rgba(192, 192, 192, 0.25)" : "",
+          boxShadow:
+            router.pathname != "/"
+              ? " 0px 0px 2rem rgba(192, 192, 192, 0.25)"
+              : "",
           transition: "background 300ms ease-out 0s",
         }}
       >

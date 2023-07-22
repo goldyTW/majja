@@ -9,11 +9,46 @@ import ServiceSlugContent from "../../../../components/ServiceSlugContent";
 import ArticleSlugContent from "../../../../components/ArticleSlugContent";
 import styled from "styled-components";
 import { useRouter } from "next/router";
+import { gql } from '@apollo/client';
+import { addApolloState, initializeApollo } from "../../../../lib/apolloClient";
 import moment from "moment";
 
-function Slug() {
-  const router = useRouter();
-  const { slug } = router.query;
+const QUERY_BLOG = gql`
+query artikel($filterString:String){
+  queryArtikelContents(filter:$filterString){
+    id
+    data{
+      judul{
+        iv
+      }
+      slug{
+        iv
+      }
+      photo{
+        iv
+      }
+      date{
+        iv
+      }
+      content{
+        iv
+      }
+      creator{
+        iv
+      }
+    }
+  }
+}`
+
+const DETAIL_VAR = (params) => {
+  return {
+      filterString: "data/slug/iv eq '" + params + "'"
+  }
+}
+
+function Slug({data}) {
+  // const router = useRouter();
+  // const { slug } = router.query;
   return (
     <>
       <Head>
@@ -21,12 +56,7 @@ function Slug() {
       </Head>
       <Navbar></Navbar>
       <StyledSection>
-        <ArticleSlugContent
-          data={newsList.filter(
-            (item) =>
-              item.slug + moment(item.created).format("YYYYMMDD") === slug
-          )}
-        />
+        <ArticleSlugContent data={data}/>
       </StyledSection>
       <FloatingWA></FloatingWA>
       <Footer></Footer>
@@ -38,3 +68,29 @@ const StyledSection = styled.div`
   padding-top: 10%;
 `;
 export default Slug;
+
+export async function getServerSideProps(context){
+  const apolloClient = initializeApollo()
+
+  let {data} = await apolloClient.query({
+      query: QUERY_BLOG,
+      variables: DETAIL_VAR(context.params.slug),
+    })
+
+  // let blog = await apolloClient.query({
+  //   query: BLOG
+  // })
+
+  if(data.queryArtikelContents.length < 0){
+    return {
+      notFound: true,
+    }
+  }
+
+  return addApolloState(apolloClient, {
+    props: {
+      // data:data.queryBlogContents,
+      data:data.queryArtikelContents
+    }
+  })
+}

@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 moment.locale("id");
 const { Search } = Input;
 
-function PatientList() {
+function PatientList({ updateRes }) {
   const [DataPatient, setDataPatient] = useState()
   const [DataPatientMaster, setDataPatientMaster] = useState();
   const [loading, setLoading] = useState(false);

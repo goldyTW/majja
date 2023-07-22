@@ -40,6 +40,10 @@ const ImageSlider = () => {
 
 const Wrapper = styled.div`
   width: 100%;
+  @media (max-width: 1121px) {
+    width: 110%;
+    margin: 0 0 0 -7%;
+  }
 `;
 
 export default ImageSlider;

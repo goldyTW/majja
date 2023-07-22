@@ -12,7 +12,7 @@ const { Option } = Select;
 const { Search } = Input;
 const { TextArea } = Input;
 
-function Dashboard() {
+function Dashboard({ updateRes }) {
   const [today, setToday] = useState(new Date()); // Save the current date to be able to trigger an update
   const [sevendays, setsevendays] = useState(new Date(today.getFullYear(), today.getMonth(), today.getDate()-7)); 
   const [thirtydays, setthirtydays] = useState(new Date(today.getFullYear(), today.getMonth(), today.getDate()-30)); 
@@ -52,8 +52,8 @@ function Dashboard() {
     setCatatan(record.catatan)
   }
 
-  const handleStatusChange = (value) => {
-    axios.post(`${url}/api/booking/update_actionstatus`,{id_booking:idBooking, action_status:value, catatan},{
+  const handleStatusChange = (value, id, note) => {
+    axios.post(`${url}/api/booking/update_actionstatus`,{id_booking:id, action_status:value, catatan:note},{
       headers: {
         'Content-Type': 'application/json',
       },
@@ -61,7 +61,9 @@ function Dashboard() {
     .then(res => {
       if(res.status == 200){
         toast.success('Edit Action Status Success!');
+        localStorage.setItem('halamandash', 1)
         window.location.reload()
+        // updateRes(1)
       }
       else{
         toast.error('Silahkan Coba Lagi')
@@ -119,49 +121,49 @@ function Dashboard() {
       title: "Status",
       dataIndex: "action_status",
       sorter: (a, b) => a.action_status - b.action_status,
-      render: ((_, record) =>
-      (
-        record.action_status == 1 ?
-        <Tag color="geekblue">
-          New Bookings
-        </Tag>
-        :
-        record.action_status == 2 ?
-        <Tag color="yellow">
-         Reminded
-        </Tag>
-        :
-        record.action_status == 3 ?
-        <Tag color="green">
-         Completed
-        </Tag>
-        :
-        <Tag>
-         Not Shown
-        </Tag>
-      ))
-      // render: (text, record) => {
-      //   const statusLabels = {
-      //     1: "New Bookings",
-      //     2: "Reminded",
-      //     3: "Completed",
-      //     4: "Not Shown",
-      //   };
-  
-      //   return (
-      //     <Select
-      //       defaultValue={record.action_status && record.action_status.toString()}
-      //       onChange={(value) => handleStatusChange(value)}
-      //       status={record.action_status && record.action_status == 1 ? "warning" : record.action_status && record.action_status == 3 ? "success" : ""}
-      //     >
-      //       {Object.entries(statusLabels).map(([value, label]) => (
-      //         <Option key={value} value={value}>
-      //           {label}
-      //         </Option>
-      //       ))}
-      //     </Select>
-      //   );
-      // },
+      // render: ((_, record) =>
+      // (
+      //   record.action_status == 1 ?
+      //   <Tag color="geekblue">
+      //     New Bookings
+      //   </Tag>
+      //   :
+      //   record.action_status == 2 ?
+      //   <Tag color="yellow">
+      //    Reminded
+      //   </Tag>
+      //   :
+      //   record.action_status == 3 ?
+      //   <Tag color="green">
+      //    Completed
+      //   </Tag>
+      //   :
+      //   <Tag>
+      //    Not Shown
+      //   </Tag>
+      // ))
+      render: (text, record) => {
+        const statusLabels = {
+          1: "New Bookings",
+          2: "Reminded",
+          3: "Completed",
+          4: "Not Shown",
+        };
+
+        return (
+          <Select
+            defaultValue={record.action_status && record.action_status.toString()}
+            onChange={(value) => handleStatusChange(value, record.id, record.catatan)}
+            style={{width:'100%', color:record.action_status && (record.action_status == 1 ? "#1D5D9B":  record.action_status == 2 ? "#F4D160" : record.action_status == 3 ? "#54B435" : record.action_status == 4 ? "#666" : "")}}
+          >
+            {Object.entries(statusLabels).map(([value, label]) => (
+              <Option key={value} value={value} style={{color:value == 1 ? "#1D5D9B" : value == 2 ? "#F4D160": value == 3 ? "#54B435": value == 4 ? "#666" : ''}}>
+                {label}
+              </Option>
+            ))}
+          </Select>
+        );
+      },
     },
     {
       title: "Catatan",
@@ -372,12 +374,12 @@ function Dashboard() {
         <div className="text-end">
           {
             statusbook == 1 ?
-            <button className='buttonModalReminded' onClick={() => handleStatusChange(2)}>Reminded</button>
+            <button className='buttonModalReminded' onClick={() => handleStatusChange(2, idBooking, catatan)}>Reminded</button>
             :
             statusbook == 2 ?
             <div className="text-end">
-              <button className='buttonModalNot mx-1' onClick={() => handleStatusChange(4)}>Not Shown</button>
-              <button className='buttonModalComplete mx-1' onClick={() => handleStatusChange(3)}>Completed</button>
+              <button className='buttonModalNot mx-1' onClick={() => handleStatusChange(4, idBooking, catatan)}>Not Shown</button>
+              <button className='buttonModalComplete mx-1' onClick={() => handleStatusChange(3, idBooking, catatan)}>Completed</button>
             </div>
             :
             ''
