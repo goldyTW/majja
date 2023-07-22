@@ -48,6 +48,8 @@ jobs:
             sudo docker rm frontend_container_dev -f
             sudo docker rmi frontend_dev
 
+            sudo docker builder prune -f
+
             sudo docker build . --no-cache -t frontend_dev
             sudo docker run --name frontend_container_dev \
             --restart always \
@@ -61,3 +63,5 @@ jobs:
             -e NEXT_PUBLIC_MYSQL_USER=${{ env.NEXT_PUBLIC_MYSQL_USER }} \
             -e NEXT_PUBLIC_MYSQL_PASSWORD=${{ env.NEXT_PUBLIC_MYSQL_PASSWORD }} \
             -d frontend_dev
+
+            sudo docker builder prune -f
