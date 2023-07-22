@@ -49,7 +49,7 @@ jobs:
             sudo docker rm frontend_container_dev -f
             sudo docker rmi frontend_dev
 
-            sudo docker build . --no-cache -t frontend_dev
+            sudo docker build --no-cache -t frontend_dev .
             sudo docker run --name frontend_container_dev \
             --restart always \
             --network containers_lan \
