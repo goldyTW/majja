@@ -34,7 +34,7 @@ const Logo = styled.div`
   font-weight: bold;
 `;
 
-const SpHomeScroll = styled.a`
+const SpHomeScroll = styled.span`
   text-decoration: none;
   color: #9c9c9c;
 `;
