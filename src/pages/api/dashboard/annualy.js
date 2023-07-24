@@ -17,20 +17,23 @@ export default async function exportDoctor(req, res) {
     try {
         const data = await excuteQuery({
             query: `SELECT * FROM 
-            (SELECT COUNT(*) AS curr_book, COUNT(DISTINCT(id_pasien)) AS curr_pasien, SUM(earning) AS curr_earning FROM tb_booking 
-            WHERE YEAR(tanggal) = YEAR(CURDATE()) AND status_booking = 1) a,
-            (SELECT COUNT(*) AS last_book, COUNT(DISTINCT(id_pasien)) AS last_pasien, SUM(earning) AS last_earning FROM tb_booking
-            WHERE YEAR(tanggal) = YEAR(CURDATE()) - 1 AND status_booking = 1) b`,
+            (SELECT COUNT(*) AS curr_book, COUNT(DISTINCT(phone)) AS curr_pasien FROM booking 
+            WHERE YEAR(tanggal_booking) = YEAR(CURDATE()) AND payment_status = 'settlement') a,
+            (SELECT COUNT(*) AS last_book, COUNT(DISTINCT(phone)) AS last_pasien FROM booking
+            WHERE YEAR(tanggal_booking) = YEAR(CURDATE()) - 1 AND payment_status = 'settlement') b`,
             values:'',
         });
+        
+        const COST = 50000;
+
         var book_diff = data[0].curr_book - data[0].last_book;
         var book_percent = book_diff / data[0].last_book * 100;
         
         var pasien_diff = data[0].curr_pasien - data[0].last_pasien;
         var pasien_percent = pasien_diff / data[0].last_pasien * 100;
 
-        var earning_diff = data[0].curr_earning - data[0].last_earning;
-        var earning_percent = earning_diff / data[0].last_earning * 100;
+        var earning_diff = book_diff * COST;
+        var earning_percent = book_percent;
         
         var count = {
             book_diff:book_diff,

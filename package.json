@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@apollo/client": "^3.6.9",
     "@amir04lm26/react-modern-calendar-date-picker": "^1.0.1",
+    "@apollo/client": "^3.7.17",
     "@iconify/react": "^4.1.0",
     "@tinymce/tinymce-react": "^4.3.0",
     "antd": "^4.23.5",
