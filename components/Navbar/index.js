@@ -190,7 +190,6 @@ const Header = () => {
   const router = useRouter();
   const [navbar, setNavbar] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [menu, setmenu] = useState("");
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
