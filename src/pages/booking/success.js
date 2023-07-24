@@ -9,6 +9,7 @@ import styled from "styled-components";
 // import Lottie from 'react-lottie';
 import Lottie from "lottie-react";
 import * as animationData from '../../../public/images/success.json'
+import moment from 'moment';
 
 function BookingSuccess() {
   const defaultOptions = {
@@ -71,19 +72,19 @@ function BookingSuccess() {
                     Nama Pasien
                   </div>
                   <div className="col-xl-9 col-12 py-2 successSectionRight">
-                    Gabriella Esther Notokusuman
+                    {typeof window !== 'undefined' && localStorage.getItem('nama_booking')}
                   </div>
                   <div className="col-xl-3 col-12 py-2 successSectionLeft">
                     Kategori Pasien
                   </div>
                   <div className="col-xl-9 col-12 py-2 successSectionRight">
-                   Pasien Lama
+                    {"Pasien "+(typeof window !== 'undefined' && localStorage.getItem('kategori_booking'))}
                   </div>
                   <div className="col-xl-3 col-12 py-2 successSectionLeft">
                     Nomor Rekam Medis
                   </div>
                   <div className="col-xl-9 col-12 py-2 successSectionRight">
-                    121000210
+                    {typeof window !== 'undefined' && (localStorage.getItem('rekamMedis_booking') != '' ? localStorage.getItem('rekamMedis_booking') : '')}
                   </div>
                   <div className="col-xl-3 col-12 py-2 successSectionLeft">
                     Jenis Booking
@@ -95,13 +96,13 @@ function BookingSuccess() {
                     Tanggal
                   </div>
                   <div className="col-xl-9 col-12 py-2 successSectionRight">
-                  Rabu, 28 September 2021
+                  {typeof window !== 'undefined' && moment(localStorage.getItem('tanggal_booking')).format('dddd, DD MMMM YYYY')}
                   </div>
-                  <div className="col-xl-3 col-12 py-2 successSectionLeft">
+                  <div className="col-xl-3 col-12 py-2 successSectionLeft align-self-start">
                     Waktu
                   </div>
                   <div className="col-xl-9 col-12 py-2 successSectionRight">
-                    10.00<br></br>
+                  {typeof window !== 'undefined' && localStorage.getItem('jam_booking')}<br></br>
                     <span className='disclaimer'>Harap datang tepat waktu. Keterlambatan akan ditoleransi max. 30 menit.</span>
                   </div>
                   <div className='col-12 pt-3 successSectionTitle'>
@@ -117,13 +118,13 @@ function BookingSuccess() {
                     Metode Pembayaran
                   </div>
                   <div className="col-xl-9 col-12 py-2 successSectionRight">
-                    -
+                    Midtrans
                   </div>
                   <div className="col-xl-3 col-12 py-2 successSectionLeft">
                     Tanggal
                   </div>
                   <div className="col-xl-9 col-12 py-2 successSectionRight">
-                    Minggu, 25 September 2021
+                  {typeof window !== 'undefined' && moment(new Date()).format('DD MMMM YYYY HH:mm')}
                   </div>
                 </div>
                 </Card>

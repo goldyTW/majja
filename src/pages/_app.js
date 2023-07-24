@@ -15,15 +15,21 @@ import '../styles/doctorHome.css'
 import '../styles/chooseBooking.css'
 import '../styles/renderJam.css'
 import '../styles/dashboard.css'
+import '../styles/login.css'
+import '../styles/modal.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "swiper/swiper.min.css";
 import 'antd/dist/antd.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
+import { ApolloProvider } from '@apollo/client'
+import { useApollo } from '../../lib/apolloClient'
 
 export default function App({ Component, pageProps }) {
+  const apolloClient = useApollo(pageProps);
   return(
     <>
+    <ApolloProvider client={apolloClient}>
     <Head>
       {/* Google Font */}
       <link rel="preconnect" href="https://fonts.googleapis.com"></link>
@@ -39,6 +45,7 @@ export default function App({ Component, pageProps }) {
     </Head>
     <Component {...pageProps} />
     <ToastContainer />
+    </ApolloProvider>
     </>
   )
 }

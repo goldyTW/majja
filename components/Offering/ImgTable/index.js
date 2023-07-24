@@ -105,6 +105,10 @@ const Wrapper = styled.div`
   background: #ffffff;
   box-shadow: 0px 0px 2rem rgba(192, 192, 192, 0.25);
   border-radius: 5%;
+
+  @media (max-width: 1121px) {
+    box-shadow: none;
+  }
 `;
 
 const StyledText = styled.div`

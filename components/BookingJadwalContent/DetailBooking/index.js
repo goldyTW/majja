@@ -5,8 +5,6 @@ import styled from "styled-components";
 import { Icon } from "@iconify/react";
 
 function DetailBooking({ value, dateItem, showCalendar, setshowCalendar, bayar,loading }) {
-  // console.log("DetailValue:", value);
-  // console.log("detailDate:", dateItem);
   const getMonthName = (monthNumber) => {
     const date = new Date();
     date.setMonth(monthNumber - 1);
@@ -27,7 +25,7 @@ function DetailBooking({ value, dateItem, showCalendar, setshowCalendar, bayar,l
           fontFamily: "Poppins",
           fontStyle: "normal",
           fontWeight: "600",
-          fontSize: "var(--fs-20)",
+          fontSize: "22px",
           color: "#433B3B",
           paddingTop:'35px'
         }}

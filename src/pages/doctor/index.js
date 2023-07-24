@@ -23,7 +23,6 @@ function Dokter() {
   }
 
   const filterday = (value) => {
-    console.log(value)
     const filteredData = dokter.filter(entry =>
       (entry.jadwal.forEach(item => {
         item.hari.includes(value)

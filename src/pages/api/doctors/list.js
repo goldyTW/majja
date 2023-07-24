@@ -15,12 +15,12 @@ export default async function exportDoctor(req, res) {
 
     try {
         const dokter = await excuteQuery({
-            query: `SELECT * FROM tb_dokter`,
+            query: `SELECT a.*, b.pass FROM tb_dokter a LEFT JOIN tb_user b ON a.email = b.email order by a.modified_at DESC`,
             values:'',
         });
         res.status(200).json({ dokter })
     } catch (error) {
-        res.status(404).json({ msg: error.message });
+        res.status(404).json( error.toString() );
     }
 }
 
