@@ -56,6 +56,7 @@ export default function SignInForm({loading, setLoading}) {
           Cookies.set('token', token, { expires: 1 })
           Cookies.set('username', JSON.stringify(res.data.username), { expires: 1 })
           Cookies.set('is_admin', JSON.stringify(res.data.is_admin), { expires: 1 })
+          Cookies.set('email', JSON.stringify(res.data.email), { expires: 1 })
           router.push('/dashboard');
         }
       })

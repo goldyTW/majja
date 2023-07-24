@@ -7,37 +7,73 @@ import axios from 'axios';
 import FloatingWA from '../../../components/FloatingWA';
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
-import { dokter } from '../../../components/DokterData';
+// import { dokter } from '../../../components/DokterData';
 
 function Dokter() {
   const { Option } = Select;
   const { Search } = Input;
-  const [DataDokter, setDataDokter] = useState(dokter)
+  const [DataDokter, setDataDokter] = useState()
+  const [DataJadwalDokter, setDataJadwalDokter] = useState()
+  const [DataDokterMaster, setDataDokterMaster] = useState()
   const [dayselected, setdayselected] = useState()
+  const [layanan, setlayanan] = useState()
+  const [harihari, setharihari] = useState(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'])
+  const url =process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const [loading, setLoading] = useState(false);
 
   const onSearch = (value) => {
-      const filteredData = dokter.filter(entry =>
-        (entry.name.toLowerCase().includes(value))
+      const filteredData = DataDokterMaster.filter(entry =>
+        (entry.nama.toLowerCase().includes(value))
       );
       setDataDokter(filteredData);
   }
 
   const filterday = (value) => {
-    const filteredData = dokter.filter(entry =>
-      (entry.jadwal.forEach(item => {
-        item.hari.includes(value)
-        }
-      ))
+    let temp = [];
+    DataJadwalDokter.map((item, i) => (
+      item.hari == value && temp.indexOf(item.id_dokter) < 0 && temp.push(item.id_dokter)
+    ))
+
+    let filteredData = [];
+    DataDokterMaster.map((dktr, i) => (
+      temp.indexOf(dktr.id_dokter) > -1 && filteredData.push(dktr)
+    ))
+    
+    setDataDokter(filteredData);
+  }
+
+  const filterLayanan = (value) => {
+    const filteredData = DataDokterMaster.filter(entry =>
+      (entry.posisi.includes(value))
     );
     setDataDokter(filteredData);
   }
 
-  const handlePagination = async (value) => {
-    if((value*9)-1 > dokter.length){
-      setDataDokter([...slice2(dokter, (value-1)*9, dokter.length)])
+  const sortNama = (value) =>{
+    if(value == "atoz"){
+      const filteredData = DataDokterMaster.sort((a,b) => {
+       if(b.nama[4].toLowerCase() > a.nama[4].toLowerCase()){
+        return -1;
+       } 
+      })
+      setDataDokter(filteredData);
     }
     else{
-      setDataDokter([...slice2(dokter, (value-1)*9, (value*9))])
+      const filteredData = DataDokterMaster.sort((a,b) => {
+        if(b.nama[4].toLowerCase() < a.nama[4].toLowerCase()){
+          return -1;
+         } 
+      })
+      setDataDokter(filteredData);
+    }
+  };
+
+  const handlePagination = async (value) => {
+    if((value*9)-1 > DataDokterMaster.length){
+      setDataDokter([...slice2(DataDokterMaster, (value-1)*9, DataDokterMaster.length)])
+    }
+    else{
+      setDataDokter([...slice2(DataDokterMaster, (value-1)*9, (value*9))])
     }
   };
 
@@ -51,9 +87,27 @@ function Dokter() {
 }
 
   useEffect(() => {
-    setDataDokter([...slice2(dokter, 0, 9)])
+    setLoading(true)
+    axios.get(`${url}/api/doctors/list`,{
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(res => {
+      setDataDokter([...slice2(res.data.dokter, 0, 9)])
+      setDataDokterMaster(res.data.dokter)
+    })
+
+    axios.get(`${url}/api/doctors/schedule/list`,{
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(res => {
+      setLoading(false)
+      setDataJadwalDokter(res.data.jadwal)
+    })
   }, [])
-  
 
   return (
     <>
@@ -76,13 +130,19 @@ function Dokter() {
                       className='py-1'
                       placeholder="Nama Layanan"
                       optionFilterProp="children"
-                      // onChange={(e) => setsekilselected(e)}
-                      // value={sekilselected}
+                      onChange={(e) => filterLayanan(e)}
+                      value={layanan}
                       // filterOption={(input) =>
                       //   (option.children).toLowerCase().includes(input.toLowerCase())
                       //   }
                         >
-                      <Option value="all">All</Option>
+                      <Option value="Spesialis Anestesi Konsultan Intensive Care">Spesialis Anestesi Konsultan Intensive Care</Option>
+                      <Option value="Spesialis Obstetri dan Ginekologi">Spesialis Obstetri dan Ginekologi</Option>
+                      <Option value="Spesialis Penyakit Dalam">Spesialis Penyakit Dalam</Option>
+                      <Option value="Spesialis Anak">Spesialis Anak</Option>
+                      <Option value="Dokter Umum">Dokter Umum</Option>
+                      <Option value="Spesialis Gizi">Spesialis Gizi</Option>
+                      <Option value="Psikolog">Psikolog</Option>
                   </Select>
               </div>
               <div className="col-xl-3 col-md-6 col-12 px-3">
@@ -106,16 +166,12 @@ function Dokter() {
                 <span className='py-3'><b>Diurutkan dari</b></span>
                  <Select
                       style={{width: '100%'}}
-                      showSearch
                       className='py-1'
                       placeholder=""
                       optionFilterProp="children"
-                      defaultValue="atoz"
-                      // onChange={(e) => setsekilselected(e)}
+                      // defaultValue="atoz"
+                      onChange={(e) => sortNama(e)}
                       // value={sekilselected}
-                      // filterOption={(input) =>
-                      //   (option.children).toLowerCase().includes(input.toLowerCase())
-                      //   }
                         >
                       <Option value="atoz">A to Z</Option>
                       <Option value="ztoa">Z to A</Option>
@@ -123,40 +179,48 @@ function Dokter() {
               </div>
             </div>
           </div>
+          {
+          !loading?
           <div className='row'>
             {
-              DataDokter.map((item, i) => (
+             DataDokter?.map((item, i) => (
                 <div className='col-xl-4 col-lg-6 col-12 p-3' key={i}>
                   <div className='cardDokterList' >
                     <div className='d-flex'>
-                      <img src={item.image} height="122px"></img>
+                      <img src={item?.gambar} height="122px"></img>
                       <div className='ps-3' style={{height:"122px"}}>
-                        <span className='cardDokterTitle'>{item.name}</span>
-                        <p className='cardDokterText'>{item.position}</p>
+                        <span className='cardDokterTitle'>{item?.nama}</span>
+                        <p className='cardDokterText'>{item?.posisi}</p>
                         <div className='d-flex'>
                             <Icon
                                 icon="fa6-solid:briefcase-medical"
                                 className="me-2"
                                 style={{ cursor: "pointer", fontSize: "18px", color: "#8D8D8D" }}
                             />
-                            <p className='cardDokterText'>Pengalaman: {item.xp} tahun</p>
+                            <p className='cardDokterText'>Pengalaman: {item?.xp}</p>
                         </div>
                       </div>
                     </div>
                     <div className='dot my-3'></div>
                     {
-                      item && item.jadwal && item.jadwal.map((jdwl, i) => (
-                        <>
-                        <div className='row py-1'>
-                          <div className='col-3 text'>{jdwl.hari}</div>
-                          <div className='col-9'>
-                          {jdwl.jam != '' ? <span className='text2'> {jdwl.jam} </span> : <span className='text'>Tidak ada jadwal praktek</span>}
-                          {jdwl.jam2 && jdwl.jam2 != '' ? <span className='text2 ms-5'> {jdwl.jam2} </span> : ''}
-                          </div>
+                       harihari.map((hari, i) => (
+                        <div key={i}>
+                         <div className='row py-1'>
+                          <div className='col-2 text'>{hari}</div>
+                          {
+                            DataJadwalDokter?.map((jdwl, i) => (
+                              (jdwl.id_dokter == item.id_dokter && 
+                               ( jdwl.hari == hari &&
+                                <div className='col-5'><span className='text2'>{jdwl.jam_mulai+(jdwl.jam_selesai != null ? (' - '+jdwl.jam_selesai):'')}</span></div>
+                                // :
+                                // <div className='col-10'> <span className='text'>Tidak ada jadwal praktek</span></div>
+                                )
+                            )))
+                          }
+                         </div>
+                         <div className='line'></div>
                         </div>
-                        <div className='line'></div>
-                        </>
-                      ))
+                       ))
                     }
                     <Link href={'/booking/'+item.id} style={{textDecoration:'none'}}>
                     <div className='button2 mt-5'>Booking Jadwal</div>
@@ -166,9 +230,21 @@ function Dokter() {
               ))
             }
           </div>
+          :
+          <div className='col-11 py-5'>
+            <div className="loader">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+          }
           <div className='row justify-content-center'>
             <div className='col-12 text-center py-4'>
-              <Pagination onChange={(value) => handlePagination(value)} defaultCurrent={1} total={dokter.length}/>
+              <Pagination onChange={(value) => handlePagination(value)} defaultCurrent={1} total={DataDokterMaster?.length}/>
             </div>
           </div>
         </div>

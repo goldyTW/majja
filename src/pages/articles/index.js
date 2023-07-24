@@ -3,109 +3,56 @@ import Head from "next/head";
 import Navbar from "../../../components/Navbar";
 import FloatingWA from "../../../components/FloatingWA";
 import Footer from "../../../components/footer";
-import ArticlesPageContent from "../../../components/ArticlesPageContent";
+// import ArticlesPageContent from "../../../components/ArticlesPageContent";
 import styled from "styled-components";
 import AOS from "aos";
 import { Input, Pagination } from "antd";
-import { useQuery, gql, ApolloClient, InMemoryCache, useMutation } from '@apollo/client';
-import { addApolloState, initializeApollo } from "../../../lib/apolloClient";
 import BacaSelengkapnya from "../../../components/BacaSelengkapnya";
 import moment from "moment";
 import "moment/locale/id";
 import { useRouter } from "next/router";
+import axios from "axios";
 moment.locale("id");
-
-const TOP = 8;
-const QUERY_BLOG = gql`
-query artikel($top: Int, $skip:Int){
-  queryArtikelContentsWithTotal(top:$top, skip:$skip){
-    total
-    items{
-    id
-    data{
-      judul{
-        iv
-      }
-      slug{
-        iv
-      }
-      photo{
-        iv
-      }
-      date{
-        iv
-      }
-      content{
-        iv
-      }
-      creator{
-        iv
-      }
-    }
-    }
-  }
-}`
 
 function Articles({data}) {
   const { Search } = Input;
   const [newsList, setNewsList] = useState([]);
-  const [total, setTotal] = useState(0);
+  const [newsListMaster, setNewsListMaster] = useState([]);
   const router = useRouter();
-  const apolloClient = new ApolloClient({
-    uri: 'https://cloud.squidex.io/api/content/artikel/graphql',
-    cache: new InMemoryCache({
-      dataIdFromObject: (o) => (o.id ? `${o.__typename}:${o.id}` : null),
-    }),
-  });
-
-  useEffect(() => {
-    data.items && setNewsList(data.items);
-    data.total && setTotal(data.total);
-  }, [data]);
 
   useEffect(() => {
     AOS.init();
+
+    axios.get(`https://cloud.squidex.io/api/content/artikel/artikel`,{
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(res => {
+      setNewsList(res.data.items.length >= 12 ? [...slice2(res.data.items, 0, 12)] : res.data.items)
+      setNewsListMaster(res.data.items)
+    })
   }, []);
 
-  const loadNews = async (top, skip) => {
-    // let orderby = '';
-    // if (sort === 'asc') orderby += "data/date/iv asc";
-    // if (sort === 'desc') orderby += "data/date/iv desc";
-
-    const newsMore = await apolloClient.query({
-      query: QUERY_BLOG,
-      variables: {
-        top,
-        skip,
-      },
-    });
-    
-    return newsMore.data;
-  };
-
-  const handleLoadMore = async (value) => {
-    // if (total <= newsArr.length) return;
-    var x = Math.ceil(total / TOP);
-    var i;
-    for (i=0; i<x; i++){
-      if(value.selected == i){
-        const moreNews = await loadNews(TOP, i*TOP);
-        setNewsList(moreNews.queryArtikelContentsWithTotal.items);
-      }
+  const handlePagination = async (value) => {
+    if (value * 12- 1 > newsList.length) {
+      setNewsList([...slice2(newsListMaster, (value - 1) * 12, newsListMaster.length)]);
+    } else {
+      setNewsList([...slice2(newsListMaster, (value - 1) * 12, value * 12)]);
     }
   };
 
-  // const handlePagination = async (value) => {
-  //   if (value * 16 - 1 > newsList.length) {
-  //     setDataNews([...slice2(newsList, (value - 1) * 16, newsList.length)]);
-  //   } else {
-  //     setDataNews([...slice2(newsList, (value - 1) * 16, value * 16)]);
-  //   }
-  // };
+  function slice2(array, val, offset) {
+    var subarray = [];
+    for (var i = val; i<offset; i++) {
+        subarray.push(array[i]);
+    }
 
+    return subarray;
+}
 
   const onSearch = (value) => {
-    const filteredData = data.items.filter((entry) =>
+    const filteredData = newsListMaster.filter((entry) =>
       entry.data.judul.iv.toLowerCase().includes(value)
     );
     setNewsList(filteredData);
@@ -130,33 +77,30 @@ function Articles({data}) {
           </SearchWrapper>
           <div className="row" data-aos="fade-up">
             {newsList?.map((item, index) => (
-              <div className="col-xl-3 col-lg-5 col-md-6 col-12 p-3" key={index} onClick={()=> router.push('/articles/' + item.data.slug.iv)}>
-                {/* <Link href={item.link} style={{textDecoration:'none'}}> */}
+              <div className="col-xl-3 col-lg-5 col-md-6 col-12 p-3" key={index} onClick={()=> router.push('/articles/' + item?.id)}>
                 <>
-                  <img src={item.data.photo.iv} width="100%"></img>
+                  <img src={item?.data?.photo?.iv} width="100%"></img>
                   <CardWrapper className="p-3">
                     <CardTitleWrapper>
-                      <CardTitle>{item.data.judul.iv}</CardTitle>
+                      <CardTitle>{item?.data?.judul?.iv}</CardTitle>
                     </CardTitleWrapper>
                     <CardBodyText>
-                      {moment(item.data.date.iv).format("DD MMMM YYYY")}
+                      {moment(item?.data?.date?.iv).format("DD MMMM YYYY")}
                     </CardBodyText>
                     <CardBodyWrapper className="my-2">
-                      <CardBodyText><div dangerouslySetInnerHTML={{__html: item.data.content.iv}}></div> </CardBodyText>
+                      <CardBodyText><div dangerouslySetInnerHTML={{__html: item?.data?.content?.iv}}></div> </CardBodyText>
                     </CardBodyWrapper>
-                    <BacaSelengkapnya link={'/articles/' + item.data.slug.iv}></BacaSelengkapnya>
+                    <BacaSelengkapnya link={'/articles/' + item?.id}></BacaSelengkapnya>
                   </CardWrapper>
                 </>
-                {/* </Link> */}
               </div>
             ))}
           </div>
           <div className="col-12 text-center py-4">
             <Pagination
-              // onChange={(value) => handlePagination(value)}
-              onChange={(value)=> handleLoadMore(value)}
+              onChange={(value) => handlePagination(value)}
               defaultCurrent={1}
-              total={newsList.length}
+              total={newsListMaster.length}
             />
           </div>
         </Wrapper>
@@ -241,24 +185,3 @@ const CardBodyText = styled.p`
 `;
 
 export default Articles;
-
-export async function getServerSideProps(){
-  const apolloClient = initializeApollo()
-  
-  let {data} = await apolloClient.query({
-      query: QUERY_BLOG,
-      variables: { top: TOP, skip: 0 },
-  })
-
-  if(data.queryArtikelContentsWithTotal.length < 0){
-    return {
-      notFound: true,
-    }
-  }
-
-  return addApolloState(apolloClient, {
-    props: {
-      data:data.queryArtikelContentsWithTotal
-    }
-  })
-}

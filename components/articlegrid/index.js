@@ -45,13 +45,13 @@ function ArticleGridHome({newsList}) {
         <div className="row justify-content-center" data-aos="fade-up">
         {
             newsList.map((item, index)=>(     
-            <div className="col-xl-3 col-lg-5 col-md-6 col-12 p-3" key={index} onClick={()=> router.push('/articles/' + item.data.slug.iv)}>
+            <div className="col-xl-3 col-lg-5 col-md-6 col-12 p-3" key={index} onClick={()=> router.push('/articles/' + item.id)}>
                 <img src={item.data.photo.iv} width="100%"></img>  
                 <div className="cardArticle p-3">
                     <h1 className="cardArticleTitle">{item.data.judul.iv}</h1>
                     <div className="cardArticleText my-2"  dangerouslySetInnerHTML={{__html: item.data.content.iv}}>
                     </div>
-                    <BacaSelengkapnya link={'/articles/'+item.data.slug.iv}></BacaSelengkapnya>
+                    <BacaSelengkapnya link={'/articles/'+item.id}></BacaSelengkapnya>
                 </div>
             </div>
             ))

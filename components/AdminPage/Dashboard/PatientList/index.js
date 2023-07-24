@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Table, Tag, Modal, Select } from "antd";
-// import { dokter } from "../../../DokterData";
 import moment from "moment";
 import "moment/locale/id";
 import { Input, Pagination } from "antd";
 import { Icon } from "@iconify/react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 moment.locale("id");
 const { Search } = Input;
 
@@ -16,6 +17,7 @@ function PatientList({ updateRes }) {
   const [DataPatientMaster, setDataPatientMaster] = useState();
   const [loading, setLoading] = useState(false);
    const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const router = useRouter();
 
   const onSearch = (value) => {
     const filteredData =  DataPatientMaster.filter(entry =>
@@ -26,6 +28,10 @@ function PatientList({ updateRes }) {
 
   useEffect(() => {
     setLoading(true)
+    if(!Cookies.get('token')){
+      router.push('/login')
+    }
+    else{
     axios.get(`${url}/api/patient/list`,{
         headers: {
           'Content-Type': 'application/json',
@@ -36,6 +42,7 @@ function PatientList({ updateRes }) {
         setDataPatient(res.data.pasien)
         setDataPatientMaster(res.data.pasien)
       })
+    }
   }, [])
 
   const columns = [

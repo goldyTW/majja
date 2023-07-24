@@ -17,7 +17,7 @@ function CardLayanan({text, title}) {
         <div className='cardLayananArticle py-2'>
             {text}
         </div>
-        <BacaSelengkapnya></BacaSelengkapnya>
+        <BacaSelengkapnya link="/services"></BacaSelengkapnya>
     </div>
     // </Link>
   )

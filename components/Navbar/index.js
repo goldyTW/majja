@@ -184,6 +184,7 @@ const Header = () => {
   const router = useRouter();
   const [navbar, setNavbar] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [menu, setmenu] = useState("");
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -222,7 +223,7 @@ const Header = () => {
           </Logo>
           <Menu isMenuOpen={isMenuOpen}>
             <li>
-              <Link href="/" className={router.pathname == "/" ? "active" : ""}>
+              <Link href="/" className={(menu == "" && router.pathname == "/") ? "active" : ""}  onClick={() => setmenu("")}>
                 Home
               </Link>
             </li>
@@ -230,7 +231,8 @@ const Header = () => {
               <Link2
                 // href="/tentang"
                 to="offering"
-                className={router.pathname == "/tentang" ? "active" : ""}
+                onClick={() => router.pathname == "/" && setmenu("offering")}
+                className={menu == "offering" ? "active" : ""}
               >
                 Tentang Kami
               </Link2>
@@ -239,7 +241,8 @@ const Header = () => {
               <Link2
                 // href="/layanan"
                 to="layanan"
-                className={router.pathname == "/layanan" ? "active" : ""}
+                onClick={() => router.pathname == "/" && setmenu("layanan")}
+                className={(menu == "layanan" || router.pathname == "/services") ? "active" : ""}
               >
                 Layanan
               </Link2>
@@ -248,7 +251,8 @@ const Header = () => {
               <Link2
                 // href="/doctor"
                 to="doctor"
-                className={router.pathname == "/doctor" ? "active" : ""}
+                onClick={() => router.pathname == "/" && setmenu("doctor")}
+                className={(menu == "doctor" || router.pathname == "/doctor") ? "active" : ""}
               >
                 Dokter
               </Link2>
@@ -257,7 +261,8 @@ const Header = () => {
               <Link2
                 // href="/artikel"
                 to="artikel"
-                className={router.pathname == "/artikel" ? "active" : ""}
+                onClick={() => router.pathname == "/" && setmenu("artikel")}
+                className={(menu == "artikel" || router.pathname == "/articles") ? "active" : ""}
               >
                 Artikel
               </Link2>
@@ -266,13 +271,14 @@ const Header = () => {
               <Link2
                 // href="/hubungiKami"
                 to="findUs"
-                className={router.pathname == "/hubungiKami" ? "active" : ""}
+                onClick={() => router.pathname == "/" && setmenu("findUs")}
+                className={menu == "findUs" ? "active" : ""}
               >
                 Hubungi Kami
               </Link2>
             </li>
             <li>
-              <Link href="/booking">
+              <Link href="/doctor">
                 <LoginButtonMobile>Booking Jadwal</LoginButtonMobile>
               </Link>
             </li>

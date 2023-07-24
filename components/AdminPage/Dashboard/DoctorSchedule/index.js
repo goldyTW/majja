@@ -16,6 +16,8 @@ import { Icon } from "@iconify/react";
 import dayjs, { recur } from "dayjs";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 moment.locale("id");
 const { Option } = Select;
 
@@ -28,8 +30,8 @@ function DoctorSchedule({ updateRes }) {
   const [recurring, setrecurring] = useState();
   const [jamMulai, setjamMulai] = useState();
   const [jamSelesai, setjamSelesai] = useState();
-  const [angkaUlang, setAngkaUlang] = useState();
-  const [textUlang, setTextUlang] = useState();
+  const [angkaUlang, setAngkaUlang] = useState('');
+  const [textUlang, setTextUlang] = useState('');
   const [ulangHari, setulangHari] = useState();
   const [berakhirpada, setberakhirpada] = useState();
   const [date, setDate] = useState();
@@ -50,36 +52,42 @@ function DoctorSchedule({ updateRes }) {
   const [idjadwal, setidjadwal] = useState();
   const [btnTab, setbtnTab] = useState("tabel");
   const [today, setToday] = useState(new Date());
-  const [loading, setLoading] = useState(false);
-  const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const [loading, setLoading] = useState(false); 
+  const url =  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const router = useRouter();
 
   useEffect(() => {
     setLoading(true)
-    axios.get(`${url}/api/doctors/schedule/list`,{
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(res => {
-      setDataDokter(res.data.jadwal)
-    })
-    axios.get(`${url}/api/doctors/list`,{
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(res => {
-      setDataDokterMaster(res.data.dokter)
-    })
-    axios.get(`${url}/api/doctors/schedule/list_khusus`,{
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(res => {
-      setLoading(false)
-      setjadwalkhusus(res.data.jadwal)
-    })
+    if(!Cookies.get('token')){
+      router.push('/login')
+    }
+    else{
+      axios.get(`${url}/api/doctors/schedule/list`,{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => {
+        setDataDokter(res.data.jadwal)
+      })
+      axios.get(`${url}/api/doctors/list`,{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => {
+        setDataDokterMaster(res.data.dokter)
+      })
+      axios.get(`${url}/api/doctors/schedule/list_khusus`,{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => {
+        setLoading(false)
+        setjadwalkhusus(res.data.jadwal)
+      })
+    }
     
   }, [])
 
@@ -132,16 +140,18 @@ function DoctorSchedule({ updateRes }) {
         addDokterAPI(item.jamMulai, item.jamSelesai, item.recurring, item.rep, item.onDate, item.afterDate)
       ))
       addDokterAPI(jamMulai, jamSelesai, recurring, repetisi, onDate, afterDate)
+      localStorage.setItem('halamandash', 5)
       // window.location.reload()
-      updateRes(5)
+      // updateRes(5)
     }
     else{
       addDokterAPI(jamMulai, jamSelesai, recurring, repetisi, onDate, afterDate)
-      // window.location.reload()
-      updateRes(5)
+      localStorage.setItem('halamandash', 5)
+      window.location.reload()
+      // updateRes(5)
     }
   }
-
+  
   const openModalDoctor = (record) => {
     setModalOpen2(true);
     setNamaDokter(record.nama);
@@ -260,9 +270,10 @@ function DoctorSchedule({ updateRes }) {
       .then(res => {
         if(res.status == 200){
           toast.success('Seluruh Jadwal Berhasil Dihapus!');
-          // window.location.reload()
-          updateRes(5)
           setModalOpen3(false);
+          localStorage.setItem('halamandash', 5)
+          window.location.reload()
+          // updateRes(5)
         }
         else{
           toast.error('Silahkan Coba Lagi')
@@ -285,9 +296,10 @@ function DoctorSchedule({ updateRes }) {
       .then(res => {
         if(res.status == 200){
           toast.success('Jadwal tanggal '+hapusJadwal+' berhasil dihapus!');
-          // window.location.reload()
-          updateRes(5)
           setModalOpen3(false);
+          localStorage.setItem('halamandash', 5)
+          window.location.reload()
+          // updateRes(5)
         }
         else{
           toast.error('Silahkan Coba Lagi')
@@ -457,7 +469,7 @@ function DoctorSchedule({ updateRes }) {
               </div>
             </div>
             <div className="row py-2">
-              <div className="col-lg-3 col-12 modalSubtitle align-self-center">
+              <div className="col-lg-3 col-12 modalSubtitle align-self-start mt-1">
                 Jam Praktek
               </div>
               <div className="col-lg-9 col-12 modalSubtitle align-self-center">

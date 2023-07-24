@@ -42,7 +42,7 @@ query artikel($filterString:String){
 
 const DETAIL_VAR = (params) => {
   return {
-      filterString: "data/slug/iv eq '" + params + "'"
+      filterString: "id eq '" + params + "'"
   }
 }
 
@@ -74,7 +74,7 @@ export async function getServerSideProps(context){
 
   let {data} = await apolloClient.query({
       query: QUERY_BLOG,
-      variables: DETAIL_VAR(context.params.slug),
+      variables: DETAIL_VAR(context.params.id),
     })
 
   // let blog = await apolloClient.query({

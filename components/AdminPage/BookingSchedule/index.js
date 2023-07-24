@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Table, Tag, Modal, Select, Input, Pagination  } from "antd";
-// import { dokter } from "../../../DokterData";
 import moment from "moment";
 import "moment/locale/id";
 import { Icon } from "@iconify/react";
-// import NewDoctor from "../NewDoctor";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 moment.locale("id");
 const { Search } = Input;
 const { Option } = Select;
@@ -27,18 +27,24 @@ function BookingSchedule({ updateRes }) {
   const [keluhan, setkeluhan] = useState();
   const [catatan, setCatatan] = useState();
   const [idBooking, setidBooking] = useState();
+  const router = useRouter();
 
   useEffect(() => {
-    axios
-      .get(`${url}/api/booking`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        setDataBookingSchedule(res.data.result);
-        setDataBookingScheduleMaster(res.data.result);
-      });
+    if(!Cookies.get('token')){
+      router.push('/login')
+    }
+    else{
+      axios
+        .get(`${url}/api/booking`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          setDataBookingSchedule(res.data.result);
+          setDataBookingScheduleMaster(res.data.result);
+        });
+    }
   }, []);
 
   const handleStatusChange = (value, id, note) => {

@@ -10,10 +10,10 @@ function Index() {
   const router = useRouter();
 
   useEffect(() => {
-    // const token = Cookies.get('token');
-    // if(token){
-    //   router.push('/dashboard')
-    // }
+    const token = Cookies.get('token');
+    if(token){
+      router.push('/dashboard')
+    }
   }, [])
 
   return (

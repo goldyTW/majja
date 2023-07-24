@@ -1,5 +1,6 @@
 export const serviceList = [
   {
+    id:1,
     title: "Polycystic Ovarian Syndrome (PCOS)",
     text: "Sindrom polikistik ovarium atau polycystic ovarian syndrome (PCOS) adalah gangguan hormon yang terjadi pada wanita di usia ...",
     link: "/",
@@ -16,6 +17,7 @@ export const serviceList = [
       "<p>Boston Children&#39;s Hospital. What is Craniosynostosis?<br />Royal Children&#39;s Hospital Melbourne (2020). Plagiocephaly &ndash; Misshapen Head.<br />Christiano, D. Healthline (2018). Understanding Flat Head Syndrome (Plagiocephaly) in Babies.<br />KidsHealth, Nemours (2023). For Parents. Flat Head Syndrome (Positional Plagiocephaly).</p>",
   },
   {
+    id:2,
     title: "Endometriosis",
     text: "Endometriosis adalah kondisi ketika endometrium tumbuh di luar dinding rahim. Pada kondisi ini, endometrium dapat bertumb...",
     link: "/",
@@ -32,6 +34,7 @@ export const serviceList = [
       "<p>Boston Children&#39;s Hospital. What is Craniosynostosis?<br />Royal Children&#39;s Hospital Melbourne (2020). Plagiocephaly &ndash; Misshapen Head.<br />Christiano, D. Healthline (2018). Understanding Flat Head Syndrome (Plagiocephaly) in Babies.<br />KidsHealth, Nemours (2023). For Parents. Flat Head Syndrome (Positional Plagiocephaly).</p>",
   },
   {
+    id:3,
     title: "Kista Endometriosis",
     text: "Kista endometriosis bisa dialami oleh remaja atau wanita dewasa. Kondisi ini paling sering menimbulkan gejala berupa kra...",
     link: "/",
@@ -48,6 +51,7 @@ export const serviceList = [
       "<p>Boston Children&#39;s Hospital. What is Craniosynostosis?<br />Royal Children&#39;s Hospital Melbourne (2020). Plagiocephaly &ndash; Misshapen Head.<br />Christiano, D. Healthline (2018). Understanding Flat Head Syndrome (Plagiocephaly) in Babies.<br />KidsHealth, Nemours (2023). For Parents. Flat Head Syndrome (Positional Plagiocephaly).</p>",
   },
   {
+    id:4,
     title: "Adenomiosis",
     text: "Adenomyosis atau adenomiosis adalah kondisi ketika endometrium atau lapisan permukaan rongga rahim tumbu...",
     link: "/",
@@ -64,6 +68,7 @@ export const serviceList = [
       "<p>Boston Children&#39;s Hospital. What is Craniosynostosis?<br />Royal Children&#39;s Hospital Melbourne (2020). Plagiocephaly &ndash; Misshapen Head.<br />Christiano, D. Healthline (2018). Understanding Flat Head Syndrome (Plagiocephaly) in Babies.<br />KidsHealth, Nemours (2023). For Parents. Flat Head Syndrome (Positional Plagiocephaly).</p>",
   },
   {
+    id:5,
     title: "Mioma",
     text: "Mioma merupakan suatu pertumbuhan daging di dalam rahim atau di luar rahim yang tidak bersifat ganas. Mioma bera...",
     link: "/",
@@ -80,6 +85,7 @@ export const serviceList = [
       "<p>Boston Children&#39;s Hospital. What is Craniosynostosis?<br />Royal Children&#39;s Hospital Melbourne (2020). Plagiocephaly &ndash; Misshapen Head.<br />Christiano, D. Healthline (2018). Understanding Flat Head Syndrome (Plagiocephaly) in Babies.<br />KidsHealth, Nemours (2023). For Parents. Flat Head Syndrome (Positional Plagiocephaly).</p>",
   },
   {
+    id:6,
     title: "Infeksi Ginekologi",
     text: "Peradangan di dalam alat kelamin pada wanita maupun pria merupakan masalah penting dalam ginekologi dan venereolo...",
     link: "/",
@@ -96,6 +102,7 @@ export const serviceList = [
       "<p>Boston Children&#39;s Hospital. What is Craniosynostosis?<br />Royal Children&#39;s Hospital Melbourne (2020). Plagiocephaly &ndash; Misshapen Head.<br />Christiano, D. Healthline (2018). Understanding Flat Head Syndrome (Plagiocephaly) in Babies.<br />KidsHealth, Nemours (2023). For Parents. Flat Head Syndrome (Positional Plagiocephaly).</p>",
   },
   {
+    id:7,
     title: "Polip Endometrium",
     text: "Polip endometrium juga dikenal sebagai polip rahim. Ini merupakan pertumbuhan jaringan yang tidak normal di lap...",
     link: "/",
@@ -112,6 +119,7 @@ export const serviceList = [
       "<p>Boston Children&#39;s Hospital. What is Craniosynostosis?<br />Royal Children&#39;s Hospital Melbourne (2020). Plagiocephaly &ndash; Misshapen Head.<br />Christiano, D. Healthline (2018). Understanding Flat Head Syndrome (Plagiocephaly) in Babies.<br />KidsHealth, Nemours (2023). For Parents. Flat Head Syndrome (Positional Plagiocephaly).</p>",
   },
   {
+    id:8,
     title: "Sumbatan Tuba Fallopi",
     text: "Tuba falopi merupakan bagian dari sistem reproduksi wanita yang berperan penting dalam proses menstruasi dan pembuah...",
     link: "/",
@@ -128,6 +136,7 @@ export const serviceList = [
       "<p>Boston Children&#39;s Hospital. What is Craniosynostosis?<br />Royal Children&#39;s Hospital Melbourne (2020). Plagiocephaly &ndash; Misshapen Head.<br />Christiano, D. Healthline (2018). Understanding Flat Head Syndrome (Plagiocephaly) in Babies.<br />KidsHealth, Nemours (2023). For Parents. Flat Head Syndrome (Positional Plagiocephaly).</p>",
   },
   {
+    id:9,
     title: "Evaluasi Awal Infertilitas Pria",
     text: "Gangguan kesuburan atau infertilitas pria merupakan salah satu faktor yang dapat menghambat pasangan untuk m...",
     link: "/",
@@ -144,6 +153,7 @@ export const serviceList = [
       "<p>Boston Children&#39;s Hospital. What is Craniosynostosis?<br />Royal Children&#39;s Hospital Melbourne (2020). Plagiocephaly &ndash; Misshapen Head.<br />Christiano, D. Healthline (2018). Understanding Flat Head Syndrome (Plagiocephaly) in Babies.<br />KidsHealth, Nemours (2023). For Parents. Flat Head Syndrome (Positional Plagiocephaly).</p>",
   },
   {
+    id:10,
     title: "Analisa Sperma",
     text: "Pemeriksaan sperma adalah prosedur yang dilakukan untuk menganalisis kuantitas dan kualitas sperma. Selain itu, pemer...",
     link: "/",
@@ -160,6 +170,7 @@ export const serviceList = [
       "<p>Boston Children&#39;s Hospital. What is Craniosynostosis?<br />Royal Children&#39;s Hospital Melbourne (2020). Plagiocephaly &ndash; Misshapen Head.<br />Christiano, D. Healthline (2018). Understanding Flat Head Syndrome (Plagiocephaly) in Babies.<br />KidsHealth, Nemours (2023). For Parents. Flat Head Syndrome (Positional Plagiocephaly).</p>",
   },
   {
+    id:11,
     title: "Gangguan Haid",
     text: "Gangguan menstruasi adalah kelainan yang terjadi pada siklus menstruasi. Ada beragam gangguan menstruasi yang dap...",
     link: "/",
@@ -176,6 +187,7 @@ export const serviceList = [
       "<p>Boston Children&#39;s Hospital. What is Craniosynostosis?<br />Royal Children&#39;s Hospital Melbourne (2020). Plagiocephaly &ndash; Misshapen Head.<br />Christiano, D. Healthline (2018). Understanding Flat Head Syndrome (Plagiocephaly) in Babies.<br />KidsHealth, Nemours (2023). For Parents. Flat Head Syndrome (Positional Plagiocephaly).</p>",
   },
   {
+    id:12,
     title: "Penjadwalan Laparoscopy",
     text: "Laparoskopi adalah prosedur yang dilakukan untuk memeriksa dan mengobati kondisi bagian dalam perut atau panggul. Prose...",
     link: "/",
@@ -192,6 +204,7 @@ export const serviceList = [
       "<p>Boston Children&#39;s Hospital. What is Craniosynostosis?<br />Royal Children&#39;s Hospital Melbourne (2020). Plagiocephaly &ndash; Misshapen Head.<br />Christiano, D. Healthline (2018). Understanding Flat Head Syndrome (Plagiocephaly) in Babies.<br />KidsHealth, Nemours (2023). For Parents. Flat Head Syndrome (Positional Plagiocephaly).</p>",
   },
   {
+    id:13,
     title: "Tracking Cycle",
     text: "Tracking cycle dalah pola perhitungan masa ovulasi atau masa subur, berdasarkan rata-rata siklus haid pada pasien wani...",
     link: "/",
@@ -208,6 +221,7 @@ export const serviceList = [
       "<p>Boston Children&#39;s Hospital. What is Craniosynostosis?<br />Royal Children&#39;s Hospital Melbourne (2020). Plagiocephaly &ndash; Misshapen Head.<br />Christiano, D. Healthline (2018). Understanding Flat Head Syndrome (Plagiocephaly) in Babies.<br />KidsHealth, Nemours (2023). For Parents. Flat Head Syndrome (Positional Plagiocephaly).</p>",
   },
   {
+    id:14,
     title: "IUI - Inseminasi",
     text: "Inseminasi buatan adalah salah satu prosedur medis untuk mengatasi masalah kesuburan (infertilitas). Inseminasi buatan b...",
     link: "/",
@@ -224,6 +238,7 @@ export const serviceList = [
       "<p>Boston Children&#39;s Hospital. What is Craniosynostosis?<br />Royal Children&#39;s Hospital Melbourne (2020). Plagiocephaly &ndash; Misshapen Head.<br />Christiano, D. Healthline (2018). Understanding Flat Head Syndrome (Plagiocephaly) in Babies.<br />KidsHealth, Nemours (2023). For Parents. Flat Head Syndrome (Positional Plagiocephaly).</p>",
   },
   {
+    id:15,
     title: "Program Bayi Tabung",
     text: "Bayi tabung adalah prosedur untuk membantu wanita agar bisa hamil. Prosedur ini diperuntukkan bagi pasangan yang sulit memili...",
     link: "/",
@@ -240,6 +255,7 @@ export const serviceList = [
       "<p>Boston Children&#39;s Hospital. What is Craniosynostosis?<br />Royal Children&#39;s Hospital Melbourne (2020). Plagiocephaly &ndash; Misshapen Head.<br />Christiano, D. Healthline (2018). Understanding Flat Head Syndrome (Plagiocephaly) in Babies.<br />KidsHealth, Nemours (2023). For Parents. Flat Head Syndrome (Positional Plagiocephaly).</p>",
   },
   {
+    id:16,
     title: "Histeroscopy",
     text: "Histeroskopi adalah prosedur pemeriksaan kondisi leher rahim dan bagian dalamnya. Prosedur ini dapat digunakan untuk mendi...",
     link: "/",
@@ -256,6 +272,7 @@ export const serviceList = [
       "<p>Boston Children&#39;s Hospital. What is Craniosynostosis?<br />Royal Children&#39;s Hospital Melbourne (2020). Plagiocephaly &ndash; Misshapen Head.<br />Christiano, D. Healthline (2018). Understanding Flat Head Syndrome (Plagiocephaly) in Babies.<br />KidsHealth, Nemours (2023). For Parents. Flat Head Syndrome (Positional Plagiocephaly).</p>",
   },
   {
+    id:17,
     title: "Polycystic Ovarian Syndrome (PCOS)",
     text: "Sindrom polikistik ovarium atau polycystic ovarian syndrome (PCOS) adalah gangguan hormon yang terjadi pada wanita di usia ...",
     link: "/",
@@ -272,6 +289,7 @@ export const serviceList = [
       "<p>Boston Children&#39;s Hospital. What is Craniosynostosis?<br />Royal Children&#39;s Hospital Melbourne (2020). Plagiocephaly &ndash; Misshapen Head.<br />Christiano, D. Healthline (2018). Understanding Flat Head Syndrome (Plagiocephaly) in Babies.<br />KidsHealth, Nemours (2023). For Parents. Flat Head Syndrome (Positional Plagiocephaly).</p>",
   },
   {
+    id:18,
     title: "Endometriosis",
     text: "Endometriosis adalah kondisi ketika endometrium tumbuh di luar dinding rahim. Pada kondisi ini, endometrium dapat bertumb...",
     link: "/",
@@ -288,6 +306,7 @@ export const serviceList = [
       "<p>Boston Children&#39;s Hospital. What is Craniosynostosis?<br />Royal Children&#39;s Hospital Melbourne (2020). Plagiocephaly &ndash; Misshapen Head.<br />Christiano, D. Healthline (2018). Understanding Flat Head Syndrome (Plagiocephaly) in Babies.<br />KidsHealth, Nemours (2023). For Parents. Flat Head Syndrome (Positional Plagiocephaly).</p>",
   },
   {
+    id:19,
     title: "Kista Endometriosis",
     text: "Kista endometriosis bisa dialami oleh remaja atau wanita dewasa. Kondisi ini paling sering menimbulkan gejala berupa kra...",
     link: "/",

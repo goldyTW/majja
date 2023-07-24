@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Table, Tag, Select, Modal, Input} from "antd";
-// import { dataSource } from "../../DashboardData";
 import moment from "moment";
 import "moment/locale/id";
 import { Icon } from "@iconify/react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 moment.locale("id");
 const { Option } = Select;
 const { Search } = Input;
@@ -33,6 +34,7 @@ function Dashboard({ updateRes }) {
   const [jumlahpasien, setjumlahpasien] = useState()
   const [catatan, setCatatan] = useState();
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   
   const onChange = (pagination, filters, sorter, extra) => {
@@ -174,7 +176,11 @@ function Dashboard({ updateRes }) {
 
   useEffect(() => {
     setLoading(true)
-    axios.get(`${url}/api/booking`,{
+    if(!Cookies.get('token')){
+      router.push('/login')
+    }
+    else{
+      axios.get(`${url}/api/booking`,{
         headers: {
           'Content-Type': 'application/json',
         },
@@ -193,6 +199,7 @@ function Dashboard({ updateRes }) {
         setLoading(false)
         setjumlahpasien(res.data.pasien.length)
       })
+    }
   }, [])
 
   const onSearch = (value) => {

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { Table, Tag, Modal, Select } from "antd";
 import moment from "moment";
 import "moment/locale/id";
-import { useForm } from "react-hook-form";
 import { Input, Pagination, DatePicker } from "antd";
 import { useQuery, gql, useMutation } from '@apollo/client';
 import { Icon } from "@iconify/react";
@@ -148,6 +147,17 @@ function ArticleDashboard({ updateRes }) {
       )
       })
   }
+
+  useEffect(() => {
+    setLoading(true)
+    if(!Cookies.get('token')){
+      router.push('/login')
+    }
+    else{
+      setLoading(false)
+    }
+  }, [])
+  
 
   const deleteArticle = (id) => {
     axios.delete(`https://cloud.squidex.io/api/content/artikel/artikel/`+id,{

@@ -12,6 +12,8 @@ import DoctorSchedule from "../../../components/AdminPage/Dashboard/DoctorSchedu
 import { useRouter } from "next/router";
 import BookingSchedule from "../../../components/AdminPage/BookingSchedule";
 import ArticleDashboard from "../../../components/AdminPage/Dashboard/ArticleDashboard";
+import Setting from "../../../components/AdminPage/Dashboard/Setting";
+import Cookies from "js-cookie";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -193,9 +195,9 @@ function Dashboard() {
             items={items}
             onSelect={handleMenuSelect}
           />
-          {/* <div className="text-center mx-auto py-1 px-5 my-3" style={{position:'absolute', bottom:'20px'}}>
+          <div className="text-center mx-auto py-1 px-5 my-3" style={{position:'absolute', bottom:'20px'}}>
             <button className="buttonAlt" onClick={() => logout()}>Logout</button>
-          </div> */}
+          </div>
         </Sider>
         <Layout
           style={{width:'100px'}}
@@ -227,18 +229,7 @@ function Dashboard() {
                ) : selectedKey == 6 ? (
                 <ArticleDashboard updateRes={setSelectedKey} />
             ) : selectedKey == 7 ? (
-              <>
-                <h1>Pengaturan</h1>
-                <div
-                  style={{
-                    padding: 24,
-                    minHeight: 360,
-                    background: "#FFFFFF",
-                  }}
-                >
-                  Pengaturan
-                </div>
-              </>
+             <Setting></Setting>
             ) : (
               <></>
             )}

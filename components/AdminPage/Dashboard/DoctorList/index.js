@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Table, Tag, Modal, Select } from "antd";
-// import { dokter } from "../../../DokterData";
 import moment from "moment";
 import "moment/locale/id";
 import { Input, Pagination } from "antd";
@@ -9,6 +8,8 @@ import { Icon } from "@iconify/react";
 import NewDoctor from "../NewDoctor";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 moment.locale("id");
 const { Search } = Input;
 
@@ -32,6 +33,7 @@ function DoctorList({ updateRes }) {
   const [showpassword, setshowpassword] = useState(false);
   const [showTambahDokter, setShowTambahDokter] = useState(false);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const url =process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   
   const onChange = (pagination, filters, sorter, extra) => {
@@ -71,7 +73,11 @@ function DoctorList({ updateRes }) {
 
   useEffect(() => {
     setLoading(true)
-    axios.get(`${url}/api/doctors/list`,{
+    if(!Cookies.get('token')){
+      router.push('/login')
+    }
+    else{
+      axios.get(`${url}/api/doctors/list`,{
         headers: {
           'Content-Type': 'application/json',
         },
@@ -81,6 +87,7 @@ function DoctorList({ updateRes }) {
         setDataDokter(res.data.dokter)
         setDataDokterMaster(res.data.dokter)
       })
+    }
   }, [])
 
   function deletedoctor(id){
