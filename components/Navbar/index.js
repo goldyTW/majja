@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Link2 from "react-scroll/modules/components/Link";
+import { Link as ScrollLink } from "react-scroll";
 
 const HeaderWrapper = styled.header`
   background: transparent;
@@ -31,6 +32,11 @@ const Nav = styled.nav`
 const Logo = styled.div`
   font-size: 24px;
   font-weight: bold;
+`;
+
+const SpHomeScroll = styled.span`
+  text-decoration: none;
+  color: #9c9c9c;
 `;
 
 const Menu = styled.ul`
@@ -200,7 +206,14 @@ const Header = () => {
 
   useEffect(() => {
     window.addEventListener("scroll", changeBackground);
-  });
+    return () => {
+      window.removeEventListener("scroll", changeBackground);
+    };
+  }, []);
+
+  const handleLinkClick = () => {
+    setIsMenuOpen(false); // Close the mobile menu when a link is clicked
+  };
 
   return (
     <>
@@ -222,66 +235,159 @@ const Header = () => {
             </Link>
           </Logo>
           <Menu isMenuOpen={isMenuOpen}>
-            <li>
-              <Link href="/" className={(menu == "" && router.pathname == "/") ? "active" : ""}  onClick={() => setmenu("")}>
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link2
-                // href="/tentang"
-                to="offering"
-                onClick={() => router.pathname == "/" && setmenu("offering")}
-                className={menu == "offering" ? "active" : ""}
-              >
-                Tentang Kami
-              </Link2>
-            </li>
-            <li>
-              <Link2
-                // href="/layanan"
-                to="layanan"
-                onClick={() => router.pathname == "/" && setmenu("layanan")}
-                className={(menu == "layanan" || router.pathname == "/services") ? "active" : ""}
-              >
-                Layanan
-              </Link2>
-            </li>
-            <li>
-              <Link2
-                // href="/doctor"
-                to="doctor"
-                onClick={() => router.pathname == "/" && setmenu("doctor")}
-                className={(menu == "doctor" || router.pathname == "/doctor") ? "active" : ""}
-              >
-                Dokter
-              </Link2>
-            </li>
-            <li>
-              <Link2
-                // href="/artikel"
-                to="artikel"
-                onClick={() => router.pathname == "/" && setmenu("artikel")}
-                className={(menu == "artikel" || router.pathname == "/articles") ? "active" : ""}
-              >
-                Artikel
-              </Link2>
-            </li>
-            <li>
-              <Link2
-                // href="/hubungiKami"
-                to="findUs"
-                onClick={() => router.pathname == "/" && setmenu("findUs")}
-                className={menu == "findUs" ? "active" : ""}
-              >
-                Hubungi Kami
-              </Link2>
-            </li>
-            <li>
-              <Link href="/doctor">
-                <LoginButtonMobile>Booking Jadwal</LoginButtonMobile>
-              </Link>
-            </li>
+            {router.pathname === "/" ? (
+              <>
+                <li>
+                  <SpHomeScroll>
+                    <ScrollLink
+                      activeClass="active"
+                      to="hero"
+                      spy={true}
+                      smooth={true}
+                      // className={router.pathname == "/" ? "active" : ""}
+                      onClick={handleLinkClick}
+                    >
+                      Home
+                    </ScrollLink>
+                  </SpHomeScroll>
+                </li>
+                <li>
+                  <ScrollLink
+                    // href="/tentang"
+                    activeClass="active"
+                    to="offering"
+                    spy={true}
+                    smooth={true}
+                    // offset={-10}
+                    className={router.pathname == "/tentang" ? "active" : ""}
+                    onClick={handleLinkClick}
+                  >
+                    Tentang Kami
+                  </ScrollLink>
+                </li>
+                <li>
+                  <ScrollLink
+                    // href="/layanan"
+                    activeClass="active"
+                    to="layanan"
+                    spy={true}
+                    smooth={true}
+                    // offset={-80}
+                    className={router.pathname == "/services" ? "active" : ""}
+                    onClick={handleLinkClick}
+                  >
+                    Layanan
+                  </ScrollLink>
+                </li>
+                <li>
+                  <ScrollLink
+                    // href="/doctor"
+                    activeClass="active"
+                    to="doctor"
+                    spy={true}
+                    smooth={true}
+                    offset={-20}
+                    className={router.pathname == "/doctor" ? "active" : ""}
+                    onClick={handleLinkClick}
+                  >
+                    Dokter
+                  </ScrollLink>
+                </li>
+                <li>
+                  <ScrollLink
+                    // href="/artikel"
+                    activeClass="active"
+                    to="artikel"
+                    spy={true}
+                    smooth={true}
+                    offset={-150}
+                    className={router.pathname == "/articles" ? "active" : ""}
+                    onClick={handleLinkClick}
+                  >
+                    Artikel
+                  </ScrollLink>
+                </li>
+                <li>
+                  <ScrollLink
+                    // href="/hubungiKami"
+                    activeClass="active"
+                    to="findUs"
+                    spy={true}
+                    smooth={true}
+                    offset={-100}
+                    className={
+                      router.pathname == "/hubungiKami" ? "active" : ""
+                    }
+                    onClick={handleLinkClick}
+                  >
+                    Hubungi Kami
+                  </ScrollLink>
+                </li>
+                <li>
+                  <Link href="/doctor">
+                    <LoginButtonMobile>Booking Jadwal</LoginButtonMobile>
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link
+                    href="/"
+                    className={router.pathname == "/" ? "active" : ""}
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/"
+                    className={router.pathname == "/tentang" ? "active" : ""}
+                  >
+                    Tentang Kami
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/services"
+                    className={router.pathname == "/services" ? "active" : ""}
+                  >
+                    Layanan
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/doctor"
+                    className={router.pathname == "/doctor" ? "active" : ""}
+                  >
+                    Dokter
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/articles"
+                    className={router.pathname == "/articles" ? "active" : ""}
+                  >
+                    Artikel
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/"
+                    className={
+                      router.pathname == "/hubungiKami" ? "active" : ""
+                    }
+                  >
+                    Hubungi Kami
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/doctor">
+                    <LoginButtonMobile>Booking Jadwal</LoginButtonMobile>
+                  </Link>
+                </li>
+              </>
+            )}
           </Menu>
           <Link href="/doctor">
             <LoginButton>Booking Jadwal</LoginButton>
