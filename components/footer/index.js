@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import moment from 'moment';
 import { Icon } from '@iconify/react';
 // import i18n from '../../i18n';
+import Link2 from "react-scroll/modules/components/Link";
 
 function Footer() {
   const router = useRouter();
@@ -22,9 +23,13 @@ function Footer() {
                             {/* {i18n.t('product')} */} Information
                             </h3>
                         <p className='footer-text'>Home</p>
-                        <p className='footer-text'>About</p>
-                        <p className='footer-text'>Doctors</p>
-                        <p className='footer-text'>Services</p>
+                        <p className='footer-text'>
+                        <Link2 to="offering">
+                            About
+                        </Link2>
+                        </p>
+                        <p className='footer-text' onClick={() => router.push('/doctors')}>Doctors</p>
+                        <p className='footer-text' onClick={() => router.push('/services')}>Services</p>
                     </div>
                     <div className="col-lg-2 col-md-3 col-12 p-md-2 px-4 py-2">
                         <h3 className='footer-title'>
@@ -32,7 +37,7 @@ function Footer() {
                             </h3>
                         <p className='footer-text'>Location</p>
                         <p className='footer-text'>Contacts</p>
-                        <p className='footer-text'>Articles</p>
+                        <p className='footer-text' onClick={() => router.push('/articles')}>Articles</p>
                     </div>
                     <div className="col-lg-3 col-md-5 col-12 p-md-2 px-4 py-2">
                         <h3 className='footer-title'>Connect With Us</h3>

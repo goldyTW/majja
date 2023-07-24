@@ -5,7 +5,7 @@ import Button from '../Button'
 
 function Hero() {
   return (
-    <section className='hero-wrapper'>
+    <section className='hero-wrapper' id='hero'>
       <div className='container-fluid'>
         <div className='row justify-content-between'>
           <div className='col-lg-7 col-md-6 col-12 align-self-center hero-left' id='about'>

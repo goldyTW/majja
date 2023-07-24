@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Table, Tag, Select, Modal, Input} from "antd";
-// import { dataSource } from "../../DashboardData";
 import moment from "moment";
 import "moment/locale/id";
 import { Icon } from "@iconify/react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 moment.locale("id");
 const { Option } = Select;
 const { Search } = Input;
@@ -18,7 +19,7 @@ function Dashboard({ updateRes }) {
   const [thirtydays, setthirtydays] = useState(new Date(today.getFullYear(), today.getMonth(), today.getDate()-30)); 
   const [oneyear, setoneyear] = useState(new Date(today.getFullYear()-1, today.getMonth(), today.getDate())); 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [range, setrange] = useState("365");
+  const [range, setrange] = useState("30");
   const [modalOpen, setModalOpen] = useState(false);
   const [nama, setnama] = useState();
   const [idBooking, setidBooking] = useState();
@@ -33,6 +34,10 @@ function Dashboard({ updateRes }) {
   const [jumlahpasien, setjumlahpasien] = useState()
   const [catatan, setCatatan] = useState();
   const [loading, setLoading] = useState(false);
+  const [percentBook, setpercentBook] = useState();
+  const [percentPasien, setpercentPasien] = useState();
+  const [percentEarning, setpercentEarning] = useState();
+  const router = useRouter();
   const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   
   const onChange = (pagination, filters, sorter, extra) => {
@@ -82,18 +87,33 @@ function Dashboard({ updateRes }) {
     })
   }
 
+  function percentage(time){
+    axios.get(`${url}/api/dashboard/`+time,{
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(res => {
+      setpercentBook(res.data.count.book_percent)
+      setpercentEarning(res.data.count.earning_percent)
+      setpercentPasien(res.data.count.pasien_percent)
+    })
+  }
+
   function handleRangeChange(value){
     setrange(value);
     if(value == "7"){
       callData(sevendays, today)
+      percentage('weekly')
     }
     else if(value == "30"){
       callData(thirtydays, today)
+      percentage('monthly')
     }
     else{
       callData(oneyear, today)
+      percentage('annualy')
     }
-   
   }
 
   const columns = [
@@ -174,15 +194,21 @@ function Dashboard({ updateRes }) {
 
   useEffect(() => {
     setLoading(true)
-    axios.get(`${url}/api/booking`,{
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(res => {
-        setdataBooking(res.data.result)
-        setDataBookingMaster(res.data.result)
-      })
+    if(!Cookies.get('token')){
+      router.push('/login')
+    }
+    else{
+      // axios.get(`${url}/api/booking`,{
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // })
+      // .then(res => {
+      //   setdataBooking(res.data.result)
+      //   setDataBookingMaster(res.data.result)
+      // })
+
+      callData(thirtydays, today)
 
       axios.get(`${url}/api/patient/list`,{
         headers: {
@@ -193,6 +219,9 @@ function Dashboard({ updateRes }) {
         setLoading(false)
         setjumlahpasien(res.data.pasien.length)
       })
+      
+      percentage('monthly')
+    }
   }, [])
 
   const onSearch = (value) => {
@@ -228,29 +257,35 @@ function Dashboard({ updateRes }) {
               <StyledCardTitle>Total Pasien Booking</StyledCardTitle>
               <StyledCardContent>{dataBooking && dataBooking.length}</StyledCardContent>
               <StyledCardSubTitle>
-                Weekly Bookings <StyledCardPercent>^ 0%</StyledCardPercent>
+                {range == "7" ? 'Weekly' : range == "30" ? 'Monthly' : range == "365" ? 'Yearly' : "All"} Bookings {
+                  percentBook > 0 ? <StyledCardPercentPos>+{percentBook}%</StyledCardPercentPos> : <StyledCardPercentNeg>{percentBook}%</StyledCardPercentNeg>
+                }
               </StyledCardSubTitle>
             </SmallCard>
             <SmallCard className="col m-2">
               <StyledCardTitle>Total Pasien</StyledCardTitle>
               <StyledCardContent>{jumlahpasien} </StyledCardContent>
               <StyledCardSubTitle>
-                Weekly Patients <StyledCardPercent>^ 0%</StyledCardPercent>
+                {range == "7" ? 'Weekly' : range == "30" ? 'Monthly' : range == "365" ? 'Yearly' : "All"} Patients {
+                  percentPasien > 0 ? <StyledCardPercentPos>+{percentPasien}%</StyledCardPercentPos> : <StyledCardPercentNeg>{percentPasien}%</StyledCardPercentNeg>
+                }
               </StyledCardSubTitle>
             </SmallCard>
             <SmallCard className="col m-2">
               <StyledCardTitle>Pemasukan Booking</StyledCardTitle>
               <StyledCardContent>Rp {dataBooking && (dataBooking.length*50000).toLocaleString('id')},00</StyledCardContent>
               <StyledCardSubTitle>
-                Weekly Earning <StyledCardPercent>^ 0%</StyledCardPercent>
+                {range == "7" ? 'Weekly' : range == "30" ? 'Monthly' : range == "365" ? 'Yearly' : "All"} Earning {
+                  percentEarning > 0 ? <StyledCardPercentPos>+{percentEarning}%</StyledCardPercentPos> : <StyledCardPercentNeg>{percentEarning}%</StyledCardPercentNeg>
+                }
               </StyledCardSubTitle>
             </SmallCard>
             <SmallCard className="col m-2">
               <StyledCardTitle>Pengunjung Website</StyledCardTitle>
               <StyledCardContent>Google Analytics</StyledCardContent>
-              <StyledCardSubTitle>
+              {/* <StyledCardSubTitle>
                 Weekly Visitors <StyledCardPercent>^ 0%</StyledCardPercent>
-              </StyledCardSubTitle>
+              </StyledCardSubTitle> */}
             </SmallCard>
           </div>
           <div className="row">
@@ -439,11 +474,16 @@ const StyledCardSubTitle = styled.div`
   font-weight: 500;
 `;
 
-const StyledCardPercent = styled.span`
+const StyledCardPercentPos = styled.span`
   color: #09a53e;
   font-size: var(--fs-12);
   font-family: Poppins;
   font-weight: 500;
 `;
-
+const StyledCardPercentNeg = styled.span`
+  color: #DF3034;
+  font-size: var(--fs-12);
+  font-family: Poppins;
+  font-weight: 500;
+`;
 export default Dashboard;

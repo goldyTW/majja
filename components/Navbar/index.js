@@ -1,9 +1,231 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Link2 from "react-scroll/modules/components/Link";
+import { Link as ScrollLink } from "react-scroll";
+
+const Header = () => {
+  const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate a loading delay
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 5);
+  }, []);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLinkClick = () => {
+    setIsMenuOpen(false); // Close the mobile menu when a link is clicked
+  };
+
+  if (isLoading) {
+    return null; // Return null if still loading
+  }
+
+  return (
+    <>
+      <HeaderWrapper
+        style={{
+          backgroundColor: "rgba(250, 250, 250, 0.8)",
+          backdropFilter: "blur(5px)",
+          boxShadow:
+            router.pathname != "/"
+              ? " 0px 0px 2rem rgba(192, 192, 192, 0.25)"
+              : "",
+          transition: "background 300ms ease-out 0s",
+        }}
+      >
+        <Nav>
+          <Logo>
+            <Link href="/">
+              <img src="/images/Logo.svg" />
+            </Link>
+          </Logo>
+          <Menu isMenuOpen={isMenuOpen}>
+            {router.pathname === "/" ? (
+              <>
+                <li>
+                  <SpHomeScroll>
+                    <ScrollLink
+                      activeClass="active"
+                      to="hero"
+                      spy={true}
+                      smooth={true}
+                      // className={router.pathname == "/" ? "active" : ""}
+                      onClick={handleLinkClick}
+                    >
+                      Home
+                    </ScrollLink>
+                  </SpHomeScroll>
+                </li>
+                <li>
+                  <ScrollLink
+                    // href="/tentang"
+                    activeClass="active"
+                    to="offering"
+                    spy={true}
+                    smooth={true}
+                    // offset={-10}
+                    className={router.pathname == "/tentang" ? "active" : ""}
+                    onClick={handleLinkClick}
+                  >
+                    Tentang Kami
+                  </ScrollLink>
+                </li>
+                <li>
+                  <ScrollLink
+                    // href="/layanan"
+                    activeClass="active"
+                    to="layanan"
+                    spy={true}
+                    smooth={true}
+                    // offset={-80}
+                    className={router.pathname == "/services" ? "active" : ""}
+                    onClick={handleLinkClick}
+                  >
+                    Layanan
+                  </ScrollLink>
+                </li>
+                <li>
+                  <ScrollLink
+                    // href="/doctor"
+                    activeClass="active"
+                    to="doctor"
+                    spy={true}
+                    smooth={true}
+                    offset={-20}
+                    className={router.pathname == "/doctor" ? "active" : ""}
+                    onClick={handleLinkClick}
+                  >
+                    Dokter
+                  </ScrollLink>
+                </li>
+                <li>
+                  <ScrollLink
+                    // href="/artikel"
+                    activeClass="active"
+                    to="artikel"
+                    spy={true}
+                    smooth={true}
+                    offset={-150}
+                    className={router.pathname == "/articles" ? "active" : ""}
+                    onClick={handleLinkClick}
+                  >
+                    Artikel
+                  </ScrollLink>
+                </li>
+                <li>
+                  <ScrollLink
+                    // href="/hubungiKami"
+                    activeClass="active"
+                    to="findUs"
+                    spy={true}
+                    smooth={true}
+                    offset={-100}
+                    className={
+                      router.pathname == "/hubungiKami" ? "active" : ""
+                    }
+                    onClick={handleLinkClick}
+                  >
+                    Hubungi Kami
+                  </ScrollLink>
+                </li>
+                <li>
+                  <Link href="/doctor">
+                    <LoginButtonMobile>Booking Jadwal</LoginButtonMobile>
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link
+                    href="/"
+                    className={router.pathname == "/" ? "active" : ""}
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/"
+                    className={router.pathname == "/tentang" ? "active" : ""}
+                  >
+                    Tentang Kami
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/services"
+                    className={router.pathname == "/services" ? "active" : ""}
+                  >
+                    Layanan
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/doctor"
+                    className={router.pathname == "/doctor" ? "active" : ""}
+                  >
+                    Dokter
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/articles"
+                    className={router.pathname == "/articles" ? "active" : ""}
+                  >
+                    Artikel
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/"
+                    className={
+                      router.pathname == "/hubungiKami" ? "active" : ""
+                    }
+                  >
+                    Hubungi Kami
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/doctor">
+                    <LoginButtonMobile>Booking Jadwal</LoginButtonMobile>
+                  </Link>
+                </li>
+              </>
+            )}
+          </Menu>
+          <Link href="/doctor">
+            <LoginButton>Booking Jadwal</LoginButton>
+          </Link>
+          <BurgerIcon onClick={toggleMenu}>
+            {isMenuOpen ? (
+              <Icon
+                icon="ic:round-close"
+                className=""
+                style={{ cursor: "pointer", fontSize: "24px" }}
+              />
+            ) : (
+              <Icon
+                icon="ic:round-menu"
+                className=""
+                style={{ cursor: "pointer", fontSize: "24px" }}
+              />
+            )}
+          </BurgerIcon>
+        </Nav>
+      </HeaderWrapper>
+    </>
+  );
+};
 
 const HeaderWrapper = styled.header`
   background: transparent;
@@ -31,6 +253,11 @@ const Nav = styled.nav`
 const Logo = styled.div`
   font-size: 24px;
   font-weight: bold;
+`;
+
+const SpHomeScroll = styled.span`
+  text-decoration: none;
+  color: #9c9c9c;
 `;
 
 const Menu = styled.ul`
@@ -179,126 +406,5 @@ const BurgerIcon = styled.button`
     display: block;
   }
 `;
-
-const Header = () => {
-  const router = useRouter();
-  const [navbar, setNavbar] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const changeBackground = () => {
-    if (window.scrollY >= 80) {
-      setNavbar(true);
-    } else {
-      setNavbar(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", changeBackground);
-  });
-
-  return (
-    <>
-      <HeaderWrapper
-        style={{
-          backgroundColor: "rgba(250, 250, 250, 0.8)",
-          backdropFilter: "blur(5px)",
-          boxShadow:
-            router.pathname != "/"
-              ? " 0px 0px 2rem rgba(192, 192, 192, 0.25)"
-              : "",
-          transition: "background 300ms ease-out 0s",
-        }}
-      >
-        <Nav>
-          <Logo>
-            <Link href="/">
-              <img src="/images/Logo.svg" />
-            </Link>
-          </Logo>
-          <Menu isMenuOpen={isMenuOpen}>
-            <li>
-              <Link href="/" className={router.pathname == "/" ? "active" : ""}>
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link2
-                // href="/tentang"
-                to="offering"
-                className={router.pathname == "/tentang" ? "active" : ""}
-              >
-                Tentang Kami
-              </Link2>
-            </li>
-            <li>
-              <Link2
-                // href="/layanan"
-                to="layanan"
-                className={router.pathname == "/layanan" ? "active" : ""}
-              >
-                Layanan
-              </Link2>
-            </li>
-            <li>
-              <Link2
-                // href="/doctor"
-                to="doctor"
-                className={router.pathname == "/doctor" ? "active" : ""}
-              >
-                Dokter
-              </Link2>
-            </li>
-            <li>
-              <Link2
-                // href="/artikel"
-                to="artikel"
-                className={router.pathname == "/artikel" ? "active" : ""}
-              >
-                Artikel
-              </Link2>
-            </li>
-            <li>
-              <Link2
-                // href="/hubungiKami"
-                to="findUs"
-                className={router.pathname == "/hubungiKami" ? "active" : ""}
-              >
-                Hubungi Kami
-              </Link2>
-            </li>
-            <li>
-              <Link href="/booking">
-                <LoginButtonMobile>Booking Jadwal</LoginButtonMobile>
-              </Link>
-            </li>
-          </Menu>
-          <Link href="/doctor">
-            <LoginButton>Booking Jadwal</LoginButton>
-          </Link>
-          <BurgerIcon onClick={toggleMenu}>
-            {isMenuOpen ? (
-              <Icon
-                icon="ic:round-close"
-                className=""
-                style={{ cursor: "pointer", fontSize: "24px" }}
-              />
-            ) : (
-              <Icon
-                icon="ic:round-menu"
-                className=""
-                style={{ cursor: "pointer", fontSize: "24px" }}
-              />
-            )}
-          </BurgerIcon>
-        </Nav>
-      </HeaderWrapper>
-    </>
-  );
-};
 
 export default Header;

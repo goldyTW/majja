@@ -13,7 +13,7 @@ moment.locale("id");
 function ServicesPageContent() {
   useEffect(() => {
     AOS.init();
-    setDataServices([...slice2(serviceList, 0, 16)]);
+    setDataServices([...slice2(serviceList, 0, 8)]);
   }, []);
   const { Search } = Input;
   const [DataServices, setDataServices] = useState(serviceList);
@@ -27,12 +27,12 @@ function ServicesPageContent() {
   };
 
   const handlePagination = async (value) => {
-    if (value * 16 - 1 > serviceList.length) {
+    if (value * 8 - 1 > serviceList.length) {
       setDataServices([
-        ...slice2(serviceList, (value - 1) * 16, serviceList.length),
+        ...slice2(serviceList, (value - 1) * 8, serviceList.length),
       ]);
     } else {
-      setDataServices([...slice2(serviceList, (value - 1) * 16, value * 16)]);
+      setDataServices([...slice2(serviceList, (value - 1) * 8, value * 8)]);
     }
   };
 
@@ -73,9 +73,7 @@ function ServicesPageContent() {
                 </CardBodyWrapper>
                 <BacaSelengkapnya
                   link={
-                    "/articles/" +
-                    item.slug +
-                    moment(item.created).format("YYYYMMDD")
+                    "/services/" + item.id 
                   }
                 ></BacaSelengkapnya>
               </CardWrapper>

@@ -12,7 +12,8 @@ import moment from "moment";
 
 function Slug() {
   const router = useRouter();
-  const { slug } = router.query;
+  const { id } = router.query;
+  
   return (
     <>
       <Head>
@@ -23,7 +24,7 @@ function Slug() {
         <ServiceSlugContent
           data={serviceList.filter(
             (item) =>
-              item.slug + moment(item.created).format("YYYYMMDD") === slug
+              item.id == id
           )}
         />
       </StyledSection>
