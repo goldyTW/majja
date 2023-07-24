@@ -6,8 +6,8 @@ on:
       - dev
 
 env:
-  NEXT_PUBLIC_API_URL: http://203.161.53.80:3000
-  NEXT_PUBLIC_AWSENDPOINT: http://203.161.53.80:8084
+  NEXT_PUBLIC_API_URL: http://apidev.klinikmajja.com
+  NEXT_PUBLIC_AWSENDPOINT: http://paymentdev.klinikmajja.com
   NEXT_PUBLIC_DATABASE_HOST: dev_mysql_container
   NEXT_PUBLIC_DATABASE_PORT: 3306
   NEXT_PUBLIC_MYSQL_DATABASE: majja_db
