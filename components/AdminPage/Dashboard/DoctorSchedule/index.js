@@ -116,7 +116,6 @@ function DoctorSchedule({ updateRes }) {
   }
 
   function addDokterAPI(start, end, recur, rep, on, after){
-    console.log(start, end, recur, rep, on, after)
     axios.post(`${url}/api/doctors/schedule/add`,{id_dokter:dokterSelected, hari:moment(date).day(), jam_mulai:start, jam_selesai:end, 
       recurring:recur, repeat:rep, berakhir_pada:on, berakhir_setelah:after},{
       headers: {
