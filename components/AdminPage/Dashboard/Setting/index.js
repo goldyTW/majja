@@ -14,7 +14,7 @@ function Setting() {
     const [errorPass, setErrorPass] = useState(false);
     const [errorOldPass, setErrorOldPass] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
-    const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+    const url = "https://majja.netlify.app";
 
     const onSubmit = () => {
         if(!password){

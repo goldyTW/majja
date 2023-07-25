@@ -34,7 +34,7 @@ function DoctorList({ updateRes }) {
   const [showTambahDokter, setShowTambahDokter] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const url =process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const url ="https://majja.netlify.app";
   
   const onChange = (pagination, filters, sorter, extra) => {
     console.log("params", pagination, filters, sorter, extra);

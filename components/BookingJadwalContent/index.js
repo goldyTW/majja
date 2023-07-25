@@ -115,7 +115,7 @@ function BookingJadwalContent({ dokter, id }) {
   const [errorrekam, seterrorrekam] = useState(false);
   const regExPhone = /^(\+62|62)8[1-9]{1}\d{1}[\s-]?\d{4}[\s-]?\d{2,5}$/;
   const [loading, setLoading] = useState(false);
-  const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const url = "https://majja.netlify.app";
   const awsendpoint = process.env.NEXT_PUBLIC_AWSENDPOINT ;
   const { Option } = Select;
   const { TextArea } = Input;

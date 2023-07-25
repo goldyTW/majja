@@ -16,7 +16,7 @@ function PatientList({ updateRes }) {
   const [DataPatient, setDataPatient] = useState()
   const [DataPatientMaster, setDataPatientMaster] = useState();
   const [loading, setLoading] = useState(false);
-   const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+   const url = "https://majja.netlify.app";
   const router = useRouter();
 
   const onSearch = (value) => {

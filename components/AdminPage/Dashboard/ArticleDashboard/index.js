@@ -98,7 +98,7 @@ function ArticleDashboard({ updateRes }) {
   const [link, setlink] = useState()
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const url = "https://majja.netlify.app";
   const urlsquidex = "https://cloud.squidex.io/api/apps/artikel/assets";
   const editorRef = useRef(null);
   const creator = Cookies.get('username');

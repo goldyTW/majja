@@ -53,7 +53,7 @@ function DoctorSchedule({ updateRes }) {
   const [btnTab, setbtnTab] = useState("tabel");
   const [today, setToday] = useState(new Date());
   const [loading, setLoading] = useState(false); 
-  const url =  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const url =  "https://majja.netlify.app";
   const router = useRouter();
 
   useEffect(() => {

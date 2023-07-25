@@ -18,7 +18,7 @@ function Dokter() {
   const [dayselected, setdayselected] = useState()
   const [layanan, setlayanan] = useState()
   const [harihari, setharihari] = useState(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'])
-  const url =process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const url ="https://majja.netlify.app";
   const [loading, setLoading] = useState(false);
 
   const onSearch = (value) => {
