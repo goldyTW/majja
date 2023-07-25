@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-// import ChooseBooking from "./ChooseBooking";
 import DetailBooking from "./DetailBooking";
 import { Card, Input, Radio, Select } from "antd";
 import "@amir04lm26/react-modern-calendar-date-picker/lib/DatePicker.css";
