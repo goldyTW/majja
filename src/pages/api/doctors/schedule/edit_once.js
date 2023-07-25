@@ -2,16 +2,16 @@ import excuteQuery from "../../../../../lib/db";
 import NextCors from 'nextjs-cors';
 
 export default async function exportDoctor(req, res) {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ message: 'Method Not Allowed' });
-    }
-
     await NextCors(req, res, {
         // Options
         methods: ['POST'],
         origin: '*',
         optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     });
+
+    if (req.method !== 'POST') {
+        return res.status(405).json({ message: 'Method Not Allowed' });
+    }
 
     const { id_jadwal_khusus, hari, jam_mulai, jam_selesai, tanggal, hapus } = req.body;
     var mHari
