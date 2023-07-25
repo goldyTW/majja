@@ -91,7 +91,6 @@ import { toast } from 'react-toastify';
 
 function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
   const router = useRouter();
-  // const data = id ? dokter[id - 1] : dokter[1];
   const [selectedDay, setSelectedDay] = useState(utils().getToday());
   var days = ['Minggu','Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
   var d = new Date(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day);
@@ -115,8 +114,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
   const [errorrekam, seterrorrekam] = useState(false);
   const regExPhone = /^(\+62|62)8[1-9]{1}\d{1}[\s-]?\d{4}[\s-]?\d{2,5}$/;
   const [loading, setLoading] = useState(false);
-  const url =  "http://localhost:3000";
-  // process.env.NEXT_PUBLIC_API_URL ||
+  const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   const awsendpoint = process.env.NEXT_PUBLIC_AWSENDPOINT ;
   const { Option } = Select;
   const { TextArea } = Input;

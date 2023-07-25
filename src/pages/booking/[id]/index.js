@@ -4,7 +4,6 @@ import Footer from "../../../../components/footer";
 import Navbar from "../../../../components/Navbar";
 import FloatingWA from "../../../../components/FloatingWA";
 import BookingJadwalContent from "../../../../components/BookingJadwalContent";
-// import { dokter } from "../../../../components/DokterData";
 import axios from "axios";
 
 function Booking({id}) {
@@ -13,12 +12,8 @@ function Booking({id}) {
   const [hariOn, sethariOn] = useState()
   const [hariOff, sethariOff] = useState()
   var days = ['Minggu','Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-  // let hariOn = [];
-  // let hariOff = [];
   let hariOnSet = new Set();
-  let hariOffSet = new Set();
-  // process.env.NEXT_PUBLIC_API_URL ||
-  const url = "http://localhost:3000";
+  const url =process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
   useEffect(() => {
     axios.get(`${url}/api/doctors/`+id,{
