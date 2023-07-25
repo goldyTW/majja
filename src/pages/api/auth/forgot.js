@@ -4,9 +4,6 @@ import NextCors from 'nextjs-cors';
 var md5 = require("blueimp-md5");
 
 export default async function handler(req, res) {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ message: 'Method Not Allowed' });
-    }
 
     await NextCors(req, res, {
         // Options
@@ -14,6 +11,10 @@ export default async function handler(req, res) {
         origin: '*',
         optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     });
+
+    if (req.method !== 'POST') {
+        return res.status(405).json({ message: 'Method Not Allowed' });
+    }
 
     const { email, password, oldPass } = req.body;
     
