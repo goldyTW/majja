@@ -5,9 +5,9 @@ import jwt from "jsonwebtoken";
 var md5 = require("blueimp-md5");
 
 export default async function handler(req, res) {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ message: 'Method Not Allowed' });
-    }
+    // if (req.method !== 'POST') {
+    //     return res.status(405).json({ message: 'Method Not Allowed' });
+    // }
 
     await NextCors(req, res, {
         // Options
