@@ -37,9 +37,9 @@ export default async function exportDoctor(req, res) {
         // if (repeat < 1){
         //     throw new Error("Repeat harus lebih dari sama dengan 1");
         // }
-        if (mHari !== "Senin" && mHari !== "Selasa" && mHari !== "Rabu" && mHari !== "Kamis" && mHari !== "Jumat" && mHari !== "Sabtu" && mHari !== "Minggu") {
-            throw new Error("Invalid hari")
-        }
+        // if (mHari !== "Senin" && mHari !== "Selasa" && mHari !== "Rabu" && mHari !== "Kamis" && mHari !== "Jumat" && mHari !== "Sabtu" && mHari !== "Minggu") {
+        //     throw new Error("Invalid hari")
+        // }
         const jadwal = await excuteQuery({
             query: `INSERT INTO tb_jadwal (id_dokter, hari, jam_mulai, jam_selesai, recurring, \`repeat\`, berakhir_pada, berakhir_setelah) VALUES
             (?, ?, ?, ?, ?, ?, ?, ?)`,
@@ -48,7 +48,7 @@ export default async function exportDoctor(req, res) {
         if (jadwal.error == null){
             res.status(200).json({ jadwal:jadwal.insertId, msg:"Success" })
         } else {
-            res.status(200).json({ msg:jadwal.error.sqlMessage })
+            res.status(400).json({ msg:jadwal.error.sqlMessage })
         }
         
     } catch (error) {

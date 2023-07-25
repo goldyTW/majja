@@ -30,8 +30,8 @@ function DoctorSchedule({ updateRes }) {
   const [recurring, setrecurring] = useState();
   const [jamMulai, setjamMulai] = useState();
   const [jamSelesai, setjamSelesai] = useState();
-  const [angkaUlang, setAngkaUlang] = useState('');
-  const [textUlang, setTextUlang] = useState('');
+  const [angkaUlang, setAngkaUlang] = useState();
+  const [textUlang, setTextUlang] = useState();
   const [ulangHari, setulangHari] = useState();
   const [berakhirpada, setberakhirpada] = useState();
   const [date, setDate] = useState();
@@ -108,7 +108,7 @@ function DoctorSchedule({ updateRes }) {
     setjamSelesai('')
     setrecurring('')
     setAngkaUlang()
-    setTextUlang('')
+    setTextUlang()
     setulangHari()
     setberakhirpada()
     setOnDate('')
@@ -116,6 +116,7 @@ function DoctorSchedule({ updateRes }) {
   }
 
   function addDokterAPI(start, end, recur, rep, on, after){
+    console.log(start, end, recur, rep, on, after)
     axios.post(`${url}/api/doctors/schedule/add`,{id_dokter:dokterSelected, hari:moment(date).day(), jam_mulai:start, jam_selesai:end, 
       recurring:recur, repeat:rep, berakhir_pada:on, berakhir_setelah:after},{
       headers: {
@@ -130,6 +131,17 @@ function DoctorSchedule({ updateRes }) {
         toast.error('Silahkan Coba Lagi')
       }
     })
+    .catch(function (error) {
+      setLoading(true);
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          console.log(error.request);
+        } else {
+          console.log('Error', error.message);
+        }})
   }
 
   const addJadwalDokter = () => {
@@ -139,9 +151,9 @@ function DoctorSchedule({ updateRes }) {
       DataAddJadwalDokter.map((item, i) => (
         addDokterAPI(item.jamMulai, item.jamSelesai, item.recurring, item.rep, item.onDate, item.afterDate)
       ))
-      addDokterAPI(jamMulai, jamSelesai, recurring, repetisi, onDate, afterDate)
+      addDokterAPI(jamMulai, jamSelesai, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
       localStorage.setItem('halamandash', 5)
-      // window.location.reload()
+      window.location.reload()
       // updateRes(5)
     }
     else{
@@ -358,7 +370,7 @@ function DoctorSchedule({ updateRes }) {
   function cancelModalPreferensi(){
     setModalPreferensiOpen(false)
     setAngkaUlang()
-    setTextUlang('')
+    setTextUlang()
     setulangHari()
     setberakhirpada()
     setOnDate()
@@ -396,28 +408,30 @@ function DoctorSchedule({ updateRes }) {
             </button>
           </div>
         </div>
+        {
+            !loading ?
         <div className="row">
           <BigCard className="col m-2 p-0">
-          {
-            !loading ?
+          
             <Table
               columns={columns}
               dataSource={DataDokter}
               // onChange={onChange}
               pagination={false}
             />
-            :
-            <div className="loader">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          }
+           
           </BigCard>
         </div>
+         :
+         <div className="loader">
+           <span></span>
+           <span></span>
+           <span></span>
+           <span></span>
+           <span></span>
+           <span></span>
+         </div>
+       }
       </Wrapper>
       {/* tambah jadwal dokter */}
       <Modal
