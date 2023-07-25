@@ -5,16 +5,16 @@ import jwt from "jsonwebtoken";
 var md5 = require("blueimp-md5");
 
 export default async function handler(req, res) {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ message: 'Method Not Allowed' });
-    }
-
     await NextCors(req, res, {
         // Options
         methods: ['POST'],
         origin: '*',
         optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     });
+
+    if (req.method !== 'POST') {
+        return res.status(405).json({ message: 'Method Not Allowed' });
+    }
 
     const { email, password } = req.body;    
     // const encr_pass = md5(password);
@@ -40,11 +40,12 @@ export default async function handler(req, res) {
             if (user.length == 0){
                 throw new Error('User Not Found');
             } else {
+                console.log('massuk pak eko')
                 const token = jwt.sign({ email }, rand(), {});
                 res.status(200).json({ username:user[0].nama, token, is_admin: user[0].is_admin,  email: user[0].email, msg:"Success" })
             }            
         } else {
-            res.status(200).json({ msg:user.error.sqlMessage })
+            res.status(400).json({ msg:user.error.sqlMessage })
         }
         
     } catch (error) {
