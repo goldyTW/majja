@@ -41,7 +41,7 @@ export default function App({ Component, pageProps }) {
       {/* AOS Animation */}
       <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 
-      {/* <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" /> */}
+      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
 
       <link rel="shortcut icon" type="image/x-icon" href="/images/LogoRounded.png"></link>
     </Head>

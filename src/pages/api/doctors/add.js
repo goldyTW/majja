@@ -2,6 +2,10 @@ import excuteQuery from "../../../../lib/db";
 import NextCors from 'nextjs-cors';
 
 export default async function exportDoctor(req, res) {
+    if (req.method !== 'POST') {
+        return res.status(405).json({ message: 'Method Not Allowed' });
+    }
+
     const { nama, posisi, gambar, xp, status, phone, email } = req.body;
 
     await NextCors(req, res, {
@@ -10,10 +14,6 @@ export default async function exportDoctor(req, res) {
         origin: '*',
         optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     });
-    
-    if (req.method !== 'POST') {
-        return res.status(405).json({ message: 'Method Not Allowed' });
-    }
     
     try {
         const dokter = await excuteQuery({

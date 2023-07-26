@@ -222,7 +222,7 @@ function Dokter() {
                         </div>
                        ))
                     }
-                    <Link href={'/booking/'+item.id_dokter} style={{textDecoration:'none'}}>
+                    <Link href={'/booking/'+item.id} style={{textDecoration:'none'}}>
                     <div className='button2 mt-5'>Booking Jadwal</div>
                     </Link>
                   </div>

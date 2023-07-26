@@ -30,8 +30,8 @@ function DoctorSchedule({ updateRes }) {
   const [recurring, setrecurring] = useState();
   const [jamMulai, setjamMulai] = useState();
   const [jamSelesai, setjamSelesai] = useState();
-  const [angkaUlang, setAngkaUlang] = useState();
-  const [textUlang, setTextUlang] = useState();
+  const [angkaUlang, setAngkaUlang] = useState('');
+  const [textUlang, setTextUlang] = useState('');
   const [ulangHari, setulangHari] = useState();
   const [berakhirpada, setberakhirpada] = useState();
   const [date, setDate] = useState();
@@ -108,7 +108,7 @@ function DoctorSchedule({ updateRes }) {
     setjamSelesai('')
     setrecurring('')
     setAngkaUlang()
-    setTextUlang()
+    setTextUlang('')
     setulangHari()
     setberakhirpada()
     setOnDate('')
@@ -116,7 +116,6 @@ function DoctorSchedule({ updateRes }) {
   }
 
   function addDokterAPI(start, end, recur, rep, on, after){
-    console.log(start, end, recur, rep, on, after)
     axios.post(`${url}/api/doctors/schedule/add`,{id_dokter:dokterSelected, hari:moment(date).day(), jam_mulai:start, jam_selesai:end, 
       recurring:recur, repeat:rep, berakhir_pada:on, berakhir_setelah:after},{
       headers: {
@@ -131,17 +130,6 @@ function DoctorSchedule({ updateRes }) {
         toast.error('Silahkan Coba Lagi')
       }
     })
-    .catch(function (error) {
-      setLoading(true);
-        if (error.response) {
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          console.log(error.request);
-        } else {
-          console.log('Error', error.message);
-        }})
   }
 
   const addJadwalDokter = () => {
@@ -151,9 +139,9 @@ function DoctorSchedule({ updateRes }) {
       DataAddJadwalDokter.map((item, i) => (
         addDokterAPI(item.jamMulai, item.jamSelesai, item.recurring, item.rep, item.onDate, item.afterDate)
       ))
-      addDokterAPI(jamMulai, jamSelesai, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
+      addDokterAPI(jamMulai, jamSelesai, recurring, repetisi, onDate, afterDate)
       localStorage.setItem('halamandash', 5)
-      window.location.reload()
+      // window.location.reload()
       // updateRes(5)
     }
     else{
@@ -321,56 +309,58 @@ function DoctorSchedule({ updateRes }) {
     }
   };
 
-  function generateDate(hari, isRadio) {
-    let jarakHari = Number(moment(today).daysInMonth()) - Number(moment(today).format('DD'));
+  function generateDate(hari, isRadio){
+    let jarakHari = Number(moment(today).daysInMonth())-Number(moment(today).format('DD'));
     let i = 0;
     let newdate;
-    let tglpraktekSet = new Set(); // Menggunakan Set untuk menyimpan tanggal unik
-  
-    for (i = 0; i <= jarakHari; i++) {
-      newdate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
-      if (newdate.getDay() == hari) {
-        jadwalkhusus?.forEach((item) => { // Menggunakan forEach untuk iterasi array
-          if (item.id_dokter == idDokter && item.jam_mulai == moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD')) {
-            tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-          } else if (item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') == moment(newdate).format('YYYY-MM-DD')) {
-            tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-          } else if (item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD')) {
-            if (!tglpraktekSet.has(moment(newdate).format('DD MMMM YYYY'))) {
-              tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-            }
-          } else if (moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD') && item.id_dokter != idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss')) {
-            if (!tglpraktekSet.has(moment(newdate).format('DD MMMM YYYY'))) {
-              tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-            }
-          }
-        });
+    let tglpraktek = [];
+    for(i = 0; i<=jarakHari; i++){
+      newdate = new Date(today.getFullYear(), today.getMonth(), today.getDate()+i)
+      if(newdate.getDay() == hari){
+        jadwalkhusus?.map((item, i) => (
+          item.id_dokter == idDokter && item.jam_mulai == moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD') ?
+              tglpraktek.push(moment(newdate).format('DD MMMM YYYY'))
+          :
+          item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') == moment(newdate).format('YYYY-MM-DD') ?
+            tglpraktek.push(moment(newdate).format('DD MMMM YYYY'))
+          :
+          item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD') ?
+           tglpraktek.indexOf(moment(newdate).format('DD MMMM YYYY')) > -1 ? '' : tglpraktek.push(moment(newdate).format('DD MMMM YYYY'))
+          :
+           moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD') && item.id_dokter != idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') ?
+          tglpraktek.indexOf(moment(newdate).format('DD MMMM YYYY')) > -1 ? '' : tglpraktek.push(moment(newdate).format('DD MMMM YYYY'))
+           // :
+          // item.id_dokter != idDokter && item.jam_mulai = moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD') ?
+          //  tglpraktek.indexOf(moment(newdate).format('DD MMMM YYYY')) > -1 ? '' : tglpraktek.push(moment(newdate).format('DD MMMM YYYY'))
+          // :
+          // item.id_dokter != idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') == moment(newdate).format('YYYY-MM-DD') ?
+          //  tglpraktek.indexOf(moment(newdate).format('DD MMMM YYYY')) > -1 ? '' : tglpraktek.push(moment(newdate).format('DD MMMM YYYY'))
+          :
+          ''
+        ))
       }
     }
-  
-    const tglpraktek = Array.from(tglpraktekSet); // Mengonversi Set kembali menjadi array
-  
-    if (!isRadio) {
+
+    if(!isRadio){
       return tglpraktek.map((item, i) => (
         <div key={i}>
-          <span>{item}</span>
-          <br></br><br></br>
+        <span>{item}</span>
+        <br></br><br></br>
         </div>
-      ));
-    } else {
+      ))
+    }else{
       return tglpraktek.map((item, i) => (
         <div key={i}>
-          <Radio value={item}>Jadwal {item}</Radio>
+        <Radio value={item}>Jadwal {item}</Radio>
         </div>
-      ));
+      ))
     }
   }
-  
 
   function cancelModalPreferensi(){
     setModalPreferensiOpen(false)
     setAngkaUlang()
-    setTextUlang()
+    setTextUlang('')
     setulangHari()
     setberakhirpada()
     setOnDate()
@@ -408,30 +398,28 @@ function DoctorSchedule({ updateRes }) {
             </button>
           </div>
         </div>
-        {
-            !loading ?
         <div className="row">
           <BigCard className="col m-2 p-0">
-          
+          {
+            !loading ?
             <Table
               columns={columns}
               dataSource={DataDokter}
               // onChange={onChange}
               pagination={false}
             />
-           
+            :
+            <div className="loader">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          }
           </BigCard>
         </div>
-         :
-         <div className="loader">
-           <span></span>
-           <span></span>
-           <span></span>
-           <span></span>
-           <span></span>
-           <span></span>
-         </div>
-       }
       </Wrapper>
       {/* tambah jadwal dokter */}
       <Modal
