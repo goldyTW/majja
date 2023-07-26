@@ -47,7 +47,7 @@ jobs:
         run: docker tag frontend_dev_test docker.io/naufalikhsan85/frontend_dev_test:latest
 
       - name: Push Docker image
-        run: docker push your-docker-registry/your-docker-image-name:latest
+        run: docker push docker.io/naufalikhsan85/frontend_dev_test:latest
 
       - name: SSH to server and pull the latest image
         uses: appleboy/ssh-action@master
@@ -57,4 +57,4 @@ jobs:
           password: Majj@clinic2023
           port: 22
           script: |
-            docker pull your-docker-registry/your-docker-image-name:latest
+            docker pull docker.io/naufalikhsan85/frontend_dev_test:latest
