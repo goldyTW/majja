@@ -41,13 +41,13 @@ jobs:
           password: Qsampai5lima5lima
 
       - name: Build Docker image
-        run: docker build -t frontend_dev_test .
+        run: docker build -t frontend_hub_dev .
 
       - name: Tag Docker image
-        run: docker tag frontend_dev_test docker.io/naufalikhsan85/frontend_dev_test:latest
+        run: docker tag frontend_hub_dev docker.io/naufalikhsan85/frontend_hub_dev:latest
 
       - name: Push Docker image
-        run: docker push docker.io/naufalikhsan85/frontend_dev_test:latest
+        run: docker push docker.io/naufalikhsan85/frontend_hub_dev:latest
 
       - name: SSH to server and pull the latest image
         uses: appleboy/ssh-action@master
@@ -57,4 +57,22 @@ jobs:
           password: Majj@clinic2023
           port: 22
           script: |
-            docker pull docker.io/naufalikhsan85/frontend_dev_test:latest
+            sudo docker rm frontend_hub_dev_container -f
+            sudo docker rmi naufalikhsan85/frontend_hub_dev:latest
+
+            sudo docker pull docker.io/naufalikhsan85/frontend_hub_dev:latest
+
+            sudo docker run --name frontend_hub_dev_container \
+            --restart always \
+            --network containers_lan \
+            -p 3002:3000 \
+            -e NEXT_PUBLIC_API_URL=${{ env.NEXT_PUBLIC_API_URL }} \
+            -e NEXT_PUBLIC_AWSENDPOINT=${{ env.NEXT_PUBLIC_AWSENDPOINT }} \
+            -e NEXT_PUBLIC_DATABASE_HOST=${{ env.NEXT_PUBLIC_DATABASE_HOST }} \
+            -e NEXT_PUBLIC_DATABASE_PORT=${{ env.NEXT_PUBLIC_DATABASE_PORT }} \
+            -e NEXT_PUBLIC_MYSQL_DATABASE=${{ env.NEXT_PUBLIC_MYSQL_DATABASE }} \
+            -e NEXT_PUBLIC_MYSQL_USER=${{ env.NEXT_PUBLIC_MYSQL_USER }} \
+            -e NEXT_PUBLIC_MYSQL_PASSWORD=${{ env.NEXT_PUBLIC_MYSQL_PASSWORD }} \
+            -d naufalikhsan85/frontend_hub_dev
+
+            sudo docker builder prune -f
