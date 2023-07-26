@@ -89,9 +89,8 @@ import { toast } from 'react-toastify';
 //   },
 // ];
 
-function BookingJadwalContent({ dokter, id }) {
+function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
   const router = useRouter();
-  const data = id ? dokter[id - 1] : dokter[1];
   const [selectedDay, setSelectedDay] = useState(utils().getToday());
   var days = ['Minggu','Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
   var d = new Date(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day);
@@ -115,7 +114,8 @@ function BookingJadwalContent({ dokter, id }) {
   const [errorrekam, seterrorrekam] = useState(false);
   const regExPhone = /^(\+62|62)8[1-9]{1}\d{1}[\s-]?\d{4}[\s-]?\d{2,5}$/;
   const [loading, setLoading] = useState(false);
-  const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const url = "http://localhost:3000";
+  // process.env.NEXT_PUBLIC_API_URL ||
   const awsendpoint = process.env.NEXT_PUBLIC_AWSENDPOINT ;
   const { Option } = Select;
   const { TextArea } = Input;
@@ -198,9 +198,9 @@ function BookingJadwalContent({ dokter, id }) {
   );
 
   // Jadwal Days off
-  const JadwalHariOff = data && data.jadwal && data.jadwal.filter((jadwal) => !jadwal.jam);
+  // const JadwalHariOff = data && data.jadwal && data.jadwal.filter((jadwal) => !jadwal.jam);
   const convertHariOff = convertDaysToNumbers(
-    JadwalHariOff && JadwalHariOff.map((hari) => hari.hari)
+    hariOff && hariOff.map((hari) => hari)
   );
   const AllHariOffInThisYear = getArrayEveryNDayDates(convertHariOff);
   const disabledDaysDynamic =
@@ -209,7 +209,7 @@ function BookingJadwalContent({ dokter, id }) {
   // Jadwal Days on
   const JadwalHariOn = data && data.jadwal && data.jadwal.filter((jadwal) => jadwal.jam);
   const convertHariOn = convertDaysToNumbers(
-    JadwalHariOn && JadwalHariOn.map((hari) => hari.hari)
+    hariOn && hariOn.map((hari) => hari)
   );
   const AllHariOnInThisYear = getArrayEveryNDayDatesFromToday(convertHariOn);
 
@@ -331,16 +331,6 @@ function BookingJadwalContent({ dokter, id }) {
       for(var i = awalconverted; i < akhirconverted; i++){
         jamstring = i+'.00',
         temp.push(jamstring)
-        // bookingan.map((item, idx) => (
-        //   moment(item.tanggal_booking).format('YYYY-MM-DD') == moment(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day).format("YYYY-MM-DD") ? 
-        //     Number(item.jam_booking) != i &&
-        //       (jamstring = i+'.00',
-        //       temp.push(jamstring))
-              
-        //   :
-        //   (jamstring = i+'.00',
-        //   temp.push(jamstring))
-        // ))
       }
     }  
     return temp
@@ -400,14 +390,14 @@ function BookingJadwalContent({ dokter, id }) {
                       <div className="row">
                         <div className="col-lg-3 col-4">
                           <img
-                            src={"/" + data.image}
-                            alt="doctor1"
+                            src={data && data[0] && (data[0].gambar != "" ? "/"+data[0].gambar : '/images/pp.png')}
+                            alt={data && data[0] && data[0].nama}
                             width="100%"
                           />
                         </div>
                         <div className="col-lg-9 col-8">
-                          <StyledTitle>{data.name}</StyledTitle>
-                          <StyledText>{data.position}</StyledText>
+                          <StyledTitle>{data && data[0] && data[0].nama}</StyledTitle>
+                          <StyledText>{data && data[0] && data[0].posisi}</StyledText>
                           <StyledTextWIcon>
                             <Icon
                               icon="ion:medkit"
@@ -419,7 +409,7 @@ function BookingJadwalContent({ dokter, id }) {
                                 marginRight: "2%",
                               }}
                             />
-                            Pengalaman: {data.xp} tahun
+                            Pengalaman: {data && data[0] && data[0].xp}
                           </StyledTextWIcon>
                         </div>
                       </div>
@@ -450,22 +440,22 @@ function BookingJadwalContent({ dokter, id }) {
                           onChange={handleSelectedTime}
                           value={valuejam}
                         >
-                          {data.jadwal &&
-                            data.jadwal.map((item, i) =>
-                              dayName === item.hari &&
+                          {jadwal && jadwal.map((item, i) => 
+                              dayName == item.hari &&
                               // Pecah jam item.jam menjadi array jam_booking yang telah dipesan
                               filteredTimes(
                                 availableTimes,
-                                pecahjam(item.jam).map((item2, i2) => item2)
+                                pecahjam(item.jam_mulai+'-'+item.jam_selesai).map((item2, i2) => item2)
                               )
                               .filter((time) => isFutureTime(time)) // Filter only future times
                               .map((time, i3) => (
                                 <Option key={i3} value={time}>
-                                  {time}
+                                {time}
                                 </Option>
                               ))
-                            )}
-                          {data.jadwal &&
+                              )
+                          }
+                          {/* {data.jadwal &&
                             data.jadwal.map((item, i) =>
                               dayName === item.hari &&
                               item.jam2 &&
@@ -479,7 +469,7 @@ function BookingJadwalContent({ dokter, id }) {
                                   {time}
                                 </Option>
                               ))
-                            )}
+                            )} */}
                         </Select>
                       </div>
                     </div>
