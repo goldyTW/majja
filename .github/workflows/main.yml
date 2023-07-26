@@ -32,6 +32,22 @@ jobs:
             git pull origin dev
             git status
 
+            # Menghapus file next.zip jika sudah ada
+            if [ -f next.zip ]; then
+              rm next.zip
+            fi
+
+            # Menghapus folder .next jika sudah ada
+            if [ -d .next ]; then
+              rm -rf .next
+            fi
+
+            # Menyalin file next.zip dari /root/fe_build/dev ke direktori saat ini
+            sudo cp /root/fe_build/dev/next.zip .
+
+            # Mengekstrak isi next.zip ke dalam folder .next
+            unzip next.zip -d .next
+
             rm -f  .env
             touch .env
             echo NEXT_PUBLIC_API_URL=${{ env.NEXT_PUBLIC_API_URL }} >> .env

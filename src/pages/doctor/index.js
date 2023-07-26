@@ -7,7 +7,6 @@ import axios from 'axios';
 import FloatingWA from '../../../components/FloatingWA';
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
-// import { dokter } from '../../../components/DokterData';
 
 function Dokter() {
   const { Option } = Select;
