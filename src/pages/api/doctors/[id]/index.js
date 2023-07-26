@@ -2,14 +2,14 @@ import excuteQuery from "../../../../../lib/db";
 import NextCors from 'nextjs-cors';
 
 export default async function exportDoctor(req, res) {
-    const {id} = req.query;
-
     await NextCors(req, res, {
         // Options
         methods: ['GET'],
         origin: '*',
         optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     });
+
+    const {id} = req.query;
     
     if (req.method !== 'GET') {
         return res.status(405).json({ message: 'Method Not Allowed' });

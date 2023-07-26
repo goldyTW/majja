@@ -13,7 +13,7 @@ function Booking({id}) {
   const [hariOff, sethariOff] = useState()
   var days = ['Minggu','Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
   let hariOnSet = new Set();
-  const url =process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
   useEffect(() => {
     axios.get(`${url}/api/doctors/`+id,{

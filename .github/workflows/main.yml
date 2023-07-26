@@ -3,7 +3,7 @@ name: cd
 on:
   push:
     branches:
-      - dev
+      - final
 
 env:
   NEXT_PUBLIC_API_URL: https://apidev.klinikmajja.com
@@ -29,7 +29,7 @@ jobs:
         port: 22
         script: |
             cd ~/frontend/dev/majja
-            git pull origin dev
+            git pull origin final
             git status
 
             rm -f  .env
