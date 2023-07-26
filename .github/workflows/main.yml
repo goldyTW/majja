@@ -3,7 +3,7 @@ name: cd
 on:
   push:
     branches:
-      - dev
+      - final
 
 env:
   NEXT_PUBLIC_API_URL: https://apidev.klinikmajja.com
