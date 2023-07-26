@@ -29,7 +29,7 @@ jobs:
         port: 22
         script: |
             cd ~/frontend/dev/majja
-            git pull origin dev
+            git pull origin final
             git status
 
             rm -f  .env
