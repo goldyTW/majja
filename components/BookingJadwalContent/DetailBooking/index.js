@@ -70,7 +70,7 @@ function DetailBooking({ value, dateItem, showCalendar, setshowCalendar, bayar,l
               <Icon
                 icon="svg-spinners:pulse-3"
                 className="text-right"
-                style={{ cursor: "pointer", fontSize: "18px", color: '#DF3034' }}
+                style={{ cursor: "pointer", fontSize: "108px", color: '#DF3034' }}
               />
             }
             </div>

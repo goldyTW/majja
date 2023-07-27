@@ -390,7 +390,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
                       <div className="row">
                         <div className="col-lg-3 col-4">
                           <img
-                            src={data && data[0] && (data[0].gambar != "" ? "/"+data[0].gambar : '/images/pp.png')}
+                            src={data && data[0] && (data[0].gambar != "" ? data[0].gambar : '/images/pp.png')}
                             alt={data && data[0] && data[0].nama}
                             width="100%"
                           />

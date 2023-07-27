@@ -41,3 +41,28 @@ body {
   border-radius: 50%;
   cursor: pointer;
 }
+
+.changePP{
+  display: none;
+}
+
+.custom-file-upload{
+  background: #FFFFFF;
+  border: 1px solid #DF3034;
+  border-radius: 8px;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  color: #DF3034;
+  transition: 0.5s ease-in-out;
+  cursor: pointer;
+}
+.custom-file-upload:hover {
+  /* transform: scaleX(1.05); */
+  /* border: 1px solid #ebebeb; */
+  background-color: #df30331a;
+  background-position: 100%;
+}

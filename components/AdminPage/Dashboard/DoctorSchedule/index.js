@@ -21,7 +21,7 @@ import { useRouter } from "next/router";
 moment.locale("id");
 const { Option } = Select;
 
-function DoctorSchedule({ updateRes }) {
+function DoctorSchedule({ updateRes, isAdmin, email }) {
   const [DataDokter, setDataDokter] = useState();
   const [DataDokterMaster, setDataDokterMaster] = useState()
   const [DataAddJadwalDokter, setDataAddJadwalDokter] = useState([])
@@ -62,31 +62,47 @@ function DoctorSchedule({ updateRes }) {
       router.push('/login')
     }
     else{
-      axios.get(`${url}/api/doctors/schedule/list`,{
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(res => {
-        setDataDokter(res.data.jadwal)
-      })
-      axios.get(`${url}/api/doctors/list`,{
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(res => {
-        setDataDokterMaster(res.data.dokter)
-      })
-      axios.get(`${url}/api/doctors/schedule/list_khusus`,{
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(res => {
-        setLoading(false)
-        setjadwalkhusus(res.data.jadwal)
-      })
+      if(isAdmin){
+        axios.get(`${url}/api/doctors/schedule/list`,{
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(res => {
+          setDataDokter(res.data.jadwal)
+        })
+  
+        axios.get(`${url}/api/doctors/list`,{
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(res => {
+          setDataDokterMaster(res.data.dokter)
+        })
+  
+        axios.get(`${url}/api/doctors/schedule/list_khusus`,{
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(res => {
+          setLoading(false)
+          setjadwalkhusus(res.data.jadwal)
+        })
+      }
+      else{
+        console.log('masuk sini')
+        axios.post(`${url}/api/doctors/schedule/scheduleonemail`, {email: JSON.parse(email)}, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          setDataDokter(res.data.result)
+          setLoading(false)
+        })
+      }
     }
     
   }, [])
@@ -401,17 +417,19 @@ function DoctorSchedule({ updateRes }) {
               Tabel
             </button> */}
           </div>
-          <div className="col-md-6 col-12 text-end align-self-center">
-            <button className="button" onClick={() => openModalAddJadwal()}>
-              + Tambah Jadwal Baru
-            </button>
-          </div>
+          {
+            isAdmin &&
+            <div className="col-md-6 col-12 text-end align-self-center">
+              <button className="button" onClick={() => openModalAddJadwal()}>
+                + Tambah Jadwal Baru
+              </button>
+            </div>
+          }
         </div>
         {
-            !loading ?
+        !loading ?
         <div className="row">
           <BigCard className="col m-2 p-0">
-          
             <Table
               columns={columns}
               dataSource={DataDokter}
@@ -728,11 +746,14 @@ function DoctorSchedule({ updateRes }) {
               </div>
             </div>
           </div>
-          <div className="text-end">
+          {
+            isAdmin && 
+            <div className="text-end">
             <button className="buttonAlt py-1 px-3" onClick={() => setModalOpen3(true)}>
               Hapus Jadwal
             </button>
           </div>
+          }
         </div>
       </Modal>
       {/* konfirmasi hapus dokter */}

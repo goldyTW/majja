@@ -40,7 +40,10 @@ const getKeyDisplayName = (key) => {
 
 function Dashboard() {
   const [collapsed, setCollapsed] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [selectedKey, setSelectedKey] = useState(1);
+  const [selectedKeyString, setSelectedKeyString] = useState("1");
+  const email = Cookies.get('email');
   const router = useRouter();
 
   const handleMenuSelect = ({ key }) => {
@@ -48,13 +51,27 @@ function Dashboard() {
   };
 
   useEffect(() => {
-   if(typeof window !== 'undefined'){
-    if(localStorage.getItem('halamandash')){
-      setSelectedKey(localStorage.getItem('halamandash'))
+    if(Cookies.get('is_admin') == "1"){
+      setIsAdmin(true)
+      if(localStorage.getItem('halamandash')){
+        setSelectedKey(Number(localStorage.getItem('halamandash')))
+        setSelectedKeyString(localStorage.getItem('halamandash').toString())
+      }else{
+        setSelectedKey(1)
+        setSelectedKeyString("1")
+      }
+      
     }
-   }
+    else{
+      if(localStorage.getItem('halamandash')){
+        setSelectedKey(Number(localStorage.getItem('halamandash')))
+        setSelectedKeyString(localStorage.getItem('halamandash').toString())
+      }else{
+        setSelectedKey(2)
+        setSelectedKeyString("2")
+      }
+    }
   }, [])
-  
 
   function getItem(label, key, icon, children) {
     return {
@@ -66,7 +83,7 @@ function Dashboard() {
   }
 
   const items = [
-    getItem(
+    isAdmin && getItem(
       "Dashboard",
       "1",
       <Icon
@@ -92,7 +109,7 @@ function Dashboard() {
         }}
       />
     ),
-    getItem(
+    isAdmin && getItem(
       "Daftar Pasien",
       "3",
       <Icon
@@ -105,7 +122,7 @@ function Dashboard() {
         }}
       />
     ),
-    getItem(
+    isAdmin && getItem(
       "Daftar Dokter",
       "4",
       <Icon
@@ -190,7 +207,7 @@ function Dashboard() {
           
           <Menu
             theme="light"
-            defaultSelectedKeys={["1"]}
+            // defaultSelectedKeys={"2"}
             mode="inline"
             items={items}
             onSelect={handleMenuSelect}
@@ -214,19 +231,19 @@ function Dashboard() {
               marginLeft:'250px'
             }}
           >
-            {selectedKey == 1 ? (
+            {selectedKey == 1 && isAdmin ? (
               <DashboardSection updateRes={setSelectedKey} />
             ) : selectedKey == 2 ? (
-              <BookingSchedule updateRes={setSelectedKey} />
-            ) : selectedKey == 3 ? (
+              <BookingSchedule updateRes={setSelectedKey} isAdmin={isAdmin} email={email}/>
+            ) : selectedKey == 3 && isAdmin ? (
               <PatientList updateRes={setSelectedKey} />
-            ) : selectedKey == 4 ? (
-              <>
+            ) : selectedKey == 4 && isAdmin ? (
               <DoctorList updateRes={setSelectedKey} />
-              </>
-            ) : selectedKey == 5 ? (
-              <DoctorSchedule updateRes={setSelectedKey} />
-               ) : selectedKey == 6 ? (
+            ) : 
+            selectedKey == 5 ? (
+              <DoctorSchedule updateRes={setSelectedKey}  isAdmin={isAdmin} email={email} />
+               ) : 
+               selectedKey == 6 ? (
                 <ArticleDashboard updateRes={setSelectedKey} />
             ) : selectedKey == 7 ? (
              <Setting></Setting>
