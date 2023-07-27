@@ -14,42 +14,55 @@ env:
   NEXT_PUBLIC_MYSQL_USER: majja_user
   NEXT_PUBLIC_MYSQL_PASSWORD: majja_dev_db_3124535
 
+
 jobs:
-
-  build:
-    name: Build
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-    - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@v0.1.10
-      with:
-        host: 203.161.53.80
-        username: root
-        password: Majj@clinic2023
-        port: 22
-        script: |
-            cd ~/frontend/dev/majja
-            git pull origin final
-            git status
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-            rm -f  .env
-            touch .env
-            echo NEXT_PUBLIC_API_URL=${{ env.NEXT_PUBLIC_API_URL }} >> .env
-            echo NEXT_PUBLIC_AWSENDPOINT=${{ env.NEXT_PUBLIC_AWSENDPOINT }} >> .env
-            echo NEXT_PUBLIC_DATABASE_HOST=${{ env.NEXT_PUBLIC_DATABASE_HOST }} >> .env
-            echo NEXT_PUBLIC_DATABASE_PORT=${{ env.NEXT_PUBLIC_DATABASE_PORT }} >> .env
-            echo NEXT_PUBLIC_MYSQL_DATABASE=${{ env.NEXT_PUBLIC_MYSQL_DATABASE }} >> .env
-            echo NEXT_PUBLIC_MYSQL_USER=${{ env.NEXT_PUBLIC_MYSQL_USER }} >> .env
-            echo NEXT_PUBLIC_MYSQL_PASSWORD=${{ env.NEXT_PUBLIC_MYSQL_PASSWORD }} >> .env
-            
-            echo "cat .env"
-            cat .env
+      - name: Create .env file
+        run: |
+          echo NEXT_PUBLIC_API_URL=${{ env.NEXT_PUBLIC_API_URL }} >> .env
+          echo NEXT_PUBLIC_AWSENDPOINT=${{ env.NEXT_PUBLIC_AWSENDPOINT }} >> .env
+          echo NEXT_PUBLIC_DATABASE_HOST=${{ env.NEXT_PUBLIC_DATABASE_HOST }} >> .env
+          echo NEXT_PUBLIC_DATABASE_PORT=${{ env.NEXT_PUBLIC_DATABASE_PORT }} >> .env
+          echo NEXT_PUBLIC_MYSQL_DATABASE=${{ env.NEXT_PUBLIC_MYSQL_DATABASE }} >> .env
+          echo NEXT_PUBLIC_MYSQL_USER=${{ env.NEXT_PUBLIC_MYSQL_USER }} >> .env
+          echo NEXT_PUBLIC_MYSQL_PASSWORD=${{ env.NEXT_PUBLIC_MYSQL_PASSWORD }} >> .env
+          # Tambahkan variabel lain sesuai kebutuhan Anda
 
-            sudo docker rm frontend_container_dev -f
-            sudo docker rmi frontend_dev
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: naufalikhsan85
+          password: Qsampai5lima5lima
 
-            sudo docker build --no-cache -t frontend_dev .
-            sudo docker run --name frontend_container_dev \
+      - name: Build Docker image
+        run: docker build -t frontend_hub_dev .
+
+      - name: Tag Docker image
+        run: docker tag frontend_hub_dev docker.io/naufalikhsan85/frontend_hub_dev:latest
+
+      - name: Push Docker image
+        run: docker push docker.io/naufalikhsan85/frontend_hub_dev:latest
+
+      - name: SSH to server and pull the latest image
+        uses: appleboy/ssh-action@master
+        with:
+          host: 203.161.53.80
+          username: root
+          password: Majj@clinic2023
+          port: 22
+          script: |
+            sudo docker rm frontend_hub_dev_container -f
+            sudo docker rmi naufalikhsan85/frontend_hub_dev:latest
+
+            sudo docker pull docker.io/naufalikhsan85/frontend_hub_dev:latest
+
+            sudo docker run --name frontend_hub_dev_container \
             --restart always \
             --network containers_lan \
             -p 3000:3000 \
@@ -60,6 +73,6 @@ jobs:
             -e NEXT_PUBLIC_MYSQL_DATABASE=${{ env.NEXT_PUBLIC_MYSQL_DATABASE }} \
             -e NEXT_PUBLIC_MYSQL_USER=${{ env.NEXT_PUBLIC_MYSQL_USER }} \
             -e NEXT_PUBLIC_MYSQL_PASSWORD=${{ env.NEXT_PUBLIC_MYSQL_PASSWORD }} \
-            -d frontend_dev
+            -d naufalikhsan85/frontend_hub_dev
 
             sudo docker builder prune -f
