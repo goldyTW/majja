@@ -6,15 +6,33 @@ import { LockOutlined } from '@ant-design/icons';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Image from "next/image";
+import { Icon } from '@iconify/react';
 
 function Setting() {
     const [email, setEmail] = useState(Cookies.get('email') != undefined ? Cookies.get('email').split("\"")[1] : '');
+    const [loading, setloading] = useState(false);
     const [password, setPassword] = useState('');
     const [oldPass, setOldPass] = useState('');
     const [errorPass, setErrorPass] = useState(false);
     const [errorOldPass, setErrorOldPass] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
+    const [imagePreview, setImagePreview] = useState(null);
+    const [imgawal, setimgawal] = useState(null);
     const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+    const urlsquidex = "https://cloud.squidex.io/api/apps/artikel/assets";
+
+    useEffect(() => {
+      axios.post(`${url}/api/doctors/byemail`,{email},{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => {
+        setimgawal(res.data.dokter[0].gambar)
+      })
+    }, [])
+    
 
     const onSubmit = () => {
         if(!password){
@@ -55,6 +73,29 @@ function Setting() {
             })
         }
     }
+
+    const onChangePP = (img) => {
+      setloading(true)
+      const uploadimg = new FormData();
+      uploadimg.append('file',img);
+  
+      fetch(urlsquidex, {
+        method: 'POST',
+        body: uploadimg
+      }).then(response => response.json()).then(dataRes => {
+        axios.post(`${url}/api/doctors/edit`, {email:email, gambar:("https://cloud.squidex.io/api/assets/artikel/"+dataRes.id)}, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          if(res.status == 200){
+            setloading(false)
+            toast.success('Sukses Mengganti Profile Picture!')
+          }
+        })
+      })
+    }
     
     return (
         <>
@@ -63,6 +104,50 @@ function Setting() {
                 <div className="col-6"><StyledTitle>Pengaturan</StyledTitle></div>
             </div>  
             <BigCard className="col m-2">
+                <div className="col-lg-6 col-12 pb-4">
+                  <div className='d-flex'>
+                    <div className="">
+                      {imagePreview ? 
+                      <img src={imagePreview} width={105} height={140} className="img-upload" alt="upload" style={{objectFit:'cover', borderRadius:'5px'}} /> 
+                      : 
+                      (imgawal ?
+                      <Image src={imgawal ? imgawal : "/images/imgplaceholder.svg"} width={105} height={140} alt="upload" style={{objectFit:'cover', borderRadius:'5px'}}  />
+                      :
+                      <Icon
+                        icon="svg-spinners:12-dots-scale-rotate"
+                        className="text-right"
+                        style={{ fontSize: "38px", color: '#DF3034' }}
+                      />
+                      )
+                      }
+
+                      {
+                        !loading ?
+                        <label class="custom-file-upload ms-3 py-2 px-2">
+                          <input
+                            type="file"
+                            // name="avatar"
+                            accept="image/png, image/jpeg"
+                            className='changePP'
+                            onChange={(event) => {
+                              const img = event.target.files[0];
+                              setImagePreview(URL.createObjectURL(img));
+                              onChangePP(img)
+                            }}
+                          />
+                          Change Profile Picture
+                        </label>
+                        :
+                        <Icon
+                          icon="svg-spinners:12-dots-scale-rotate"
+                          className="text-right"
+                          style={{ fontSize: "38px", color: '#DF3034' }}
+                        />
+                      }
+                      
+                    </div>
+                  </div>
+                </div>
                 <div className="col-6">
                     <label><b>Email</b></label>
                     <Input 
