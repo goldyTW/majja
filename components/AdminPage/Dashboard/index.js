@@ -120,7 +120,7 @@ function Dashboard({ updateRes }) {
     {
       title: "Nama Pasien",
       dataIndex: "nama",
-      defaultSortOrder: "ascend",
+      // defaultSortOrder: "ascend",
       // sorter: (a, b) => a.nama.localeCompare(b.nama),
       // render: ((_, record) => ( 
       //   <span style={{cursor:'pointer'}} onClick={() => openModal(record)}>{record.nama}</span>
@@ -129,7 +129,7 @@ function Dashboard({ updateRes }) {
     {
       title: "Jadwal Konsultasi",
       dataIndex: "tanggal_booking",
-      defaultSortOrder: "descend",
+      defaultSortOrder: "ascend",
       // sorter: (a, b) => moment(a.tanggal_booking).toDate() - moment(b.tanggal_booking).toDate(), // sort by dates only
       sorter: (a, b) => {
         const dateTimeA = moment(a.tanggal_booking + ' ' + a.jam_booking, 'YYYY-MM-DD HH:mm:ss').toDate();

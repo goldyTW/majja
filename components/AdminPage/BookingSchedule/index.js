@@ -76,12 +76,6 @@ function BookingSchedule({ updateRes, isAdmin, email }) {
     })
   };
 
-  const dateSorter = (a, b) => {
-    const dateA = a.tanggal_booking.valueOf();
-    const dateB = b.tanggal_booking.valueOf();
-    return dateA - dateB;
-  };
-
   const columns = [
     {
       title: "Nama Pasien",
@@ -101,7 +95,16 @@ function BookingSchedule({ updateRes, isAdmin, email }) {
       title: "Jadwal Konsultasi",
       dataIndex: "tanggal_booking",
       defaultSortOrder: "ascend",
-      sorter: dateSorter,
+      sorter: (a, b) => {
+        const dateTimeA = moment(a.tanggal_booking + ' ' + a.jam_booking, 'YYYY-MM-DD HH:mm:ss').toDate();
+        const dateTimeB = moment(b.tanggal_booking + ' ' + b.jam_booking, 'YYYY-MM-DD HH:mm:ss').toDate();
+        if (dateTimeA.getDate() === dateTimeB.getDate()) {
+          // If the dates are equal, sort by "jam_booking" in descending order
+          return moment(b.jam_booking, 'HH:mm').diff(moment(a.jam_booking, 'HH:mm'));
+        }
+        // Sort by "tanggal_booking" in ascending order
+        return dateTimeA - dateTimeB;
+      },
       render: (_, record) =>
         moment(record.tanggal_booking).format("DD MMM YY") + ", " + record.jam_booking,
       width: 200,
@@ -167,7 +170,16 @@ function BookingSchedule({ updateRes, isAdmin, email }) {
       title: "Jadwal Konsultasi",
       dataIndex: "tanggal_booking",
       defaultSortOrder: "ascend",
-      sorter: dateSorter,
+      sorter: (a, b) => {
+        const dateTimeA = moment(a.tanggal_booking + ' ' + a.jam_booking, 'YYYY-MM-DD HH:mm:ss').toDate();
+        const dateTimeB = moment(b.tanggal_booking + ' ' + b.jam_booking, 'YYYY-MM-DD HH:mm:ss').toDate();
+        if (dateTimeA.getDate() === dateTimeB.getDate()) {
+          // If the dates are equal, sort by "jam_booking" in descending order
+          return moment(b.jam_booking, 'HH:mm').diff(moment(a.jam_booking, 'HH:mm'));
+        }
+        // Sort by "tanggal_booking" in ascending order
+        return dateTimeA - dateTimeB;
+      },
       render: (_, record) =>
         moment(record.tanggal_booking).format("DD MMM YY") + ", " + record.jam_booking,
       width: 200,
