@@ -88,14 +88,14 @@ function BookingSchedule({ updateRes, isAdmin, email }) {
       dataIndex: "nama",
       sorter: (a, b) => a.nama.localeCompare(b.nama),
       width: 200,
-      render: (_, record) => (
-        <span
-          style={{ cursor: "pointer" }}
-          onClick={() => openBookingSchedule(record)}
-        >
-          {record.nama}
-        </span>
-      ),
+      // render: (_, record) => (
+      //   <span
+      //     style={{ cursor: "pointer" }}
+      //     onClick={() => openBookingSchedule(record)}
+      //   >
+      //     {record.nama}
+      //   </span>
+      // ),
     },
     {
       title: "Jadwal Konsultasi",
@@ -153,14 +153,14 @@ function BookingSchedule({ updateRes, isAdmin, email }) {
       dataIndex: "nama",
       sorter: (a, b) => a.nama.localeCompare(b.nama),
       width: 200,
-      render: (_, record) => (
-        <span
-          style={{ cursor: "pointer" }}
-          onClick={() => openBookingSchedule(record)}
-        >
-          {record.nama}
-        </span>
-      ),
+      // render: (_, record) => (
+      //   <span
+      //     style={{ cursor: "pointer" }}
+      //     onClick={() => openBookingSchedule(record)}
+      //   >
+      //     {record.nama}
+      //   </span>
+      // ),
     },
     {
       title: "Jadwal Konsultasi",
@@ -276,6 +276,13 @@ function BookingSchedule({ updateRes, isAdmin, email }) {
                 dataSource={DataBookingSchedule}
                 onChange={onChange}
                 pagination={false}
+                onRow={(record, rowIndex) => {
+                  return {
+                    onClick: (event) => {
+                      openBookingSchedule(record)
+                    },
+                  };
+                }}
               />
             </div>
           </BigCard>

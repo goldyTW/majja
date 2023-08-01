@@ -207,7 +207,7 @@ function Dashboard() {
           
           <Menu
             theme="light"
-            // defaultSelectedKeys={"2"}
+            defaultSelectedKeys={"1"}
             mode="inline"
             items={items}
             onSelect={handleMenuSelect}

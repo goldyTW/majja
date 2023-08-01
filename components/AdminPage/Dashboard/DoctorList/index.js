@@ -115,9 +115,9 @@ function DoctorList({ updateRes }) {
       defaultSortOrder: "ascend",
       sorter: (a, b) => a.nama.localeCompare(b.nama),
       width: 500,
-      render: ((_, record) => ( 
-        <span style={{cursor:'pointer'}} onClick={() => openModalDoctor(record)}>{record.nama}</span>
-      ))
+      // render: ((_, record) => ( 
+      //   <span style={{cursor:'pointer'}} onClick={() => openModalDoctor(record)}>{record.nama}</span>
+      // ))
     },
     {
       title: "Spesialis",
@@ -230,6 +230,13 @@ function DoctorList({ updateRes }) {
               dataSource={DataDokter}
               onChange={onChange}
               pagination={false}
+              onRow={(record, rowIndex) => {
+                return {
+                  onClick: (event) => {
+                    openModalDoctor(record)
+                  },
+                };
+              }}
             />
             :
             <div className="loader">

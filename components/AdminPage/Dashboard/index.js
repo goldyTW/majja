@@ -122,9 +122,9 @@ function Dashboard({ updateRes }) {
       dataIndex: "nama",
       defaultSortOrder: "ascend",
       // sorter: (a, b) => a.nama.localeCompare(b.nama),
-      render: ((_, record) => ( 
-        <span style={{cursor:'pointer'}} onClick={() => openModal(record)}>{record.nama}</span>
-      ))
+      // render: ((_, record) => ( 
+      //   <span style={{cursor:'pointer'}} onClick={() => openModal(record)}>{record.nama}</span>
+      // ))
     },
     {
       title: "Jadwal Konsultasi",
@@ -310,6 +310,13 @@ function Dashboard({ updateRes }) {
                   dataSource={dataBooking}
                   onChange={onChange}
                   pagination={false}
+                  onRow={(record, rowIndex) => {
+                    return {
+                      onClick: (event) => {
+                        openModal(record)
+                      },
+                    };
+                  }}
                 />
               </div>
             </BigCard>
