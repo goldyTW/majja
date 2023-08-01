@@ -5,7 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 
-function NewDoctor({ updateBatal, updateSimpan }) {
+function NewDoctor({ updateBatal, updateSimpan, callData }) {
   const [nama, setnama] = useState();
   const [phone, setphone] = useState();
   const [spesialis, setspesialis] = useState();
@@ -54,9 +54,10 @@ function NewDoctor({ updateBatal, updateSimpan }) {
             .then((res) => {
               if (res.status == 200) {
                 toast.success("Tambah Dokter Berhasil!");
-                localStorage.setItem('halamandash', 4)
-                window.location.reload()
+                // localStorage.setItem('halamandash', 4)
+                // window.location.reload()
                 updateSimpan(false);
+                callData(true);
               } else {
                 toast.success("Tambah Dokter Gagal!");
               }

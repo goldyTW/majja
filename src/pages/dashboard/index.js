@@ -71,6 +71,7 @@ function Dashboard() {
         setSelectedKeyString("2")
       }
     }
+    const storedKey = localStorage.getItem('halamandash');
   }, [])
 
   function getItem(label, key, icon, children) {
@@ -204,7 +205,6 @@ function Dashboard() {
           <Logo>
             <img src="/images/Logo.svg" />
           </Logo>
-          
           <Menu
             theme="light"
             defaultSelectedKeys={"1"}

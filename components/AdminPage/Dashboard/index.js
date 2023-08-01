@@ -66,9 +66,10 @@ function Dashboard({ updateRes }) {
       .then(res => {
         if (res.status == 200) {
           toast.success('Edit Action Status Success!');
-          localStorage.setItem('halamandash', 1)
-          window.location.reload()
-          // updateRes(1)
+          // localStorage.setItem('halamandash', 1)
+          // window.location.reload()
+          fetchData()
+          updateRes(1)
         }
         else {
           toast.error('Silahkan Coba Lagi')
@@ -205,6 +206,25 @@ function Dashboard({ updateRes }) {
     },
   ];
 
+  const fetchData = async () => {
+    try {
+      callData(thirtydays, today)
+      percentage('monthly')
+
+      axios.get(`${url}/api/patient/list`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(res => {
+          setLoading(false)
+          setjumlahpasien(res.data.pasien.length)
+        })
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
   useEffect(() => {
     setLoading(true)
     if (!Cookies.get('token')) {
@@ -221,19 +241,7 @@ function Dashboard({ updateRes }) {
       //   setDataBookingMaster(res.data.result)
       // })
 
-      callData(thirtydays, today)
-
-      axios.get(`${url}/api/patient/list`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then(res => {
-          setLoading(false)
-          setjumlahpasien(res.data.pasien.length)
-        })
-
-      percentage('monthly')
+      fetchData()
     }
   }, [])
 
