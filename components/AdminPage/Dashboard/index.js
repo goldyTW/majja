@@ -128,8 +128,19 @@ function Dashboard({ updateRes }) {
     },
     {
       title: "Jadwal Konsultasi",
-      dataIndex: "",
-      // sorter: (a, b) => a.age - b.age,
+      dataIndex: "tanggal_booking",
+      defaultSortOrder: "descend",
+      // sorter: (a, b) => moment(a.tanggal_booking).toDate() - moment(b.tanggal_booking).toDate(), // sort by dates only
+      sorter: (a, b) => {
+        const dateTimeA = moment(a.tanggal_booking + ' ' + a.jam_booking, 'YYYY-MM-DD HH:mm:ss').toDate();
+        const dateTimeB = moment(b.tanggal_booking + ' ' + b.jam_booking, 'YYYY-MM-DD HH:mm:ss').toDate();
+        if (dateTimeA.getDate() === dateTimeB.getDate()) {
+          // If the dates are equal, sort by "jam_booking" in descending order
+          return moment(b.jam_booking, 'HH:mm').diff(moment(a.jam_booking, 'HH:mm'));
+        }
+        // Sort by "tanggal_booking" in ascending order
+        return dateTimeA - dateTimeB;
+      },
       render: ((_, record) => moment(record.tanggal_booking).format('DD MMM YY') + ', ' + record.jam_booking),
     },
     {
