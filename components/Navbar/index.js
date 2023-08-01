@@ -57,7 +57,7 @@ const Header = () => {
                       activeClass="active"
                       to="hero"
                       spy={true}
-                      smooth={true}
+                      // smooth={true}
                       // className={router.pathname == "/" ? "active" : ""}
                       onClick={handleLinkClick}
                     >
@@ -71,7 +71,7 @@ const Header = () => {
                     activeClass="active"
                     to="offering"
                     spy={true}
-                    smooth={true}
+                    // smooth={true}
                     // offset={-10}
                     className={router.pathname == "/tentang" ? "active" : ""}
                     onClick={handleLinkClick}
@@ -85,7 +85,7 @@ const Header = () => {
                     activeClass="active"
                     to="layanan"
                     spy={true}
-                    smooth={true}
+                    // smooth={true}
                     // offset={-80}
                     className={router.pathname == "/services" ? "active" : ""}
                     onClick={handleLinkClick}
@@ -99,7 +99,7 @@ const Header = () => {
                     activeClass="active"
                     to="doctor"
                     spy={true}
-                    smooth={true}
+                    // smooth={true}
                     offset={-20}
                     className={router.pathname == "/doctor" ? "active" : ""}
                     onClick={handleLinkClick}
@@ -113,7 +113,7 @@ const Header = () => {
                     activeClass="active"
                     to="artikel"
                     spy={true}
-                    smooth={true}
+                    // smooth={true}
                     offset={-150}
                     className={router.pathname == "/articles" ? "active" : ""}
                     onClick={handleLinkClick}
@@ -127,7 +127,7 @@ const Header = () => {
                     activeClass="active"
                     to="findUs"
                     spy={true}
-                    smooth={true}
+                    // smooth={true}
                     offset={-100}
                     className={
                       router.pathname == "/hubungiKami" ? "active" : ""
