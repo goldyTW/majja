@@ -92,7 +92,6 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
         })
       }
       else{
-        console.log('masuk sini')
         axios.post(`${url}/api/doctors/schedule/scheduleonemail`, {email: JSON.parse(email)}, {
           headers: {
             "Content-Type": "application/json",
@@ -346,21 +345,26 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
       for (i = 0; i <= jarakHari; i++) {
         newdate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
         if (newdate.getDay() == hari) {
-          jadwalkhusus?.forEach((item) => { // Menggunakan forEach untuk iterasi array
-            if (item.id_dokter == idDokter && item.jam_mulai == moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD')) {
-              tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-            } else if (item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') == moment(newdate).format('YYYY-MM-DD')) {
-              tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-            } else if (item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD')) {
-              if (!tglpraktekSet.has(moment(newdate).format('DD MMMM YYYY'))) {
+          if(jadwalkhusus.length > 0){
+            jadwalkhusus?.forEach((item) => { // Menggunakan forEach untuk iterasi array
+              if (item.id_dokter == idDokter && item.jam_mulai == moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD')) {
                 tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-              }
-            } else if (moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD') && item.id_dokter != idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss')) {
-              if (!tglpraktekSet.has(moment(newdate).format('DD MMMM YYYY'))) {
+              } else if (item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') == moment(newdate).format('YYYY-MM-DD')) {
                 tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
+              } else if (item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD')) {
+                if (!tglpraktekSet.has(moment(newdate).format('DD MMMM YYYY'))) {
+                  tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
+                }
+              } else if (moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD') && item.id_dokter != idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss')) {
+                if (!tglpraktekSet.has(moment(newdate).format('DD MMMM YYYY'))) {
+                  tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
+                }
               }
-            }
-          });
+            });
+          }else{
+            tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
+          }
+          
         }
       }
     }
@@ -368,21 +372,25 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
       for (i = 0; i <= 6; i++){
         newdate = moment(today).add(i, 'days')
         if (moment(newdate).day() == hari) {
-          jadwalkhusus?.forEach((item) => { // Menggunakan forEach untuk iterasi array
-            if (item.id_dokter == idDokter && item.jam_mulai == moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD')) {
-              tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-            } else if (item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') == moment(newdate).format('YYYY-MM-DD')) {
-              tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-            } else if (item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD')) {
-              if (!tglpraktekSet.has(moment(newdate).format('DD MMMM YYYY'))) {
+          if(jadwalkhusus.length > 0){
+            jadwalkhusus?.forEach((item) => { // Menggunakan forEach untuk iterasi array
+              if (item.id_dokter == idDokter && item.jam_mulai == moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD')) {
                 tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-              }
-            } else if (moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD') && item.id_dokter != idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss')) {
-              if (!tglpraktekSet.has(moment(newdate).format('DD MMMM YYYY'))) {
+              } else if (item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') == moment(newdate).format('YYYY-MM-DD')) {
                 tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
+              } else if (item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD')) {
+                if (!tglpraktekSet.has(moment(newdate).format('DD MMMM YYYY'))) {
+                  tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
+                }
+              } else if (moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD') && item.id_dokter != idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss')) {
+                if (!tglpraktekSet.has(moment(newdate).format('DD MMMM YYYY'))) {
+                  tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
+                }
               }
-            }
-          });
+            });
+          }else{
+            tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
+          }
         }
       }
     }

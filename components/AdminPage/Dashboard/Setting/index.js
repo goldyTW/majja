@@ -21,16 +21,19 @@ function Setting() {
     const [imgawal, setimgawal] = useState(null);
     const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
     const urlsquidex = "https://cloud.squidex.io/api/apps/artikel/assets";
+    const isAdmin = Cookies.get('is_admin');
 
     useEffect(() => {
-      axios.post(`${url}/api/doctors/byemail`,{email},{
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(res => {
-        setimgawal(res.data.dokter[0].gambar)
-      })
+      if(isAdmin != "1"){
+        axios.post(`${url}/api/doctors/byemail`,{email},{
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(res => {
+          setimgawal(res.data.dokter[0].gambar)
+        })
+      }
     }, [])
     
 
@@ -104,50 +107,53 @@ function Setting() {
                 <div className="col-6"><StyledTitle>Pengaturan</StyledTitle></div>
             </div>  
             <BigCard className="col m-2">
-                <div className="col-lg-6 col-12 pb-4">
-                  <div className='d-flex'>
-                    <div className="">
-                      {imagePreview ? 
-                      <img src={imagePreview} width={105} height={140} className="img-upload" alt="upload" style={{objectFit:'cover', borderRadius:'5px'}} /> 
-                      : 
-                      (imgawal ?
-                      <Image src={imgawal ? imgawal : "/images/imgplaceholder.svg"} width={105} height={140} alt="upload" style={{objectFit:'cover', borderRadius:'5px'}}  />
-                      :
-                      <Icon
-                        icon="svg-spinners:12-dots-scale-rotate"
-                        className="text-right"
-                        style={{ fontSize: "38px", color: '#DF3034' }}
-                      />
-                      )
-                      }
-
-                      {
-                        !loading ?
-                        <label class="custom-file-upload ms-3 py-2 px-2">
-                          <input
-                            type="file"
-                            // name="avatar"
-                            accept="image/png, image/jpeg"
-                            className='changePP'
-                            onChange={(event) => {
-                              const img = event.target.files[0];
-                              setImagePreview(URL.createObjectURL(img));
-                              onChangePP(img)
-                            }}
-                          />
-                          Change Profile Picture
-                        </label>
+                {
+                  isAdmin != "1" &&
+                  <div className="col-lg-6 col-12 pb-4">
+                    <div className='d-flex'>
+                      <div className="">
+                        {imagePreview ? 
+                        <img src={imagePreview} width={105} height={140} className="img-upload" alt="upload" style={{objectFit:'cover', borderRadius:'5px'}} /> 
+                        : 
+                        (imgawal ?
+                        <Image src={imgawal ? imgawal : "/images/imgplaceholder.svg"} width={105} height={140} alt="upload" style={{objectFit:'cover', borderRadius:'5px'}}  />
                         :
                         <Icon
                           icon="svg-spinners:12-dots-scale-rotate"
                           className="text-right"
                           style={{ fontSize: "38px", color: '#DF3034' }}
                         />
-                      }
-                      
+                        )
+                        }
+
+                        {
+                          !loading ?
+                          <label class="custom-file-upload ms-3 py-2 px-2">
+                            <input
+                              type="file"
+                              // name="avatar"
+                              accept="image/png, image/jpeg"
+                              className='changePP'
+                              onChange={(event) => {
+                                const img = event.target.files[0];
+                                setImagePreview(URL.createObjectURL(img));
+                                onChangePP(img)
+                              }}
+                            />
+                            Change Profile Picture
+                          </label>
+                          :
+                          <Icon
+                            icon="svg-spinners:12-dots-scale-rotate"
+                            className="text-right"
+                            style={{ fontSize: "38px", color: '#DF3034' }}
+                          />
+                        }
+                        
+                      </div>
                     </div>
                   </div>
-                </div>
+                }
                 <div className="col-6">
                     <label><b>Email</b></label>
                     <Input 

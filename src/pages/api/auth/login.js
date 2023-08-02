@@ -40,7 +40,6 @@ export default async function handler(req, res) {
             if (user.length == 0){
                 throw new Error('User Not Found');
             } else {
-                console.log('massuk pak eko')
                 const token = jwt.sign({ email }, rand(), {});
                 res.status(200).json({ username:user[0].nama, token, is_admin: user[0].is_admin,  email: user[0].email, msg:"Success" })
             }            

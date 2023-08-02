@@ -544,7 +544,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
                       </div>
                     )}
                     <div className="col-12 p-3">
-                      <span className="bookingInputLabel py-2">Keluhan<span className='required'>*</span></span>
+                      <span className="bookingInputLabel py-2">Keluhan</span>
                       <TextArea
                         placeholder="Tulis keluhanmu di sini"
                         value={keluhan}
