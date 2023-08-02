@@ -52,62 +52,78 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
   const [idjadwal, setidjadwal] = useState();
   const [btnTab, setbtnTab] = useState("tabel");
   const [today, setToday] = useState(new Date());
-  const [loading, setLoading] = useState(false); 
-  const url =  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const [loading, setLoading] = useState(false);
+  const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   const router = useRouter();
 
-  useEffect(() => {
-    setLoading(true)
-    if(!Cookies.get('token')){
-      router.push('/login')
-    }
-    else{
-      if(isAdmin){
-        axios.get(`${url}/api/doctors/schedule/list`,{
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
+  const fetchDataAdmin = async () => {
+    try {
+      axios.get(`${url}/api/doctors/schedule/list`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
         .then(res => {
           setDataDokter(res.data.jadwal)
         })
-  
-        axios.get(`${url}/api/doctors/list`,{
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
+
+      axios.get(`${url}/api/doctors/list`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
         .then(res => {
           setDataDokterMaster(res.data.dokter)
         })
-  
-        axios.get(`${url}/api/doctors/schedule/list_khusus`,{
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
+
+      axios.get(`${url}/api/doctors/schedule/list_khusus`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
         .then(res => {
           setLoading(false)
           setjadwalkhusus(res.data.jadwal)
         })
-      }
-      else{
-        axios.post(`${url}/api/doctors/schedule/scheduleonemail`, {email: JSON.parse(email)}, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  const fetchDataNonAdmin = async () => {
+    try {
+      axios.post(`${url}/api/doctors/schedule/scheduleonemail`, { email: JSON.parse(email) }, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
         .then((res) => {
           setDataDokter(res.data.result)
           setLoading(false)
         })
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  useEffect(() => {
+    setLoading(true)
+    if (!Cookies.get('token')) {
+      router.push('/login')
+    }
+    else {
+      if (isAdmin) {
+        fetchDataAdmin()
+      }
+      else {
+        fetchDataNonAdmin()
       }
     }
-    
+
   }, [])
 
   useEffect(() => {
-    if(recurring == 5){
+    if (recurring == 5) {
       setModalPreferensiOpen(true)
     }
   }, [recurring])
@@ -116,9 +132,9 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
     setModalOpen(true);
   };
 
-  function isiArrayJadwal(){
-    var rep = angkaUlang+' '+textUlang;
-    setDataAddJadwalDokter([...DataAddJadwalDokter, {jamMulai, jamSelesai, recurring, rep, onDate, afterDate}])
+  function isiArrayJadwal() {
+    var rep = angkaUlang + ' ' + textUlang;
+    setDataAddJadwalDokter([...DataAddJadwalDokter, { jamMulai, jamSelesai, recurring, rep, onDate, afterDate }])
     setjamMulai('')
     setjamSelesai('')
     setrecurring('')
@@ -130,23 +146,25 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
     setAfterDate('')
   }
 
-  function addDokterAPI(start, end, recur, rep, on, after){
-    axios.post(`${url}/api/doctors/schedule/add`,{id_dokter:dokterSelected, hari:moment(date).day(), jam_mulai:start, jam_selesai:end, 
-      recurring:recur, repeat:rep, berakhir_pada:on, berakhir_setelah:after},{
+  function addDokterAPI(start, end, recur, rep, on, after) {
+    axios.post(`${url}/api/doctors/schedule/add`, {
+      id_dokter: dokterSelected, hari: moment(date).day(), jam_mulai: start, jam_selesai: end,
+      recurring: recur, repeat: rep, berakhir_pada: on, berakhir_setelah: after
+    }, {
       headers: {
         'Content-Type': 'application/json',
       },
     })
-    .then(res => {
-      if(res.status == 200){
-        toast.success('Tambah Jadwal Dokter Success!');
-      }
-      else{
-        toast.error('Silahkan Coba Lagi')
-      }
-    })
-    .catch(function (error) {
-      setLoading(true);
+      .then(res => {
+        if (res.status == 200) {
+          toast.success('Tambah Jadwal Dokter Success!');
+        }
+        else {
+          toast.error('Silahkan Coba Lagi')
+        }
+      })
+      .catch(function (error) {
+        setLoading(true);
         if (error.response) {
           console.log(error.response.data);
           console.log(error.response.status);
@@ -155,34 +173,37 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
           console.log(error.request);
         } else {
           console.log('Error', error.message);
-        }})
+        }
+      })
   }
 
   const addJadwalDokter = () => {
-    var repetisi = angkaUlang+' '+textUlang;
+    var repetisi = angkaUlang + ' ' + textUlang;
 
-    if(DataAddJadwalDokter.length > 0){
+    if (DataAddJadwalDokter.length > 0) {
       DataAddJadwalDokter.map((item, i) => (
         addDokterAPI(item.jamMulai, item.jamSelesai, item.recurring, item.rep, item.onDate, item.afterDate)
       ))
       addDokterAPI(jamMulai, jamSelesai, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-      localStorage.setItem('halamandash', 5)
-      window.location.reload()
-      // updateRes(5)
+      // localStorage.setItem('halamandash', 5)
+      // window.location.reload()
+      isAdmin ? fetchDataAdmin : fetchDataNonAdmin;
+      updateRes(5)
     }
-    else{
+    else {
       addDokterAPI(jamMulai, jamSelesai, recurring, repetisi, onDate, afterDate)
-      localStorage.setItem('halamandash', 5)
-      window.location.reload()
-      // updateRes(5)
+      // localStorage.setItem('halamandash', 5)
+      // window.location.reload()
+      isAdmin ? fetchDataAdmin : fetchDataNonAdmin;
+      updateRes(5)
     }
   }
-  
+
   const openModalDoctor = (record) => {
     setModalOpen2(true);
     setNamaDokter(record.nama);
     settanggalpraktek(record.hari);
-    setjampraktek(record.jam_mulai+(record.jam_selesai != null ? (' - '+record.jam_selesai):''))
+    setjampraktek(record.jam_mulai + (record.jam_selesai != null ? (' - ' + record.jam_selesai) : ''))
     setjamMulaiPraktek(record.jam_mulai)
     setjamSelesaiPraktek(record.jam_selesai)
     setidjadwal(record.id_jadwal)
@@ -190,11 +211,11 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
   };
 
   const columns = [
-    { 
-      dataIndex: "no", 
-      title: "No", 
+    {
+      dataIndex: "no",
+      title: "No",
       width: 70,
-      align:'center',
+      align: 'center',
       render: ((value, item, index) => index += 1)
     },
     {
@@ -203,14 +224,14 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
       defaultSortOrder: "ascend",
       // sorter: (a, b) => a.nama.localeCompare(b.nama),
       width: 500,
-      render: (_, record) => (
-        <span
-          style={{ cursor: "pointer" }}
-          onClick={() => openModalDoctor(record)}
-        >
-          {record.nama}
-        </span>
-      ),
+      // render: (_, record) => (
+      //   <span
+      //     style={{ cursor: "pointer" }}
+      //     onClick={() => openModalDoctor(record)}
+      //   >
+      //     {record.nama}
+      //   </span>
+      // ),
     },
     {
       title: "Spesialis",
@@ -262,7 +283,7 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
       dataIndex: "jam_praktek",
       defaultSortOrder: "ascend",
       render: (_, record) => (
-        record.jam_mulai+(record.jam_selesai != null ? (' - '+record.jam_selesai):'')
+        record.jam_mulai + (record.jam_selesai != null ? (' - ' + record.jam_selesai) : '')
       ),
       // sorter: (a, b) => a.name.localeCompare(b.name),
       width: 200,
@@ -287,51 +308,55 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
 
   const onChangeHapus = () => {
     //semua
-    if(hapusJadwal == 0){
-      axios.post(`${url}/api/doctors/schedule/delete`,{id:idjadwal},{
+    if (hapusJadwal == 0) {
+      axios.post(`${url}/api/doctors/schedule/delete`, { id: idjadwal }, {
         headers: {
           'Content-Type': 'application/json',
         },
       })
-      .then(res => {
-        if(res.status == 200){
-          toast.success('Seluruh Jadwal Berhasil Dihapus!');
-          setModalOpen3(false);
-          localStorage.setItem('halamandash', 5)
-          window.location.reload()
-          // updateRes(5)
-        }
-        else{
-          toast.error('Silahkan Coba Lagi')
-          setModalOpen3(false);
-        }
-      })
+        .then(res => {
+          if (res.status == 200) {
+            toast.success('Seluruh Jadwal Berhasil Dihapus!');
+            setModalOpen3(false);
+            // localStorage.setItem('halamandash', 5)
+            // window.location.reload()
+            isAdmin ? fetchDataAdmin : fetchDataNonAdmin;
+            updateRes(5)
+          }
+          else {
+            toast.error('Silahkan Coba Lagi')
+            setModalOpen3(false);
+          }
+        })
     }
     //harian
-    else if(hapusJadwal == null){
+    else if (hapusJadwal == null) {
       toast.error('Hapus Jadwal Gagal! Pilih Pilihan Hapus Jadwal!')
       setModalOpen3(false);
     }
-    else{
-      axios.post(`${url}/api/doctors/schedule/add_once`,{id_dokter: idDokter, hari: tanggalpraktek, jam_mulai:moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss'), 
-        jam_selesai:moment.utc(jamSelesaiPraktek, "THH Z").format('HH:mm:ss'), tanggal:moment(hapusJadwal).format('YYYY-MM-DD'), hapus:1},{
+    else {
+      axios.post(`${url}/api/doctors/schedule/add_once`, {
+        id_dokter: idDokter, hari: tanggalpraktek, jam_mulai: moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss'),
+        jam_selesai: moment.utc(jamSelesaiPraktek, "THH Z").format('HH:mm:ss'), tanggal: moment(hapusJadwal).format('YYYY-MM-DD'), hapus: 1
+      }, {
         headers: {
           'Content-Type': 'application/json',
         },
       })
-      .then(res => {
-        if(res.status == 200){
-          toast.success('Jadwal tanggal '+hapusJadwal+' berhasil dihapus!');
-          setModalOpen3(false);
-          localStorage.setItem('halamandash', 5)
-          window.location.reload()
-          // updateRes(5)
-        }
-        else{
-          toast.error('Silahkan Coba Lagi')
-          setModalOpen3(false);
-        }
-      })
+        .then(res => {
+          if (res.status == 200) {
+            toast.success('Jadwal tanggal ' + hapusJadwal + ' berhasil dihapus!');
+            setModalOpen3(false);
+            // localStorage.setItem('halamandash', 5)
+            // window.location.reload()
+            isAdmin ? fetchDataAdmin : fetchDataNonAdmin;
+            updateRes(5)
+          }
+          else {
+            toast.error('Silahkan Coba Lagi')
+            setModalOpen3(false);
+          }
+        })
     }
   };
 
@@ -340,8 +365,8 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
     let i = 0;
     let newdate;
     let tglpraktekSet = new Set(); // Menggunakan Set untuk menyimpan tanggal unik
-  
-    if(jarakHari > 6){
+
+    if (jarakHari > 6) {
       for (i = 0; i <= jarakHari; i++) {
         newdate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
         if (newdate.getDay() == hari) {
@@ -368,8 +393,8 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
         }
       }
     }
-    else{
-      for (i = 0; i <= 6; i++){
+    else {
+      for (i = 0; i <= 6; i++) {
         newdate = moment(today).add(i, 'days')
         if (moment(newdate).day() == hari) {
           if(jadwalkhusus.length > 0){
@@ -394,9 +419,9 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
         }
       }
     }
-  
+
     const tglpraktek = Array.from(tglpraktekSet); // Mengonversi Set kembali menjadi array
-  
+
     if (!isRadio) {
       return tglpraktek.map((item, i) => (
         <div key={i}>
@@ -412,9 +437,9 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
       ));
     }
   }
-  
 
-  function cancelModalPreferensi(){
+
+  function cancelModalPreferensi() {
     setModalPreferensiOpen(false)
     setAngkaUlang()
     setTextUlang()
@@ -459,28 +484,35 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
           }
         </div>
         {
-        !loading ?
-        <div className="row">
-          <BigCard className="col m-2 p-0">
-            <Table
-              columns={columns}
-              dataSource={DataDokter}
-              // onChange={onChange}
-              pagination={false}
-            />
-           
-          </BigCard>
-        </div>
-         :
-         <div className="loader">
-           <span></span>
-           <span></span>
-           <span></span>
-           <span></span>
-           <span></span>
-           <span></span>
-         </div>
-       }
+          !loading ?
+            <div className="row">
+              <BigCard className="col m-2 p-0">
+                <Table
+                  columns={columns}
+                  dataSource={DataDokter}
+                  // onChange={onChange}
+                  pagination={false}
+                  onRow={(record, rowIndex) => {
+                    return {
+                      onClick: (event) => {
+                        openModalDoctor(record)
+                      },
+                    };
+                  }}
+                />
+
+              </BigCard>
+            </div>
+            :
+            <div className="loader">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+        }
       </Wrapper>
       {/* tambah jadwal dokter */}
       <Modal
@@ -505,7 +537,7 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
               <div className="col-lg-9 col-12 modalSubtitleData align-self-center">
                 <Select
                   placeholder="Nama Dokter"
-                  style={{width:'100%'}}
+                  style={{ width: '100%' }}
                   onChange={(e) => setdokterSelected(e)}
                   value={dokterSelected}
                 >
@@ -538,62 +570,62 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
                   {
                     DataAddJadwalDokter?.map((item, i) => (
                       <>
-                      <div className="col-lg-6 col-12 py-1 modalSubtitleData align-self-center">
-                        <div className="d-flex">
-                          <Input
-                            placeholder="Mulai"
-                            value={item.jamMulai}
+                        <div className="col-lg-6 col-12 py-1 modalSubtitleData align-self-center">
+                          <div className="d-flex">
+                            <Input
+                              placeholder="Mulai"
+                              value={item.jamMulai}
                             />
                             <span className="mx-3 align-self-center"> - </span>
                             <Input
-                            placeholder="Selesai"
-                            value={item.jamSelesai}
-                          />
+                              placeholder="Selesai"
+                              value={item.jamSelesai}
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-lg-6 col-12 py-1 modalSubtitleData align-self-center">
-                        <Select
-                          placeholder="Setiap..."
-                          style={{width:'100%'}}
-                          value={item.recurring == 1 ?
-                            'Setiap Hari '+moment(date).format('dddd')
-                            :
-                            item.recurring == 2 ? 
-                            'Tidak Diulang'
-                            :
-                            item.recurring == 3 ?
-                            "Setiap Hari"
-                            :
-                            item.recurring == 4 ?
-                            "Senin sampai Jumat"
-                            :
-                            "Preferensi"
+                        <div className="col-lg-6 col-12 py-1 modalSubtitleData align-self-center">
+                          <Select
+                            placeholder="Setiap..."
+                            style={{ width: '100%' }}
+                            value={item.recurring == 1 ?
+                              'Setiap Hari ' + moment(date).format('dddd')
+                              :
+                              item.recurring == 2 ?
+                                'Tidak Diulang'
+                                :
+                                item.recurring == 3 ?
+                                  "Setiap Hari"
+                                  :
+                                  item.recurring == 4 ?
+                                    "Senin sampai Jumat"
+                                    :
+                                    "Preferensi"
                             }
-                        >
-                        </Select>
-                      </div>
+                          >
+                          </Select>
+                        </div>
                       </>
                     ))
                   }
                   <div className="col-6 modalSubtitleData py-1 align-self-center">
-                      <div className="d-flex">
+                    <div className="d-flex">
                       <Input
-                      placeholder="Mulai"
-                      value={jamMulai}
-                      onChange={(event) => setjamMulai(event.target.value)}
+                        placeholder="Mulai"
+                        value={jamMulai}
+                        onChange={(event) => setjamMulai(event.target.value)}
                       />
                       <span className="mx-3 align-self-center"> - </span>
                       <Input
-                      placeholder="Selesai"
-                      value={jamSelesai}
-                      onChange={(event) => setjamSelesai(event.target.value)}
+                        placeholder="Selesai"
+                        value={jamSelesai}
+                        onChange={(event) => setjamSelesai(event.target.value)}
                       />
-                      </div>
+                    </div>
                   </div>
                   <div className="col-6 modalSubtitleData py-1 align-self-center">
                     <Select
                       placeholder="Setiap..."
-                      style={{width:'100%'}}
+                      style={{ width: '100%' }}
                       onChange={(e) => setrecurring(e)}
                       value={recurring}
                     >
@@ -604,7 +636,7 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
                       <Option value={5}>Preferensi</Option>
                     </Select>
                   </div>
-                  <span className="tambahjam py-2"  style={{cursor:'pointer'}} onClick={() => isiArrayJadwal()}>+ Tambahkan jam praktek</span>
+                  <span className="tambahjam py-2" style={{ cursor: 'pointer' }} onClick={() => isiArrayJadwal()}>+ Tambahkan jam praktek</span>
                 </div>
               </div>
             </div>
@@ -622,55 +654,55 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
         width={450}
         // onOk={() => setModalOpen(false)}
         onCancel={() => cancelModalPreferensi()}>
-          <div className="p-3">
-            <h5 className="pb-3 modalDoctorTitle">Preferensi</h5>
-            <div className="row my-3">
-              <div className="col-lg-4 col-12 modalSubtitle align-self-center">
-                Ulangi Setiap
-              </div>
-              <div className="col-lg-3 col-12 modalSubtitle">
-                <Input
-                  placeholder="3"
-                  type="number"
-                  value={angkaUlang}
-                  max={3}
-                  onChange={(event) => setAngkaUlang(event.target.value)}
-                />
-              </div>
-              <div className="col-lg-4 col-12 modalSubtitle">
-                <Select
-                  placeholder="Setiap..."
-                  style={{width:'100%'}}
-                  onChange={(e) => setTextUlang(e)}
-                  value={textUlang}
-                >
-                  <Option value="Minggu">Minggu</Option>
-                  <Option value="Bulan">Bulan</Option>
-                </Select>
-              </div>
+        <div className="p-3">
+          <h5 className="pb-3 modalDoctorTitle">Preferensi</h5>
+          <div className="row my-3">
+            <div className="col-lg-4 col-12 modalSubtitle align-self-center">
+              Ulangi Setiap
             </div>
-            <div className="row my-3 mt-4">
-              <div className="col-12 modalSubtitle">
-                Ulangi Pada Hari
-              </div>
-              <div className="col-12 my-3 modalSubtitle">
-                <span className={ulangHari == 0 ? "buletSelected" : "bulet"} onClick={() => setulangHari(0)}>M</span>
-                <span className={ulangHari == 1 ? "buletSelected" : "bulet"} onClick={() => setulangHari(1)}>S</span>
-                <span className={ulangHari == 2 ? "buletSelected" : "bulet"} onClick={() => setulangHari(2)}>S</span>
-                <span className={ulangHari == 3 ? "buletSelected" : "bulet"} onClick={() => setulangHari(3)}>R</span>
-                <span className={ulangHari == 4 ? "buletSelected" : "bulet"} onClick={() => setulangHari(4)}>K</span>
-                <span className={ulangHari == 5 ? "buletSelected" : "bulet"} onClick={() => setulangHari(5)}>J</span>
-                <span className={ulangHari == 6 ? "buletSelected" : "bulet"} onClick={() => setulangHari(6)}>S</span>
-              </div>
+            <div className="col-lg-3 col-12 modalSubtitle">
+              <Input
+                placeholder="3"
+                type="number"
+                value={angkaUlang}
+                max={3}
+                onChange={(event) => setAngkaUlang(event.target.value)}
+              />
             </div>
-            <div className="row my-3">
-              <div className="col-12 modalSubtitle">
-                Berakhir Pada
-              </div>
-              <div className="col-12 modalSubtitle">
-                <Radio.Group 
-                  onChange={(e) => setberakhirpada(e.target.value)} 
-                  value={berakhirpada}>
+            <div className="col-lg-4 col-12 modalSubtitle">
+              <Select
+                placeholder="Setiap..."
+                style={{ width: '100%' }}
+                onChange={(e) => setTextUlang(e)}
+                value={textUlang}
+              >
+                <Option value="Minggu">Minggu</Option>
+                <Option value="Bulan">Bulan</Option>
+              </Select>
+            </div>
+          </div>
+          <div className="row my-3 mt-4">
+            <div className="col-12 modalSubtitle">
+              Ulangi Pada Hari
+            </div>
+            <div className="col-12 my-3 modalSubtitle">
+              <span className={ulangHari == 0 ? "buletSelected" : "bulet"} onClick={() => setulangHari(0)}>M</span>
+              <span className={ulangHari == 1 ? "buletSelected" : "bulet"} onClick={() => setulangHari(1)}>S</span>
+              <span className={ulangHari == 2 ? "buletSelected" : "bulet"} onClick={() => setulangHari(2)}>S</span>
+              <span className={ulangHari == 3 ? "buletSelected" : "bulet"} onClick={() => setulangHari(3)}>R</span>
+              <span className={ulangHari == 4 ? "buletSelected" : "bulet"} onClick={() => setulangHari(4)}>K</span>
+              <span className={ulangHari == 5 ? "buletSelected" : "bulet"} onClick={() => setulangHari(5)}>J</span>
+              <span className={ulangHari == 6 ? "buletSelected" : "bulet"} onClick={() => setulangHari(6)}>S</span>
+            </div>
+          </div>
+          <div className="row my-3">
+            <div className="col-12 modalSubtitle">
+              Berakhir Pada
+            </div>
+            <div className="col-12 modalSubtitle">
+              <Radio.Group
+                onChange={(e) => setberakhirpada(e.target.value)}
+                value={berakhirpada}>
                 <Space direction="vertical">
                   <Radio className="my-1" value={1}>Tidak Pernah</Radio>
                   <Radio className="my-1" value={2}>
@@ -688,8 +720,8 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
                   </Radio>
                   <Radio className="my-1" value={3}>
                     <div className="d-flex align-self-center">
-                    Setelah Tanggal
-                    <DatePicker
+                      Setelah Tanggal
+                      <DatePicker
                         className="ms-3"
                         placeholder="Pilih Tanggal"
                         format="DD-MM-YY"
@@ -697,7 +729,7 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
                         onChange={onChangeAfterDate}
                         disabledDate={disabledDate}
                       />
-                    {/* <Input
+                      {/* <Input
                       placeholder="3"
                       type="number"
                       className="ms-3"
@@ -709,17 +741,17 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
                   </Radio>
                 </Space>
               </Radio.Group>
-                </div>
             </div>
-            <div className="text-end mt-5">
-                <ModalButtonCancel className="batalkan me-3" onClick={() => cancelModalPreferensi()}>
-                  Batalkan
-                </ModalButtonCancel>
-                <ModalButtonOk className="ok" onClick={() => setModalPreferensiOpen(false)}>
-                  Ok
-                </ModalButtonOk>
-              </div>
           </div>
+          <div className="text-end mt-5">
+            <ModalButtonCancel className="batalkan me-3" onClick={() => cancelModalPreferensi()}>
+              Batalkan
+            </ModalButtonCancel>
+            <ModalButtonOk className="ok" onClick={() => setModalPreferensiOpen(false)}>
+              Ok
+            </ModalButtonOk>
+          </div>
+        </div>
       </Modal>
 
       {/* keterangan per dokter */}
@@ -752,22 +784,22 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
               </div>
               <div className="col-lg-8 col-12 modalSubtitleData">
                 {
-                  tanggalpraktek == "Senin" ? 
-                  generateDate(1, false)
-                  :
-                  tanggalpraktek == "Selasa" ?
-                  generateDate(2, false)
-                  :
-                  tanggalpraktek == "Rabu" ?
-                  generateDate(3, false)
-                  :
-                  tanggalpraktek == "Kamis" ?
-                  generateDate(4, false)
-                  :
-                  tanggalpraktek == "Jumat" ?
-                  generateDate(5, false)
-                  :
-                  generateDate(6, false)
+                  tanggalpraktek == "Senin" ?
+                    generateDate(1, false)
+                    :
+                    tanggalpraktek == "Selasa" ?
+                      generateDate(2, false)
+                      :
+                      tanggalpraktek == "Rabu" ?
+                        generateDate(3, false)
+                        :
+                        tanggalpraktek == "Kamis" ?
+                          generateDate(4, false)
+                          :
+                          tanggalpraktek == "Jumat" ?
+                            generateDate(5, false)
+                            :
+                            generateDate(6, false)
                 }
               </div>
             </div>
@@ -779,12 +811,12 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
             </div>
           </div>
           {
-            isAdmin && 
+            isAdmin &&
             <div className="text-end">
-            <button className="buttonAlt py-1 px-3" onClick={() => setModalOpen3(true)}>
-              Hapus Jadwal
-            </button>
-          </div>
+              <button className="buttonAlt py-1 px-3" onClick={() => setModalOpen3(true)}>
+                Hapus Jadwal
+              </button>
+            </div>
           }
         </div>
       </Modal>
@@ -803,22 +835,22 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
               <Space direction="vertical">
                 <Radio value={0}>Semua Jadwal</Radio>
                 {
-                  tanggalpraktek == "Senin" ? 
-                  generateDate(1, true)
-                  :
-                  tanggalpraktek == "Selasa" ?
-                  generateDate(2, true)
-                  :
-                  tanggalpraktek == "Rabu" ?
-                  generateDate(3, true)
-                  :
-                  tanggalpraktek == "Kamis" ?
-                  generateDate(4, true)
-                  :
-                  tanggalpraktek == "Jumat" ?
-                  generateDate(5, true)
-                  :
-                  generateDate(6, true)
+                  tanggalpraktek == "Senin" ?
+                    generateDate(1, true)
+                    :
+                    tanggalpraktek == "Selasa" ?
+                      generateDate(2, true)
+                      :
+                      tanggalpraktek == "Rabu" ?
+                        generateDate(3, true)
+                        :
+                        tanggalpraktek == "Kamis" ?
+                          generateDate(4, true)
+                          :
+                          tanggalpraktek == "Jumat" ?
+                            generateDate(5, true)
+                            :
+                            generateDate(6, true)
                 }
               </Space>
             </Radio.Group>

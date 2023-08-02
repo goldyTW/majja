@@ -71,12 +71,8 @@ function DoctorList({ updateRes }) {
     getJadwal(record.id_dokter)
   }
 
-  useEffect(() => {
-    setLoading(true)
-    if(!Cookies.get('token')){
-      router.push('/login')
-    }
-    else{
+  const fetchData = async () => {
+    try {
       axios.get(`${url}/api/doctors/list`,{
         headers: {
           'Content-Type': 'application/json',
@@ -87,6 +83,18 @@ function DoctorList({ updateRes }) {
         setDataDokter(res.data.dokter)
         setDataDokterMaster(res.data.dokter)
       })
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  useEffect(() => {
+    setLoading(true)
+    if(!Cookies.get('token')){
+      router.push('/login')
+    }
+    else{
+      fetchData();
     }
   }, [])
 
@@ -99,9 +107,11 @@ function DoctorList({ updateRes }) {
       .then(res => {
         if(res.status == 200){
           toast.success('Delete Dokter Berhasil!')
-          localStorage.setItem('halamandash', 4)
-          window.location.reload()
-          // updateRes(4)
+          // localStorage.setItem('halamandash', 4)
+          // window.location.reload()
+          updateRes(4);
+          setModalOpen(false);
+          fetchData();
         }else{
           toast.error('Gagal menghapus dokter')
         }
@@ -115,9 +125,9 @@ function DoctorList({ updateRes }) {
       defaultSortOrder: "ascend",
       sorter: (a, b) => a.nama.localeCompare(b.nama),
       width: 500,
-      render: ((_, record) => ( 
-        <span style={{cursor:'pointer'}} onClick={() => openModalDoctor(record)}>{record.nama}</span>
-      ))
+      // render: ((_, record) => ( 
+      //   <span style={{cursor:'pointer'}} onClick={() => openModalDoctor(record)}>{record.nama}</span>
+      // ))
     },
     {
       title: "Spesialis",
@@ -202,7 +212,7 @@ function DoctorList({ updateRes }) {
     <>
     {
       showTambahDokter ?
-      <NewDoctor updateBatal={setShowTambahDokter} updateSimpan={setShowTambahDokter}></NewDoctor>
+      <NewDoctor updateBatal={setShowTambahDokter} updateSimpan={setShowTambahDokter} callData={fetchData}></NewDoctor>
       :
       <Wrapper className="container-fluid">
       <div className="row">
@@ -230,6 +240,13 @@ function DoctorList({ updateRes }) {
               dataSource={DataDokter}
               onChange={onChange}
               pagination={false}
+              onRow={(record, rowIndex) => {
+                return {
+                  onClick: (event) => {
+                    openModalDoctor(record)
+                  },
+                };
+              }}
             />
             :
             <div className="loader">
