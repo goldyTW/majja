@@ -8,6 +8,7 @@ import {
   DatePicker,
   Radio,
   Space,
+  TimePicker,
 } from "antd";
 import moment from "moment";
 import "moment/locale/id";
@@ -182,18 +183,20 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
 
     if (DataAddJadwalDokter.length > 0) {
       DataAddJadwalDokter.map((item, i) => (
-        addDokterAPI(item.jamMulai, item.jamSelesai, item.recurring, item.rep, item.onDate, item.afterDate)
+        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), item.recurring, item.rep, item.onDate, item.afterDate)
       ))
-      addDokterAPI(jamMulai, jamSelesai, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
+      addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
       // localStorage.setItem('halamandash', 5)
       // window.location.reload()
+      closeModal()
       isAdmin ? fetchDataAdmin : fetchDataNonAdmin;
       updateRes(5)
     }
     else {
-      addDokterAPI(jamMulai, jamSelesai, recurring, repetisi, onDate, afterDate)
+      addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), recurring, repetisi, onDate, afterDate)
       // localStorage.setItem('halamandash', 5)
       // window.location.reload()
+      closeModal()
       isAdmin ? fetchDataAdmin : fetchDataNonAdmin;
       updateRes(5)
     }
@@ -317,7 +320,8 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
         .then(res => {
           if (res.status == 200) {
             toast.success('Seluruh Jadwal Berhasil Dihapus!');
-            setModalOpen3(false);
+            setModalOpen3(false)
+            closeModal()
             // localStorage.setItem('halamandash', 5)
             // window.location.reload()
             isAdmin ? fetchDataAdmin : fetchDataNonAdmin;
@@ -326,6 +330,7 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
           else {
             toast.error('Silahkan Coba Lagi')
             setModalOpen3(false);
+            closeModal()
           }
         })
     }
@@ -347,6 +352,7 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
           if (res.status == 200) {
             toast.success('Jadwal tanggal ' + hapusJadwal + ' berhasil dihapus!');
             setModalOpen3(false);
+            closeModal()
             // localStorage.setItem('halamandash', 5)
             // window.location.reload()
             isAdmin ? fetchDataAdmin : fetchDataNonAdmin;
@@ -355,6 +361,7 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
           else {
             toast.error('Silahkan Coba Lagi')
             setModalOpen3(false);
+            closeModal()
           }
         })
     }
@@ -449,6 +456,14 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
     setAfterDate()
   }
 
+  function closeModal(){
+    setdokterSelected()
+    setjamMulai()
+    setjamSelesai()
+    setDate()
+    closeModal()
+  }
+
   return (
     <>
       <Wrapper className="container-fluid">
@@ -520,8 +535,8 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
         open={modalOpen}
         footer={null}
         width={650}
-        // onOk={() => setModalOpen(false)}
-        onCancel={() => setModalOpen(false)}
+        // onOk={() => closeModal()}
+        onCancel={() => closeModal()}
       >
         <div className="p-3">
           <h5 className="pb-3 modalDoctorTitle">Jadwal Dokter</h5>
@@ -570,20 +585,14 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
                   {
                     DataAddJadwalDokter?.map((item, i) => (
                       <>
-                        <div className="col-lg-6 col-12 py-1 modalSubtitleData align-self-center">
+                        <div className="col-lg-7 col-12 py-1 modalSubtitleData align-self-center">
                           <div className="d-flex">
-                            <Input
-                              placeholder="Mulai"
-                              value={item.jamMulai}
-                            />
+                            <TimePicker value={item.jamMulai} format={'HH:mm'} />
                             <span className="mx-3 align-self-center"> - </span>
-                            <Input
-                              placeholder="Selesai"
-                              value={item.jamSelesai}
-                            />
+                            <TimePicker value={item.jamSelesai} format={'HH:mm'} />
                           </div>
                         </div>
-                        <div className="col-lg-6 col-12 py-1 modalSubtitleData align-self-center">
+                        <div className="col-lg-5 col-12 py-1 modalSubtitleData align-self-center">
                           <Select
                             placeholder="Setiap..."
                             style={{ width: '100%' }}
@@ -607,8 +616,13 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
                       </>
                     ))
                   }
-                  <div className="col-6 modalSubtitleData py-1 align-self-center">
+                  <div className="col-7 modalSubtitleData py-1 align-self-center">
                     <div className="d-flex">
+                      <TimePicker value={jamMulai} format={'HH:mm'} placeholder="Mulai"  onChange={(event) => setjamMulai(event)}/>
+                      <span className="mx-3 align-self-center"> - </span>
+                      <TimePicker value={jamSelesai} format={'HH:mm'} placeholder="Selesai" onChange={(event) => setjamSelesai(event)}/>
+                    </div>
+                    {/* <div className="d-flex">
                       <Input
                         placeholder="Mulai"
                         value={jamMulai}
@@ -620,9 +634,9 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
                         value={jamSelesai}
                         onChange={(event) => setjamSelesai(event.target.value)}
                       />
-                    </div>
+                    </div> */}
                   </div>
-                  <div className="col-6 modalSubtitleData py-1 align-self-center">
+                  <div className="col-5 modalSubtitleData py-1 align-self-center">
                     <Select
                       placeholder="Setiap..."
                       style={{ width: '100%' }}
@@ -652,7 +666,7 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
         open={modalPreferensiOpen}
         footer={null}
         width={450}
-        // onOk={() => setModalOpen(false)}
+        // onOk={() => closeModal()}
         onCancel={() => cancelModalPreferensi()}>
         <div className="p-3">
           <h5 className="pb-3 modalDoctorTitle">Preferensi</h5>
@@ -760,7 +774,7 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
         open={modalOpen2}
         footer={null}
         width={650}
-        // onOk={() => setModalOpen(false)}
+        // onOk={() => closeModal()}
         onCancel={() => (setModalOpen2(false))}
       >
         <div className="p-3">
