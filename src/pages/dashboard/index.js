@@ -83,8 +83,8 @@ function Dashboard() {
     };
   }
 
-  const items = [
-    isAdmin && getItem(
+  const itemsAdmin = [
+     getItem(
       "Dashboard",
       "1",
       <Icon
@@ -110,7 +110,7 @@ function Dashboard() {
         }}
       />
     ),
-    isAdmin && getItem(
+     getItem(
       "Daftar Pasien",
       "3",
       <Icon
@@ -123,7 +123,7 @@ function Dashboard() {
         }}
       />
     ),
-    isAdmin && getItem(
+     getItem(
       "Daftar Dokter",
       "4",
       <Icon
@@ -177,6 +177,61 @@ function Dashboard() {
     ),
   ];
 
+  const itemsDoctor = [
+   getItem(
+     "Jadwal Temu",
+     "1",
+     <Icon
+       icon="ion:calendar"
+       className="iconDashboard me-2"
+       style={{
+         cursor: "pointer",
+         fontSize: "18px",
+         color: "#8D8D8D",
+       }}
+     />
+   ),
+   getItem(
+     "Jadwal Dokter",
+     "5",
+     <Icon
+       icon="ion:calendar"
+       className="iconDashboard me-2"
+       style={{
+         cursor: "pointer",
+         fontSize: "18px",
+         color: "#8D8D8D",
+       }}
+     />
+   ),
+   getItem(
+     "Artikel",
+     "6",
+     <Icon
+       icon="ant-design:home-filled"
+       className="iconDashboard me-2"
+       style={{
+         cursor: "pointer",
+         fontSize: "18px",
+         color: "#8D8D8D",
+       }}
+     />
+   ),
+   getItem(
+     "Pengaturan",
+     "7",
+     <Icon
+       icon="ant-design:setting-filled"
+       className="iconDashboard me-2"
+       style={{
+         cursor: "pointer",
+         fontSize: "18px",
+         color: "#8D8D8D",
+       }}
+     />
+   ),
+ ];
+
   function logout(){
     localStorage.clear();
     Cookies.remove('token');
@@ -209,7 +264,7 @@ function Dashboard() {
             theme="light"
             defaultSelectedKeys={"1"}
             mode="inline"
-            items={items}
+            items={isAdmin ? itemsAdmin : itemsDoctor}
             onSelect={handleMenuSelect}
           />
           <div className="text-center mx-auto py-1 px-5 my-3" style={{position:'absolute', bottom:'20px'}}>
@@ -235,7 +290,11 @@ function Dashboard() {
               <DashboardSection updateRes={setSelectedKey} />
             ) : selectedKey == 2 ? (
               <BookingSchedule updateRes={setSelectedKey} isAdmin={isAdmin} email={email}/>
-            ) : selectedKey == 3 && isAdmin ? (
+            )
+            : (isAdmin != "1" && selectedKey == 1) ? (
+              <BookingSchedule updateRes={setSelectedKey} isAdmin={isAdmin} email={email}/>
+            )
+             : selectedKey == 3 && isAdmin ? (
               <PatientList updateRes={setSelectedKey} />
             ) : selectedKey == 4 && isAdmin ? (
               <DoctorList updateRes={setSelectedKey} />

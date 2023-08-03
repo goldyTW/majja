@@ -172,6 +172,7 @@ function ArticleDashboard({ updateRes }) {
           toast.success('Hapus Artikel Berhasil!')
           // localStorage.setItem('halamandash', 6)
           // window.location.reload()
+          refetch()
           updateRes(6)
         }
         else {

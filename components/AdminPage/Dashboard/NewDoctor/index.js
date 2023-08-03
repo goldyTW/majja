@@ -19,10 +19,12 @@ function NewDoctor({ updateBatal, updateSimpan, callData }) {
   const [xpText, setxpText] = useState();
   const [status, setstatus] = useState();
   const [email, setemail] = useState();
+  const [loading, setloading] = useState(false);
   const router = useRouter();
   const url = process.env.NEXT_PUBLIC_API_URL ||  "http://localhost:3000";
 
   function addDokter() {
+    setloading(true)
     axios.post(`${url}/api/doctors/add`,
         {
           nama,
@@ -41,8 +43,7 @@ function NewDoctor({ updateBatal, updateSimpan, callData }) {
       )
       .then((res) => {
         if (res.status == 200) {
-          axios
-            .post(
+          axios.post(
               `${url}/api/auth/register`,
               { nama, email, password, is_admin: 0 },
               {
@@ -53,6 +54,7 @@ function NewDoctor({ updateBatal, updateSimpan, callData }) {
             )
             .then((res) => {
               if (res.status == 200) {
+                setloading(false)
                 toast.success("Tambah Dokter Berhasil!");
                 // localStorage.setItem('halamandash', 4)
                 // window.location.reload()
@@ -63,6 +65,7 @@ function NewDoctor({ updateBatal, updateSimpan, callData }) {
               }
             });
         } else {
+          setloading(false)
           toast.success("Tambah Dokter Gagal!");
         }
       });
@@ -264,13 +267,23 @@ function NewDoctor({ updateBatal, updateSimpan, callData }) {
             </div>
           </div>
           <div className="text-end">
-            <button className="button mx-1" onClick={() => batal()}>
-              Batalkan
-            </button>
-            <button className="buttonAlt mx-1" onClick={() => addDokter()}>
-              Simpan
-            </button>
-          </div>
+            {
+              !loading ?
+              <>
+              <button className="buttonAlt mx-1" onClick={() => batal()}>
+                Batalkan
+              </button>
+              <button className="button mx-1" onClick={() => addDokter()}>
+                Simpan
+              </button>
+              </>
+              :
+              <div className='d-flex flex-row' style={{float:'right'}}>
+                <div className="loading-spinner"></div> 
+                <div className='align-self-center ms-3'>Please Wait</div>
+              </div>
+              }
+            </div>
         </BigCard>
       </div>
     </Wrapper>

@@ -13,9 +13,9 @@ import { useRouter } from "next/router";
 moment.locale("id");
 const { Search } = Input;
 
-const handleStatusChange = (value, record) => {
-  console.log(`Status changed to ${value} for record:`, record);
-};
+// const handleStatusChange = (value, record) => {
+//   console.log(`Status changed to ${value} for record:`, record);
+// };
 
 function DoctorList({ updateRes }) {
   const [DataDokter, setDataDokter] = useState()
@@ -37,7 +37,7 @@ function DoctorList({ updateRes }) {
   const url =process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   
   const onChange = (pagination, filters, sorter, extra) => {
-    console.log("params", pagination, filters, sorter, extra);
+    // console.log("params", pagination, filters, sorter, extra);
   };
 
   const onSearch = (value) => {

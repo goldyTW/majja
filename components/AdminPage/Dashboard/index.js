@@ -121,8 +121,7 @@ function Dashboard({ updateRes }) {
     {
       title: "Nama Pasien",
       dataIndex: "nama",
-      // defaultSortOrder: "ascend",
-      // sorter: (a, b) => a.nama.localeCompare(b.nama),
+      sorter: (a, b) => a.nama.localeCompare(b.nama),
       // render: ((_, record) => ( 
       //   <span style={{cursor:'pointer'}} onClick={() => openModal(record)}>{record.nama}</span>
       // ))
@@ -131,7 +130,6 @@ function Dashboard({ updateRes }) {
       title: "Jadwal Konsultasi",
       dataIndex: "tanggal_booking",
       defaultSortOrder: "ascend",
-      // sorter: (a, b) => moment(a.tanggal_booking).toDate() - moment(b.tanggal_booking).toDate(), // sort by dates only
       sorter: (a, b) => {
         const dateTimeA = moment(a.tanggal_booking + ' ' + a.jam_booking, 'YYYY-MM-DD HH:mm:ss').toDate();
         const dateTimeB = moment(b.tanggal_booking + ' ' + b.jam_booking, 'YYYY-MM-DD HH:mm:ss').toDate();
@@ -279,7 +277,7 @@ function Dashboard({ updateRes }) {
                   <StyledCardContent>{dataBooking && dataBooking.length}</StyledCardContent>
                   <StyledCardSubTitle>
                     {range == "7" ? 'Weekly' : range == "30" ? 'Monthly' : range == "365" ? 'Yearly' : "All"} Bookings {
-                      percentBook > 0 ? <StyledCardPercentPos>+{percentBook}%</StyledCardPercentPos> : <StyledCardPercentNeg>{percentBook}%</StyledCardPercentNeg>
+                      percentBook > 0 ? <StyledCardPercentPos>+{percentBook?.toFixed(2)}%</StyledCardPercentPos> : <StyledCardPercentNeg>{percentBook?.toFixed(2)}%</StyledCardPercentNeg>
                     }
                   </StyledCardSubTitle>
                 </SmallCard>
@@ -288,7 +286,7 @@ function Dashboard({ updateRes }) {
                   <StyledCardContent>{jumlahpasien} </StyledCardContent>
                   <StyledCardSubTitle>
                     {range == "7" ? 'Weekly' : range == "30" ? 'Monthly' : range == "365" ? 'Yearly' : "All"} Patients {
-                      percentPasien > 0 ? <StyledCardPercentPos>+{percentPasien}%</StyledCardPercentPos> : <StyledCardPercentNeg>{percentPasien}%</StyledCardPercentNeg>
+                      percentPasien > 0 ? <StyledCardPercentPos>+{percentPasien?.toFixed(2)}%</StyledCardPercentPos> : <StyledCardPercentNeg>{percentPasien?.toFixed(2)}%</StyledCardPercentNeg>
                     }
                   </StyledCardSubTitle>
                 </SmallCard>
@@ -297,7 +295,7 @@ function Dashboard({ updateRes }) {
                   <StyledCardContent>Rp {dataBooking && (dataBooking.length * 50000).toLocaleString('id')},00</StyledCardContent>
                   <StyledCardSubTitle>
                     {range == "7" ? 'Weekly' : range == "30" ? 'Monthly' : range == "365" ? 'Yearly' : "All"} Earning {
-                      percentEarning > 0 ? <StyledCardPercentPos>+{percentEarning}%</StyledCardPercentPos> : <StyledCardPercentNeg>{percentEarning}%</StyledCardPercentNeg>
+                      percentEarning > 0 ? <StyledCardPercentPos>+{percentEarning?.toFixed(2)}%</StyledCardPercentPos> : <StyledCardPercentNeg>{percentEarning?.toFixed(2)}%</StyledCardPercentNeg>
                     }
                   </StyledCardSubTitle>
                 </SmallCard>

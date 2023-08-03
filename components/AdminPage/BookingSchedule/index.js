@@ -136,6 +136,28 @@ function BookingSchedule({ updateRes, isAdmin, email }) {
       dataIndex: "action_status",
       width: 100,
       sorter: (a, b) => a.action_status - b.action_status,
+      filters: [
+        {
+          text: 'New Bookings',
+          value: 1,
+        },
+
+        {
+          text: "Reminded",
+          value: 2,
+        },
+        {
+          text: 'Completed',
+          value: 3,
+        },
+        {
+          text: 'Not Shown',
+          value: 4,
+        }
+      ],
+      onFilter: (value, record) => (
+        record.action_status == value
+        ),
       render: (text, record) => {
         const statusLabels = {
           1: "New Bookings",
@@ -224,9 +246,7 @@ function BookingSchedule({ updateRes, isAdmin, email }) {
           value: 4,
         }
       ],
-      onFilter: (value, record) => (
-        record.action_status.indexOf(value) === 0),
-      // sorter: (a, b) => a.action_status - b.action_status,
+      onFilter: (value, record) => (record.action_status == value),
       render: (text, record) => {
         const statusLabels = {
           1: "New Bookings",
