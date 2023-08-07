@@ -17,9 +17,11 @@ function Dashboard({ updateRes }) {
   const [today, setToday] = useState(new Date()); // Save the current date to be able to trigger an update
   const [sevendays, setsevendays] = useState(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7));
   const [thirtydays, setthirtydays] = useState(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 30));
-  const [oneyear, setoneyear] = useState(new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()));
+  const [oneyear, setoneyear] = useState(new Date(today.getFullYear(), 0, 1));
+  const [yesterday, setyesterday] = useState(new Date(today.getFullYear(), today.getMonth(), today.getDate()-1));
+  const [tomorrow, settomorrow] = useState(new Date(today.getFullYear(), today.getMonth(), today.getDate()+1));
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [range, setrange] = useState("30");
+  const [range, setrange] = useState("1");
   const [modalOpen, setModalOpen] = useState(false);
   const [nama, setnama] = useState();
   const [idBooking, setidBooking] = useState();
@@ -34,9 +36,12 @@ function Dashboard({ updateRes }) {
   const [jumlahpasien, setjumlahpasien] = useState()
   const [catatan, setCatatan] = useState();
   const [loading, setLoading] = useState(false);
-  const [percentBook, setpercentBook] = useState();
-  const [percentPasien, setpercentPasien] = useState();
-  const [percentEarning, setpercentEarning] = useState();
+  const [percentBook, setpercentBook] = useState(0);
+  const [percentPasien, setpercentPasien] = useState(0);
+  const [percentEarning, setpercentEarning] = useState(0);
+  const [countBook, setcountBook] = useState(0);
+  const [countPasien, setcountPasien] = useState(0);
+  const [countEarning, setcountEarning] = useState(0);
   const router = useRouter();
   const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -68,6 +73,7 @@ function Dashboard({ updateRes }) {
           toast.success('Edit Action Status Success!');
           // localStorage.setItem('halamandash', 1)
           // window.location.reload()
+          setModalOpen(false)
           fetchData()
           updateRes(1)
         }
@@ -95,6 +101,10 @@ function Dashboard({ updateRes }) {
       },
     })
       .then(res => {
+        setcountBook(res.data.data.curr_book)
+        setcountEarning(res.data.data.curr_book * 50000)
+        setcountPasien(res.data.count.curr_pasien)
+        
         setpercentBook(res.data.count.book_percent)
         setpercentEarning(res.data.count.earning_percent)
         setpercentPasien(res.data.count.pasien_percent)
@@ -110,6 +120,10 @@ function Dashboard({ updateRes }) {
     else if (value == "30") {
       callData(thirtydays, today)
       percentage('monthly')
+    }
+    else if (value == "1") {
+      callData(yesterday, tomorrow)
+      percentage('daily')
     }
     else {
       callData(oneyear, today)
@@ -206,15 +220,14 @@ function Dashboard({ updateRes }) {
 
   const fetchData = async () => {
     try {
-      callData(thirtydays, today)
-      percentage('monthly')
+      callData(yesterday, tomorrow)
+      percentage('daily')
 
       axios.get(`${url}/api/patient/list`, {
         headers: {
           'Content-Type': 'application/json',
         },
-      })
-        .then(res => {
+      }).then(res => {
           setLoading(false)
           setjumlahpasien(res.data.pasien.length)
         })
@@ -229,16 +242,6 @@ function Dashboard({ updateRes }) {
       router.push('/login')
     }
     else {
-      // axios.get(`${url}/api/booking`,{
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // })
-      // .then(res => {
-      //   setdataBooking(res.data.result)
-      //   setDataBookingMaster(res.data.result)
-      // })
-
       fetchData()
     }
   }, [])
@@ -254,10 +257,10 @@ function Dashboard({ updateRes }) {
     <>
       <Wrapper className="container-fluid">
         <div className="row">
-          <div className="col-6"><StyledTitle>Dashboard</StyledTitle></div>
-          <div className="col-6 text-end align-self-center">
+          <div className="col-10"><StyledTitle>Dashboard</StyledTitle></div>
+          <div className="col-2 align-self-center text-end">
             <Select
-              style={{ fontFamily: 'Poppins' }}
+              style={{ fontFamily: 'Poppins', minWidth:'130px', textAlign:'left'}}
               defaultValue={range}
               onChange={(value) => handleRangeChange(value)}
             >
@@ -265,6 +268,7 @@ function Dashboard({ updateRes }) {
               <Option key={2} value="30">30 Hari Terakhir</Option>
               <Option key={3} value="365">1 Tahun Terakhir</Option>
               <Option key={4} value="all">Semua Periode</Option>
+              <Option key={5} value="1">Hari Ini</Option>
             </Select>
           </div>
         </div>
@@ -273,10 +277,10 @@ function Dashboard({ updateRes }) {
             <>
               <div className="row">
                 <SmallCard className="col m-2">
-                  <StyledCardTitle>Total Pasien Booking</StyledCardTitle>
+                  <StyledCardTitle>Total Booking</StyledCardTitle>
                   <StyledCardContent>{dataBooking && dataBooking.length}</StyledCardContent>
                   <StyledCardSubTitle>
-                    {range == "7" ? 'Weekly' : range == "30" ? 'Monthly' : range == "365" ? 'Yearly' : "All"} Bookings {
+                    {range == "1" ? "Daily" : range == "7" ? 'Weekly' : range == "30" ? 'Monthly' : range == "365" ? 'Yearly' : "All"} Bookings {
                       percentBook > 0 ? <StyledCardPercentPos>+{percentBook?.toFixed(2)}%</StyledCardPercentPos> : <StyledCardPercentNeg>{percentBook?.toFixed(2)}%</StyledCardPercentNeg>
                     }
                   </StyledCardSubTitle>
@@ -285,7 +289,7 @@ function Dashboard({ updateRes }) {
                   <StyledCardTitle>Total Pasien</StyledCardTitle>
                   <StyledCardContent>{jumlahpasien} </StyledCardContent>
                   <StyledCardSubTitle>
-                    {range == "7" ? 'Weekly' : range == "30" ? 'Monthly' : range == "365" ? 'Yearly' : "All"} Patients {
+                    {range == "1" ? "Daily" : range == "7" ? 'Weekly' : range == "30" ? 'Monthly' : range == "365" ? 'Yearly' : "All"} Patients {
                       percentPasien > 0 ? <StyledCardPercentPos>+{percentPasien?.toFixed(2)}%</StyledCardPercentPos> : <StyledCardPercentNeg>{percentPasien?.toFixed(2)}%</StyledCardPercentNeg>
                     }
                   </StyledCardSubTitle>
@@ -294,7 +298,7 @@ function Dashboard({ updateRes }) {
                   <StyledCardTitle>Pemasukan Booking</StyledCardTitle>
                   <StyledCardContent>Rp {dataBooking && (dataBooking.length * 50000).toLocaleString('id')},00</StyledCardContent>
                   <StyledCardSubTitle>
-                    {range == "7" ? 'Weekly' : range == "30" ? 'Monthly' : range == "365" ? 'Yearly' : "All"} Earning {
+                    {range == "1" ? "Daily" : range == "7" ? 'Weekly' : range == "30" ? 'Monthly' : range == "365" ? 'Yearly' : "All"} Earning {
                       percentEarning > 0 ? <StyledCardPercentPos>+{percentEarning?.toFixed(2)}%</StyledCardPercentPos> : <StyledCardPercentNeg>{percentEarning?.toFixed(2)}%</StyledCardPercentNeg>
                     }
                   </StyledCardSubTitle>

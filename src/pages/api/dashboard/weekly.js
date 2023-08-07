@@ -13,23 +13,27 @@ export default async function exportDoctor(req, res) {
         return res.status(405).json({ message: 'Method Not Allowed' });
     }
 
+    const today = new Date(); // Save the current date to be able to trigger an update
+    const sevendays = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
+    const fourteendays = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 14);
+    
     try {
         const data = await excuteQuery({
             query: `SELECT * FROM 
             (SELECT COUNT(*) AS curr_book, COUNT(DISTINCT(phone)) AS curr_pasien FROM booking 
-            WHERE tanggal_booking <= CURDATE() AND tanggal_booking > CURDATE() - 7 AND payment_status = 'settlement') a,
+            WHERE tanggal_booking between ? and ? AND payment_status = 'settlement') a,
             (SELECT COUNT(*) AS last_book, COUNT(DISTINCT(phone)) AS last_pasien FROM booking
-            WHERE tanggal_booking <= CURDATE() - 7 AND tanggal_booking > CURDATE() - 14 AND payment_status = 'settlement') b`,
-            values:'',
+            WHERE tanggal_booking between ? and ? AND payment_status = 'settlement') b`,
+            values:[sevendays, today, fourteendays, sevendays],
         });
         
         const COST = 50000;
 
         var book_diff = data[0].curr_book - data[0].last_book;
-        var book_percent = book_diff / data[0].last_book * 100;
+        var book_percent = book_diff / (data[0].last_book == 0 ? 1 : data[0].last_book) * 100;
         
         var pasien_diff = data[0].curr_pasien - data[0].last_pasien;
-        var pasien_percent = pasien_diff / data[0].last_pasien * 100;
+        var pasien_percent = pasien_diff / (data[0].last_pasien == 0 ? 1 : data[0].last_pasien) * 100;
 
         var earning_diff = book_diff * COST;
         var earning_percent = book_percent;

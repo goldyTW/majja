@@ -84,6 +84,7 @@ function BookingSchedule({ updateRes, isAdmin, email }) {
           toast.success('Edit Action Status Success!');
           // localStorage.setItem('halamandash', 2)
           // window.location.reload()
+          setModalOpen(false)
           isAdmin ? fetchDataAdmin() : fetchDataNonAdmin;
           updateRes(2)
         }
@@ -131,10 +132,9 @@ function BookingSchedule({ updateRes, isAdmin, email }) {
       dataIndex: "nama_dokter",
       width: 400,
     },
-    {
+     {
       title: "Status",
       dataIndex: "action_status",
-      width: 100,
       sorter: (a, b) => a.action_status - b.action_status,
       filters: [
         {
@@ -170,17 +170,37 @@ function BookingSchedule({ updateRes, isAdmin, email }) {
           <Select
             value={record.action_status && record.action_status.toString()}
             onChange={(value) => handleStatusChange(value, record.id, record.catatan)}
-            style={{ width: '100%', color: record.action_status && (record.action_status == 1 ? "#1D5D9B" : record.action_status == 2 ? "#F4D160" : record.action_status == 3 ? "#54B435" : record.action_status == 4 ? "#666" : "") }}
-            // status={}
+            style={{
+              color: record.action_status &&
+                (record.action_status ==
+                  1 ? "#1D5D9B" : record.action_status ==
+                    2 ? "#F4D160" : record.action_status ==
+                      3 ? "#54B435" : record.action_status ==
+                        4 ? "#666" :
+                  "")
+            }}
             onClick={(e) => e.stopPropagation()} // stop onRow click on table
           >
-            {Object.entries(statusLabels).map(([value, label]) => (
-              <Option key={value} value={value} style={{ color: value == 1 ? "#1D5D9B" : value == 2 ? "#F4D160" : value == 3 ? "#54B435" : value == 4 ? "#666" : '' }}>
-                {label}
-              </Option>
-            ))}
+            {
+              Object.entries(statusLabels).map(([value, label]) => (
+                <Option
+                  key={value}
+                  value={value}
+                  style={{
+                    color:
+                      value == 1 ? "#1D5D9B" : // biru
+                        value == 2 ? "#F4D160" : // kuning
+                          value == 3 ? "#54B435" : // hijau
+                            value == 4 ? "#666" :    // abu
+                              ''
+                  }}>
+                  {label}
+                </Option>
+              ))}
           </Select>
         );
+
+        // return statusLabels[record.action_status]
       },
     },
     {
@@ -223,10 +243,10 @@ function BookingSchedule({ updateRes, isAdmin, email }) {
         moment(record.tanggal_booking).format("DD MMM YY") + ", " + record.jam_booking,
       width: 200,
     },
-    {
+     {
       title: "Status",
       dataIndex: "action_status",
-      width: 100,
+      sorter: (a, b) => a.action_status - b.action_status,
       filters: [
         {
           text: 'New Bookings',
@@ -246,7 +266,9 @@ function BookingSchedule({ updateRes, isAdmin, email }) {
           value: 4,
         }
       ],
-      onFilter: (value, record) => (record.action_status == value),
+      onFilter: (value, record) => (
+        record.action_status == value
+        ),
       render: (text, record) => {
         const statusLabels = {
           1: "New Bookings",
@@ -257,18 +279,39 @@ function BookingSchedule({ updateRes, isAdmin, email }) {
 
         return (
           <Select
-            defaultValue={record.action_status && record.action_status.toString()}
+            value={record.action_status && record.action_status.toString()}
             onChange={(value) => handleStatusChange(value, record.id, record.catatan)}
-            style={{ width: '100%', color: record.action_status && (record.action_status == 1 ? "#1D5D9B" : record.action_status == 2 ? "#F4D160" : record.action_status == 3 ? "#54B435" : record.action_status == 4 ? "#666" : "") }}
-          // status={}
+            style={{
+              color: record.action_status &&
+                (record.action_status ==
+                  1 ? "#1D5D9B" : record.action_status ==
+                    2 ? "#F4D160" : record.action_status ==
+                      3 ? "#54B435" : record.action_status ==
+                        4 ? "#666" :
+                  "")
+            }}
+            onClick={(e) => e.stopPropagation()} // stop onRow click on table
           >
-            {Object.entries(statusLabels).map(([value, label]) => (
-              <Option key={value} value={value} style={{ color: value == 1 ? "#1D5D9B" : value == 2 ? "#F4D160" : value == 3 ? "#54B435" : value == 4 ? "#666" : '' }}>
-                {label}
-              </Option>
-            ))}
+            {
+              Object.entries(statusLabels).map(([value, label]) => (
+                <Option
+                  key={value}
+                  value={value}
+                  style={{
+                    color:
+                      value == 1 ? "#1D5D9B" : // biru
+                        value == 2 ? "#F4D160" : // kuning
+                          value == 3 ? "#54B435" : // hijau
+                            value == 4 ? "#666" :    // abu
+                              ''
+                  }}>
+                  {label}
+                </Option>
+              ))}
           </Select>
         );
+
+        // return statusLabels[record.action_status]
       },
     },
     {

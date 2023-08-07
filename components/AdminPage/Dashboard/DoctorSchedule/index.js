@@ -42,6 +42,9 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
   const [jampraktek, setjampraktek] = useState();
   const [namaDokter, setNamaDokter] = useState();
   const [idDokter, setidDokter] = useState();
+  const [berakhir_setelah_modal, setberakhir_setelah_modal] = useState();
+  const [berakhir_pada_modal, setberakhir_pada_modal] = useState();
+  const [tidak_diulang_modal, settidak_diulang_modal] = useState();
   const [jamMulaiPraktek, setjamMulaiPraktek] = useState();
   const [jamSelesaiPraktek, setjamSelesaiPraktek] = useState();
   const [modalOpen, setModalOpen] = useState(false);
@@ -83,8 +86,8 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
         },
       })
         .then(res => {
-          setLoading(false)
           setjadwalkhusus(res.data.jadwal)
+          setLoading(false)
         })
     } catch (error) {
       setLoading(false)
@@ -149,10 +152,10 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
     setAfterDate('')
   }
 
-  function addDokterAPI(start, end, day, recur, rep, on, after) {
+  function addDokterAPI(start, end, day, recur, rep, on, after, tidak_diulang) {
     axios.post(`${url}/api/doctors/schedule/add`, {
       id_dokter: dokterSelected, hari:day, jam_mulai: start, jam_selesai: end,
-      recurring: recur, repeat: rep, berakhir_pada: on, berakhir_setelah: after
+      recurring: recur, repeat: rep, berakhir_pada: on, berakhir_setelah: after, tidak_diulang:tidak_diulang
     }, {
       headers: {
         'Content-Type': 'application/json',
@@ -161,13 +164,14 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
       .then(res => {
         if (res.status == 200) {
           toast.success('Tambah Jadwal Dokter Success!');
+          isAdmin ? fetchDataAdmin() : fetchDataNonAdmin();
+          updateRes(5)
         }
         else {
           toast.error('Silahkan Coba Lagi')
         }
       })
       .catch(function (error) {
-        setLoading(true);
         if (error.response) {
           console.log(error.response.data);
           console.log(error.response.status);
@@ -185,67 +189,75 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
 
     if (DataAddJadwalDokter.length > 0) {
       DataAddJadwalDokter.map((item, i) => (
+        item.recurring == 2 ?
+        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), moment(date).day(), recurring, repetisi, item.onDate ? item.onDate : null, item.afterDate ? item.afterDate : null, moment(date._d).format('YYYY-MM-DD'))
+        :
         item.recurring == 3 ?
-        (addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 0, item.recurring, item.rep, item.onDate, item.afterDate),
-        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 1, item.recurring, item.rep, item.onDate, item.afterDate),
-        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 2, item.recurring, item.rep, item.onDate, item.afterDate),
-        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 3, item.recurring, item.rep, item.onDate, item.afterDate),
-        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 4, item.recurring, item.rep, item.onDate, item.afterDate),
-        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 5, item.recurring, item.rep, item.onDate, item.afterDate),
-        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 6, item.recurring, item.rep, item.onDate, item.afterDate))
+        (addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 0, item.recurring, item.rep, item.onDate, item.afterDate, null),
+        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 1, item.recurring, item.rep, item.onDate, item.afterDate, null),
+        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 2, item.recurring, item.rep, item.onDate, item.afterDate, null),
+        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 3, item.recurring, item.rep, item.onDate, item.afterDate, null),
+        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 4, item.recurring, item.rep, item.onDate, item.afterDate, null),
+        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 5, item.recurring, item.rep, item.onDate, item.afterDate, null),
+        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 6, item.recurring, item.rep, item.onDate, item.afterDate, null))
         :
         item.recurring == 4 ?
-        (addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 1, item.recurring, item.rep, item.onDate, item.afterDate),
-        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 2, item.recurring, item.rep, item.onDate, item.afterDate),
-        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 3, item.recurring, item.rep, item.onDate, item.afterDate),
-        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 4, item.recurring, item.rep, item.onDate, item.afterDate),
-        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 5, item.recurring, item.rep, item.onDate, item.afterDate))
+        (addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 1, item.recurring, item.rep, item.onDate, item.afterDate, null),
+        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 2, item.recurring, item.rep, item.onDate, item.afterDate, null),
+        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 3, item.recurring, item.rep, item.onDate, item.afterDate, null),
+        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 4, item.recurring, item.rep, item.onDate, item.afterDate, null),
+        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'), 5, item.recurring, item.rep, item.onDate, item.afterDate, null))
         :
-        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'),  moment(date).day(), item.recurring, item.rep, item.onDate, item.afterDate)
+        addDokterAPI(moment(item.jamMulai).format('HH.mm'), moment(item.jamSelesai).format('HH.mm'),  moment(date).day(), item.recurring, item.rep, item.onDate, item.afterDate, null)
       ))
-      if(recurring == 3){
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 0, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 1, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 2, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 3, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 4, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 5, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 6, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
+      if(recurring == 2){
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), moment(date).day(), recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, moment(date._d).format('YYYY-MM-DD'))
+      }
+      else if(recurring == 3){
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 0, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 1, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 2, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 3, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 4, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 5, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 6, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
       }
       else if(recurring == 4){
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 1, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 2, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 3, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 4, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 5, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 1, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 2, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 3, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 4, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 5, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
       }
       else{
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), moment(date).day(), recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), moment(date).day(), recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
       }
       closeModal()
       isAdmin ? fetchDataAdmin() : fetchDataNonAdmin();
       updateRes(5)
     }
     else {
-      if(recurring == 3){
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 0, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 1, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 2, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 3, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 4, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 5, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 6, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
+      if(recurring == 2){
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), moment(date).day(), recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, moment(date._d).format('YYYY-MM-DD'))
+      }
+      else if(recurring == 3){
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 0, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 1, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 2, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 3, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 4, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 5, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 6, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
       }
       else if(recurring == 4){
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 1, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 2, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 3, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 4, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 5, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 1, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 2, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 3, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 4, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), 5, recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
       }
       else{
-        // console.log(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), moment(date).day(), recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
-        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), moment(date).day(), recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null)
+        addDokterAPI(moment(jamMulai).format('HH.mm'), moment(jamSelesai).format('HH.mm'), moment(date).day(), recurring, repetisi, onDate ? onDate : null, afterDate ? afterDate : null, null)
       }
       closeModal()
       isAdmin ? fetchDataAdmin() : fetchDataNonAdmin();
@@ -262,7 +274,202 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
     setjamSelesaiPraktek(record.jam_selesai)
     setidjadwal(record.id_jadwal)
     setidDokter(record.id_dokter)
+    setberakhir_setelah_modal(record.berakhir_setelah != null ? moment(record.berakhir_setelah).add('days',0).format('YYYY-MM-DD') : null)
+    setberakhir_pada_modal(record.berakhir_pada != null ? moment(record.berakhir_pada).add('days',0).format('YYYY-MM-DD') : null)
+    settidak_diulang_modal(record.tidak_diulang != null ? moment(record.tidak_diulang).add('days',0).format('YYYY-MM-DD'): null)
   };
+
+  const disabledDate = (current) => {
+    return current && current < dayjs().endOf("day");
+  };
+
+  const onChangeDate = (dateChosen, dateString) => {
+    setDate(dateChosen);
+  };
+
+  const onChangeOnDate = (dateChosen, dateString) => {
+    setOnDate(dateChosen);
+  };
+
+  const onChangeAfterDate = (dateChosen, dateString) => {
+    setAfterDate(dateChosen);
+  };
+
+  const onChangeHapus = () => {
+    //semua
+    if (hapusJadwal == 0) {
+      axios.post(`${url}/api/doctors/schedule/delete`, { id: idjadwal }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then(res => {
+          if (res.status == 200) {
+            toast.success('Seluruh Jadwal Berhasil Dihapus!');
+            setModalOpen2(false)
+            setModalOpen3(false)
+            // localStorage.setItem('halamandash', 5)
+            // window.location.reload()
+            isAdmin ? fetchDataAdmin() : fetchDataNonAdmin();
+            updateRes(5)
+          }
+          else {
+            toast.error('Silahkan Coba Lagi')
+            setModalOpen2(false)
+            setModalOpen3(false);
+          }
+        })
+    }
+    //harian
+    else if (hapusJadwal == null) {
+      toast.error('Hapus Jadwal Gagal! Pilih Pilihan Hapus Jadwal!')
+      setModalOpen3(false);
+    }
+    else {
+      var tgl = hapusJadwal.split(' ');
+      var bln = tgl[1] == "Januari" ? '01' : tgl[1] == 'Februari' ? '02' : tgl[1] == 'Maret' ? '03' : tgl[1] == 'April' ? '04' : tgl[1] == 'Mei' ? '05' : tgl[1] == "Juni" ? '06' :
+          tgl[1] == 'Juli' ? '07' : tgl[1] == 'Agustus' ? '08' : tgl[1] == 'September' ? '09' : tgl[1] == 'Oktober' ? '10' : tgl[1] == 'November' ? '11' : '12';
+      var tgl2 = moment(tgl[2]+'-'+bln+'-'+tgl[0]).format('YYYY-MM-DD')
+      axios.post(`${url}/api/doctors/schedule/add_once`, {
+        id_dokter: idDokter, hari: tanggalpraktek, jam_mulai: moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss'),
+        jam_selesai: moment.utc(jamSelesaiPraktek, "THH Z").format('HH:mm:ss'), tanggal:tgl2, hapus: 1
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(res => {
+          if (res.status == 200) {
+            toast.success('Jadwal tanggal ' + hapusJadwal + ' berhasil dihapus!');
+            setModalOpen3(false);
+            setModalOpen2(false)
+            // localStorage.setItem('halamandash', 5)
+            // window.location.reload()
+            isAdmin ? fetchDataAdmin : fetchDataNonAdmin;
+            updateRes(5)
+          }
+          else {
+            toast.error('Silahkan Coba Lagi')
+            setModalOpen3(false);
+            closeModal()
+          }
+        })
+    }
+  };
+
+  function cancelModalPreferensi() {
+    setModalPreferensiOpen(false)
+    setAngkaUlang()
+    setTextUlang()
+    setulangHari()
+    setberakhirpada()
+    setOnDate()
+    setAfterDate()
+  }
+
+  function closeModal(){
+    setModalOpen(false)
+    setdokterSelected()
+    setjamMulai()
+    setjamSelesai()
+    setDate()
+    setrecurring()
+  }
+
+  function generateDate(hari, isRadio) {
+    let jarakHari = Number(moment(today).daysInMonth()) - Number(moment(today).format('DD'));
+    let i = 0;
+    let newdate;
+    let tglpraktekSet = new Set(); // Menggunakan Set untuk menyimpan tanggal unik
+
+    if(tidak_diulang_modal == null){
+      if (jarakHari > 6) {
+        for (i = 0; i <= jarakHari; i++) {
+          newdate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+          if (newdate.getDay() == hari) {
+            tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
+            if(jadwalkhusus.length > 0){
+              jadwalkhusus?.forEach((item) => { 
+                if (item.id_dokter == idDokter && 
+                    item.jam_mulai == moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss')) {
+                      tglpraktekSet.delete(moment(item.tanggal).format('DD MMMM YYYY'));
+                } 
+                // if (item.id_dokter == idDokter && 
+                //     item.jam_mulai == moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && 
+                //     moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD')) {
+                //       tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
+                // } 
+                // else if (item.id_dokter == idDokter && 
+                //   item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && 
+                //   moment(item.tanggal).format('YYYY-MM-DD') == moment(newdate).format('YYYY-MM-DD')) {
+                //     tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
+                // } 
+                // else if (item.id_dokter == idDokter && 
+                //   item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && 
+                //   moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD')) {
+                //   if (!tglpraktekSet.has(moment(newdate).format('DD MMMM YYYY'))) {
+                //     tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
+                //   }
+                // } 
+                // else if (moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD') && 
+                //   item.id_dokter != idDokter && 
+                //   item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss')) {
+                //   if (!tglpraktekSet.has(moment(newdate).format('DD MMMM YYYY'))) {
+                //     tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
+                //   }
+                // }
+              });
+            }
+          }
+        }
+      }
+      else {
+        for (i = 0; i <= 6; i++) {
+          newdate = moment(today).add(i, 'days')
+          if (moment(newdate).day() == hari) {
+            if(jadwalkhusus.length > 0){
+              jadwalkhusus?.forEach((item) => { // Menggunakan forEach untuk iterasi array
+                if (item.id_dokter == idDokter && item.jam_mulai == moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD')) {
+                  tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
+                } else if (item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') == moment(newdate).format('YYYY-MM-DD')) {
+                  tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
+                } else if (item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD')) {
+                  if (!tglpraktekSet.has(moment(newdate).format('DD MMMM YYYY'))) {
+                    tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
+                  }
+                } else if (moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD') && item.id_dokter != idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss')) {
+                  if (!tglpraktekSet.has(moment(newdate).format('DD MMMM YYYY'))) {
+                    tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
+                  }
+                }
+              });
+            }else{
+              tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
+            }
+          }
+        }
+      }
+    }
+    else{
+      tglpraktekSet.add(moment(tidak_diulang_modal).format('DD MMMM YYYY'));
+    }
+
+    const tglpraktek = Array.from(tglpraktekSet); // Mengonversi Set kembali menjadi array
+
+    if (!isRadio) {
+      return tglpraktek.map((item, i) => (
+        <div key={i}>
+          <span>{item}</span>
+          <br></br><br></br>
+        </div>
+      ));
+    } else {
+      return tglpraktek.map((item, i) => (
+        <div key={i}>
+          <Radio value={item}>Jadwal {item}</Radio>
+        </div>
+      ));
+    }
+  }
 
   const columns = [
     {
@@ -290,39 +497,6 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
     {
       title: "Spesialis",
       dataIndex: "posisi",
-      // sorter: (a, b) => a.age - b.age,
-      // render: (datetime) => moment(datetime).format("DD MMM, HH.mm"),
-      // filters: [
-      //   {
-      //     text: "Spesialis Obstetri dan Ginekologi",
-      //     value: "Spesialis Obstetri dan Ginekologi",
-      //   },
-      //   {
-      //     text: "Spesialis Anak",
-      //     value: "Spesialis Anak",
-      //   },
-      //   {
-      //     text: "Spesialis Penyakit Dalam",
-      //     value: "Spesialis Penyakit Dalam",
-      //   },
-      //   {
-      //     text: "Spesialis Anestesi Konsultan Intensive Care",
-      //     value: "Spesialis Anestesi Konsultan Intensive Care",
-      //   },
-      //   {
-      //     text: "Spesialis Gizi",
-      //     value: "Spesialis Gizi",
-      //   },
-      //   {
-      //     text: "Psikolog",
-      //     value: "Psikolog",
-      //   },
-      //   {
-      //     text: "Dokter Umum",
-      //     value: "Dokter Umum",
-      //   },
-      // ],
-      // onFilter: (value, record) => record.position.indexOf(value) === 0,
       width: 400,
     },
     {
@@ -343,177 +517,6 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
       width: 200,
     },
   ];
-
-  const disabledDate = (current) => {
-    return current && current < dayjs().endOf("day");
-  };
-
-  const onChangeDate = (dateChosen, dateString) => {
-    setDate(dateChosen);
-  };
-
-  const onChangeOnDate = (dateChosen, dateString) => {
-    setOnDate(dateChosen);
-  };
-
-  const onChangeAfterDate = (dateChosen, dateString) => {
-    setAfterDate(dateChosen);
-  };
-
-  const onChangeHapus = () => {
-    //semua
-    if (hapusJadwal == 0) {
-      axios.post(`${url}/api/doctors/schedule/delete`, { id: idjadwal }, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then(res => {
-          if (res.status == 200) {
-            toast.success('Seluruh Jadwal Berhasil Dihapus!');
-            setModalOpen2(false)
-            setModalOpen3(false)
-            // localStorage.setItem('halamandash', 5)
-            // window.location.reload()
-            isAdmin ? fetchDataAdmin() : fetchDataNonAdmin();
-            updateRes(5)
-          }
-          else {
-            toast.error('Silahkan Coba Lagi')
-            setModalOpen2(false)
-            setModalOpen3(false);
-          }
-        })
-    }
-    //harian
-    else if (hapusJadwal == null) {
-      toast.error('Hapus Jadwal Gagal! Pilih Pilihan Hapus Jadwal!')
-      setModalOpen3(false);
-    }
-    else {
-      axios.post(`${url}/api/doctors/schedule/add_once`, {
-        id_dokter: idDokter, hari: tanggalpraktek, jam_mulai: moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss'),
-        jam_selesai: moment.utc(jamSelesaiPraktek, "THH Z").format('HH:mm:ss'), tanggal: moment(hapusJadwal).format('YYYY-MM-DD'), hapus: 1
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then(res => {
-          if (res.status == 200) {
-            toast.success('Jadwal tanggal ' + hapusJadwal + ' berhasil dihapus!');
-            setModalOpen3(false);
-            closeModal()
-            // localStorage.setItem('halamandash', 5)
-            // window.location.reload()
-            isAdmin ? fetchDataAdmin : fetchDataNonAdmin;
-            updateRes(5)
-          }
-          else {
-            toast.error('Silahkan Coba Lagi')
-            setModalOpen3(false);
-            closeModal()
-          }
-        })
-    }
-  };
-
-  function generateDate(hari, isRadio) {
-    let jarakHari = Number(moment(today).daysInMonth()) - Number(moment(today).format('DD'));
-    let i = 0;
-    let newdate;
-    let tglpraktekSet = new Set(); // Menggunakan Set untuk menyimpan tanggal unik
-
-    if (jarakHari > 6) {
-      for (i = 0; i <= jarakHari; i++) {
-        newdate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
-        if (newdate.getDay() == hari) {
-          if(jadwalkhusus.length > 0){
-            jadwalkhusus?.forEach((item) => { // Menggunakan forEach untuk iterasi array
-              if (item.id_dokter == idDokter && item.jam_mulai == moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD')) {
-                tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-              } else if (item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') == moment(newdate).format('YYYY-MM-DD')) {
-                tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-              } else if (item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD')) {
-                if (!tglpraktekSet.has(moment(newdate).format('DD MMMM YYYY'))) {
-                  tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-                }
-              } else if (moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD') && item.id_dokter != idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss')) {
-                if (!tglpraktekSet.has(moment(newdate).format('DD MMMM YYYY'))) {
-                  tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-                }
-              }
-            });
-          }else{
-            tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-          }
-          
-        }
-      }
-    }
-    else {
-      for (i = 0; i <= 6; i++) {
-        newdate = moment(today).add(i, 'days')
-        if (moment(newdate).day() == hari) {
-          if(jadwalkhusus.length > 0){
-            jadwalkhusus?.forEach((item) => { // Menggunakan forEach untuk iterasi array
-              if (item.id_dokter == idDokter && item.jam_mulai == moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD')) {
-                tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-              } else if (item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') == moment(newdate).format('YYYY-MM-DD')) {
-                tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-              } else if (item.id_dokter == idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss') && moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD')) {
-                if (!tglpraktekSet.has(moment(newdate).format('DD MMMM YYYY'))) {
-                  tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-                }
-              } else if (moment(item.tanggal).format('YYYY-MM-DD') != moment(newdate).format('YYYY-MM-DD') && item.id_dokter != idDokter && item.jam_mulai != moment.utc(jamMulaiPraktek, "THH Z").format('HH:mm:ss')) {
-                if (!tglpraktekSet.has(moment(newdate).format('DD MMMM YYYY'))) {
-                  tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-                }
-              }
-            });
-          }else{
-            tglpraktekSet.add(moment(newdate).format('DD MMMM YYYY'));
-          }
-        }
-      }
-    }
-
-    const tglpraktek = Array.from(tglpraktekSet); // Mengonversi Set kembali menjadi array
-
-    if (!isRadio) {
-      return tglpraktek.map((item, i) => (
-        <div key={i}>
-          <span>{item}</span>
-          <br></br><br></br>
-        </div>
-      ));
-    } else {
-      return tglpraktek.map((item, i) => (
-        <div key={i}>
-          <Radio value={item}>Jadwal {item}</Radio>
-        </div>
-      ));
-    }
-  }
-
-
-  function cancelModalPreferensi() {
-    setModalPreferensiOpen(false)
-    setAngkaUlang()
-    setTextUlang()
-    setulangHari()
-    setberakhirpada()
-    setOnDate()
-    setAfterDate()
-  }
-
-  function closeModal(){
-    setModalOpen(false)
-    setdokterSelected()
-    setjamMulai()
-    setjamSelesai()
-    setDate()
-  }
 
   return (
     <>
@@ -622,6 +625,7 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
                   className="datepickerDaily"
                   placeholder="Pilih Tanggal"
                   format="DD-MM-YY"
+                  value={date}
                   onChange={onChangeDate}
                   disabledDate={disabledDate}
                 />
@@ -698,7 +702,7 @@ function DoctorSchedule({ updateRes, isAdmin, email }) {
                       <Option value={2}>Tidak diulang</Option>
                       <Option value={3}>Setiap Hari</Option>
                       <Option value={4}>Senin sampai Jumat</Option>
-                      <Option value={5}>Preferensi</Option>
+                      {/* <Option value={5}>Preferensi</Option> */}
                     </Select>
                   </div>
                   <span className="tambahjam py-2" style={{ cursor: 'pointer' }} onClick={() => isiArrayJadwal()}>+ Tambahkan jam praktek</span>

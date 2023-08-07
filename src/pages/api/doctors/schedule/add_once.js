@@ -14,37 +14,38 @@ export default async function exportDoctor(req, res) {
     });
 
     const { id_dokter, hari, jam_mulai, jam_selesai, tanggal, hapus } = req.body;
-    var mHari
-    switch (hari){
-        case "0": mHari = "Minggu"; break;
-        case "1": mHari = "Senin"; break;
-        case "2": mHari = "Selasa"; break;
-        case "3": mHari = "Rabu"; break;
-        case "4": mHari = "Kamis"; break;
-        case "5": mHari = "Jumat"; break;
-        case "6": mHari = "Sabtu"; break;
-        case 0: mHari = "Minggu"; break;
-        case 1: mHari = "Senin"; break;
-        case 2: mHari = "Selasa"; break;
-        case 3: mHari = "Rabu"; break;
-        case 4: mHari = "Kamis"; break;
-        case 5: mHari = "Jumat"; break;
-        case 6: mHari = "Sabtu"; break;
-        default: mHari = hari.charAt(0).toUpperCase() + hari.slice(1).toLowerCase(); break;
-    }
+    // var mHari
+    // switch (hari){
+    //     case "0": mHari = "Minggu"; break;
+    //     case "1": mHari = "Senin"; break;
+    //     case "2": mHari = "Selasa"; break;
+    //     case "3": mHari = "Rabu"; break;
+    //     case "4": mHari = "Kamis"; break;
+    //     case "5": mHari = "Jumat"; break;
+    //     case "6": mHari = "Sabtu"; break;
+    //     case 0: mHari = "Minggu"; break;
+    //     case 1: mHari = "Senin"; break;
+    //     case 2: mHari = "Selasa"; break;
+    //     case 3: mHari = "Rabu"; break;
+    //     case 4: mHari = "Kamis"; break;
+    //     case 5: mHari = "Jumat"; break;
+    //     case 6: mHari = "Sabtu"; break;
+    //     default: mHari = hari.charAt(0).toUpperCase() + hari.slice(1).toLowerCase(); break;
+    // }
+   
     try {
-        if (mHari !== "Senin" && mHari !== "Selasa" && mHari !== "Rabu" && mHari !== "Kamis" && mHari !== "Jumat" && mHari !== "Sabtu" && mHari !== "Minggu") {
-            throw new Error("Invalid hari")
-        }
+        // if (mHari !== "Senin" && mHari !== "Selasa" && mHari !== "Rabu" && mHari !== "Kamis" && mHari !== "Jumat" && mHari !== "Sabtu" && mHari !== "Minggu") {
+        //     throw new Error("Invalid hari")
+        // }
         const jadwal = await excuteQuery({
             query: `INSERT INTO tb_jadwal_khusus (id_dokter, hari, jam_mulai, jam_selesai, tanggal, \`remove\`) VALUES
             (?, ?, ?, ?, ?, b'?')`,
-            values:[id_dokter, mHari, jam_mulai, jam_selesai, tanggal, hapus],
+            values:[id_dokter, hari, jam_mulai, jam_selesai, tanggal, hapus],
         });
         if (jadwal.error == null){
             res.status(200).json({ jadwal_khusus:jadwal.insertId , msg:"Success" })
         } else {
-            res.status(200).json({ msg:jadwal.error.sqlMessage })
+            res.status(400).json({ msg:jadwal.error.sqlMessage })
         }
         
     } catch (error) {

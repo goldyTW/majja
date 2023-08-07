@@ -13,7 +13,7 @@ export default async function exportDoctor(req, res) {
         return res.status(405).json({ message: 'Method Not Allowed' });
     }
 
-    const { id_dokter, hari, jam_mulai, jam_selesai, recurring, repeat, berakhir_pada, berakhir_setelah } = req.body;
+    const { id_dokter, hari, jam_mulai, jam_selesai, recurring, repeat, berakhir_pada, berakhir_setelah, tidak_diulang } = req.body;
     var mHari
     switch (hari){
         case "0": mHari = "Minggu"; break;
@@ -41,9 +41,9 @@ export default async function exportDoctor(req, res) {
         //     throw new Error("Invalid hari")
         // }
         const jadwal = await excuteQuery({
-            query: `INSERT INTO tb_jadwal (id_dokter, hari, jam_mulai, jam_selesai, recurring, \`repeat\`, berakhir_pada, berakhir_setelah) VALUES
-            (?, ?, ?, ?, ?, ?, ?, ?)`,
-            values:[id_dokter, mHari, jam_mulai, jam_selesai, recurring, repeat, berakhir_pada, berakhir_setelah],
+            query: `INSERT INTO tb_jadwal (id_dokter, hari, jam_mulai, jam_selesai, recurring, \`repeat\`, berakhir_pada, berakhir_setelah, tidak_diulang) VALUES
+            (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            values:[id_dokter, mHari, jam_mulai, jam_selesai, recurring, repeat, berakhir_pada, berakhir_setelah, tidak_diulang],
         });
         if (jadwal.error == null){
             res.status(200).json({ jadwal:jadwal.insertId, msg:"Success" })

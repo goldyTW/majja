@@ -19,13 +19,48 @@ function NewDoctor({ updateBatal, updateSimpan, callData }) {
   const [xpText, setxpText] = useState();
   const [status, setstatus] = useState();
   const [email, setemail] = useState();
-  const [loading, setloading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const url = process.env.NEXT_PUBLIC_API_URL ||  "http://localhost:3000";
 
   function addDokter() {
-    setloading(true)
-    axios.post(`${url}/api/doctors/add`,
+    setLoading(true)
+    if(!nama){
+      setLoading(false)
+      toast.error('Nama Dokter harus diisi!')
+    }
+    else if(!phone){
+      setLoading(false)
+      // seterrorphone(true)
+      toast.error('Nomor Telepon harus diisi!')
+    }
+    else if (!spesialis){
+      setLoading(false)
+      // seterrorspesialis(true)
+      toast.error('Spesialis harus diisi')
+    }
+    else if (!xpNumber || !xpText){
+      setLoading(false)
+      // seterrorspesialis(true)
+      toast.error('Pengalaman harus diisi')
+    }
+    else if (!status){
+      setLoading(false)
+      // seterrorspesialis(true)
+      toast.error('Status harus diisi')
+    }
+    else if(!email){
+      setLoading(false)
+      // seterroremail(true)
+      toast.error('Email harus diisi!')
+    }
+    else if(!password){
+      setLoading(false)
+      // seterrorPass(true)
+      toast.error('Passsword harus diisi!')
+    }
+    else{
+      axios.post(`${url}/api/doctors/add`,
         {
           nama,
           posisi: spesialis,
@@ -54,7 +89,7 @@ function NewDoctor({ updateBatal, updateSimpan, callData }) {
             )
             .then((res) => {
               if (res.status == 200) {
-                setloading(false)
+                setLoading(false)
                 toast.success("Tambah Dokter Berhasil!");
                 // localStorage.setItem('halamandash', 4)
                 // window.location.reload()
@@ -69,6 +104,7 @@ function NewDoctor({ updateBatal, updateSimpan, callData }) {
           toast.success("Tambah Dokter Gagal!");
         }
       });
+    }
   }
 
   function batal() {
@@ -102,9 +138,9 @@ function NewDoctor({ updateBatal, updateSimpan, callData }) {
                 value={nama}
                 onChange={(event) => setnama(event.target.value)}
               />
-              {errornama && (
+              {/* {errornama && (
                 <span className="error mt-4">Nama Dokter harus diisi!</span>
-              )}
+              )} */}
             </div>
             <div className="col-md-5 col-12 p-3">
               <span className="bookingInputLabel py-2">
@@ -116,9 +152,9 @@ function NewDoctor({ updateBatal, updateSimpan, callData }) {
                 type="number"
                 onChange={(event) => setphone(event.target.value)}
               />
-              {errorphone && (
+              {/* {errorphone && (
                 <span className="error mt-4">Nomor Telepon harus diisi!</span>
-              )}
+              )} */}
             </div>
           </div>
           <div className="row align-items-center align-self-center">
@@ -169,9 +205,9 @@ function NewDoctor({ updateBatal, updateSimpan, callData }) {
                 value={spesialis}
                 onChange={(event) => setspesialis(event.target.value)}
                 /> */}
-              {errorspesialis && (
+              {/* {errorspesialis && (
                 <span className="error mt-4">Spesialisasi harus diisi!</span>
-              )}
+              )} */}
             </div>
           </div>
           <div className="row align-items-center align-self-center">
