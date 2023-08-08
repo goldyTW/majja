@@ -317,9 +317,9 @@ function DoctorList({ updateRes }) {
               <div className="col-lg-8 col-12 modalSubtitleData">
                 {showpassword ? password : '*********'} 
                 <Icon
-                  icon="mdi:eye"
+                  icon={!showpassword ? "mdi:eye" : "mdi:eye-off"}
                   className="ms-2 align-self-center"
-                  onClick={() => setshowpassword(true)}
+                  onClick={() => setshowpassword(!showpassword)}
                   style={{
                     cursor: "pointer",
                     fontSize: "16px",
