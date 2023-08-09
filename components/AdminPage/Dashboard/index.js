@@ -20,6 +20,7 @@ function Dashboard({ updateRes }) {
   const [oneyear, setoneyear] = useState(new Date(today.getFullYear(), 0, 1));
   const [yesterday, setyesterday] = useState(new Date(today.getFullYear(), today.getMonth(), today.getDate()-1));
   const [tomorrow, settomorrow] = useState(new Date(today.getFullYear(), today.getMonth(), today.getDate()+1));
+  const [nextyear, setnextyear] = useState(new Date(today.getFullYear()+1, today.getMonth(), today.getDate()));
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [range, setrange] = useState("1");
   const [modalOpen, setModalOpen] = useState(false);
@@ -101,9 +102,10 @@ function Dashboard({ updateRes }) {
       },
     })
       .then(res => {
+        console.log(res.data)
         setcountBook(res.data.data.curr_book)
         setcountEarning(res.data.data.curr_book * 50000)
-        setcountPasien(res.data.count.curr_pasien)
+        setcountPasien(res.data.data.curr_pasien)
         
         setpercentBook(res.data.count.book_percent)
         setpercentEarning(res.data.count.earning_percent)
@@ -114,19 +116,19 @@ function Dashboard({ updateRes }) {
   function handleRangeChange(value) {
     setrange(value);
     if (value == "7") {
-      callData(sevendays, today)
+      // callData(sevendays, today)
       percentage('weekly')
     }
     else if (value == "30") {
-      callData(thirtydays, today)
+      // callData(thirtydays, today)
       percentage('monthly')
     }
     else if (value == "1") {
-      callData(yesterday, tomorrow)
+      // callData(yesterday, tomorrow)
       percentage('daily')
     }
     else {
-      callData(oneyear, today)
+      // callData(oneyear, today)
       percentage('annualy')
     }
   }
@@ -220,7 +222,7 @@ function Dashboard({ updateRes }) {
 
   const fetchData = async () => {
     try {
-      callData(yesterday, tomorrow)
+      callData(yesterday, nextyear)
       percentage('daily')
 
       axios.get(`${url}/api/patient/list`, {
@@ -278,7 +280,8 @@ function Dashboard({ updateRes }) {
               <div className="row">
                 <SmallCard className="col m-2">
                   <StyledCardTitle>Total Booking</StyledCardTitle>
-                  <StyledCardContent>{dataBooking && dataBooking.length}</StyledCardContent>
+                  {/* <StyledCardContent>{dataBooking && dataBooking.length}</StyledCardContent> */}
+                  <StyledCardContent>{countBook}</StyledCardContent>
                   <StyledCardSubTitle>
                     {range == "1" ? "Daily" : range == "7" ? 'Weekly' : range == "30" ? 'Monthly' : range == "365" ? 'Yearly' : "All"} Bookings {
                       percentBook > 0 ? <StyledCardPercentPos>+{percentBook?.toFixed(2)}%</StyledCardPercentPos> : <StyledCardPercentNeg>{percentBook?.toFixed(2)}%</StyledCardPercentNeg>
@@ -287,7 +290,8 @@ function Dashboard({ updateRes }) {
                 </SmallCard>
                 <SmallCard className="col m-2">
                   <StyledCardTitle>Total Pasien</StyledCardTitle>
-                  <StyledCardContent>{jumlahpasien} </StyledCardContent>
+                  {/* <StyledCardContent>{jumlahpasien} </StyledCardContent> */}
+                  <StyledCardContent>{countPasien} </StyledCardContent>
                   <StyledCardSubTitle>
                     {range == "1" ? "Daily" : range == "7" ? 'Weekly' : range == "30" ? 'Monthly' : range == "365" ? 'Yearly' : "All"} Patients {
                       percentPasien > 0 ? <StyledCardPercentPos>+{percentPasien?.toFixed(2)}%</StyledCardPercentPos> : <StyledCardPercentNeg>{percentPasien?.toFixed(2)}%</StyledCardPercentNeg>
@@ -296,7 +300,8 @@ function Dashboard({ updateRes }) {
                 </SmallCard>
                 <SmallCard className="col m-2">
                   <StyledCardTitle>Pemasukan Booking</StyledCardTitle>
-                  <StyledCardContent>Rp {dataBooking && (dataBooking.length * 50000).toLocaleString('id')},00</StyledCardContent>
+                  {/* <StyledCardContent>Rp {dataBooking && (dataBooking.length * 50000).toLocaleString('id')},00</StyledCardContent> */}
+                  <StyledCardContent>Rp {(countEarning).toLocaleString('id')},00</StyledCardContent>
                   <StyledCardSubTitle>
                     {range == "1" ? "Daily" : range == "7" ? 'Weekly' : range == "30" ? 'Monthly' : range == "365" ? 'Yearly' : "All"} Earning {
                       percentEarning > 0 ? <StyledCardPercentPos>+{percentEarning?.toFixed(2)}%</StyledCardPercentPos> : <StyledCardPercentNeg>{percentEarning?.toFixed(2)}%</StyledCardPercentNeg>

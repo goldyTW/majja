@@ -20,9 +20,9 @@ export default async function exportDoctor(req, res) {
         const data = await excuteQuery({
             query: `SELECT * FROM 
             (SELECT COUNT(*) AS curr_book, COUNT(DISTINCT(phone)) AS curr_pasien FROM booking 
-            WHERE tanggal_booking <= CURDATE() AND tanggal_booking > CURDATE() + 1 AND payment_status = 'settlement') a,
+            WHERE tanggal_booking between CURDATE()-1 AND CURDATE()+365 and payment_status = 'settlement') a,
             (SELECT COUNT(*) AS last_book, COUNT(DISTINCT(phone)) AS last_pasien FROM booking
-            WHERE tanggal_booking <= CURDATE() - 2 AND tanggal_booking > CURDATE() - 1 AND payment_status = 'settlement') b`,
+            WHERE tanggal_booking BETWEEN CURDATE()-2 AND CURDATE()+364 AND payment_status = 'settlement') b`,
             values:'',
         });
         
