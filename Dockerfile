@@ -1,5 +1,7 @@
 FROM node:18-alpine AS base
-RUN apk add --no-cache openssh-client build-base python
+# Install OpenSSH client
+RUN apk update && \
+    apk add --no-cache openssh-client
 
 # Install dependencies only when needed
 FROM base AS deps
