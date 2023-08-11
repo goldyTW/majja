@@ -115,15 +115,15 @@ function Setting() {
                         {imagePreview ? 
                         <img src={imagePreview} width={105} height={140} className="img-upload" alt="upload" style={{objectFit:'cover', borderRadius:'5px'}} /> 
                         : 
-                        (imgawal ?
+                        // (imgawal ?
                         <Image src={imgawal ? imgawal : "/images/imgplaceholder.svg"} width={105} height={140} alt="upload" style={{objectFit:'cover', borderRadius:'5px'}}  />
-                        :
-                        <Icon
-                          icon="svg-spinners:12-dots-scale-rotate"
-                          className="text-right"
-                          style={{ fontSize: "38px", color: '#DF3034' }}
-                        />
-                        )
+                        // :
+                        // <Icon
+                        //   icon="svg-spinners:12-dots-scale-rotate"
+                        //   className="text-right"
+                        //   style={{ fontSize: "38px", color: '#DF3034' }}
+                        // />
+                        // )
                         }
 
                         {
