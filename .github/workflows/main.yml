@@ -8,14 +8,12 @@ on:
 env:
   NEXT_PUBLIC_API_URL: https://apidev.klinikmajja.com
   NEXT_PUBLIC_AWSENDPOINT: https://paymentdev.klinikmajja.com
-  NEXT_PUBLIC_DATABASE_HOST: 127.0.0.1
-  NEXT_PUBLIC_DATABASE_PORT: 5522
-  NEXT_PUBLIC_MYSQL_DATABASE: user_db_dev
-  NEXT_PUBLIC_MYSQL_USER: user_dev
-  NEXT_PUBLIC_MYSQL_PASSWORD: Majj@clinic2023
-  SSH_HOST: 203.161.53.80
-  SSH_USERNAME: root
-  SSH_PASSWORD: Majj@clinic2023
+  NEXT_PUBLIC_DATABASE_HOST: dev_mysql_container
+  NEXT_PUBLIC_DATABASE_PORT: 3306
+  NEXT_PUBLIC_MYSQL_DATABASE: majja_db
+  NEXT_PUBLIC_MYSQL_USER: majja_user
+  NEXT_PUBLIC_MYSQL_PASSWORD: majja_dev_db_3124535
+
 
 jobs:
   deploy:
@@ -34,9 +32,6 @@ jobs:
           echo NEXT_PUBLIC_MYSQL_DATABASE=${{ env.NEXT_PUBLIC_MYSQL_DATABASE }} >> .env
           echo NEXT_PUBLIC_MYSQL_USER=${{ env.NEXT_PUBLIC_MYSQL_USER }} >> .env
           echo NEXT_PUBLIC_MYSQL_PASSWORD=${{ env.NEXT_PUBLIC_MYSQL_PASSWORD }} >> .env
-          echo SSH_HOST=${{ env.SSH_HOST }} >> .env
-          echo SSH_USERNAME=${{ env.SSH_USERNAME }} >> .env
-          echo SSH_PASSWORD=${{ env.SSH_PASSWORD }} >> .env
           # Tambahkan variabel lain sesuai kebutuhan Anda
 
       - name: Login to Docker Hub
@@ -57,9 +52,9 @@ jobs:
       - name: SSH to server and pull the latest image
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ env.SSH_HOST }}
-          username: ${{ env.SSH_USERNAME }}
-          password: ${{ env.SSH_PASSWORD }}
+          host: 203.161.53.80
+          username: root
+          password: Majj@clinic2023
           port: 22
           script: |
             sudo docker rm frontend_hub_dev_container -f
@@ -78,7 +73,6 @@ jobs:
             -e NEXT_PUBLIC_MYSQL_DATABASE=${{ env.NEXT_PUBLIC_MYSQL_DATABASE }} \
             -e NEXT_PUBLIC_MYSQL_USER=${{ env.NEXT_PUBLIC_MYSQL_USER }} \
             -e NEXT_PUBLIC_MYSQL_PASSWORD=${{ env.NEXT_PUBLIC_MYSQL_PASSWORD }} \
-            -e SSH_PASSWORD=${{ env.SSH_PASSWORD }} -e SSH_USER=${{ env.SSH_USERNAME }} -e SSH_HOST=${{ env.SSH_HOST }} \
             -d naufalikhsan85/frontend_hub_dev
 
             sudo docker builder prune -f
