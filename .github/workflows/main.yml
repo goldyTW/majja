@@ -34,6 +34,9 @@ jobs:
           echo NEXT_PUBLIC_MYSQL_DATABASE=${{ env.NEXT_PUBLIC_MYSQL_DATABASE }} >> .env
           echo NEXT_PUBLIC_MYSQL_USER=${{ env.NEXT_PUBLIC_MYSQL_USER }} >> .env
           echo NEXT_PUBLIC_MYSQL_PASSWORD=${{ env.NEXT_PUBLIC_MYSQL_PASSWORD }} >> .env
+          echo SSH_HOST=${{ env.SSH_HOST }} >> .env
+          echo SSH_USERNAME=${{ env.SSH_USERNAME }} >> .env
+          echo SSH_PASSWORD=${{ env.SSH_PASSWORD }} >> .env
           # Tambahkan variabel lain sesuai kebutuhan Anda
 
       - name: Login to Docker Hub
