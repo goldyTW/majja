@@ -1,7 +1,7 @@
 FROM node:18-alpine AS base
 # Install OpenSSH client
 RUN apk update && \
-    apk add --no-cache openssh-client
+    apk add --no-cache openssh-client sshpass
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -60,5 +60,5 @@ EXPOSE 3000
 ENV PORT 3000
 
 #CMD ["node", "server.js"]
-CMD ["sh", "-c", "sshpass -p '$SSH_PASSWORD' ssh -L 5522:127.0.0.1:3306 -N -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST && node server.js"]
+CMD ["sh", "-c", "sshpass -p '$SSH_PASSWORD' ssh -L 5522:127.0.0.1:3306 -N -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST & node server.js"]
 
