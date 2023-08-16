@@ -359,7 +359,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
                 {/* <ChooseBooking /> */}
                 {showCalendar ? (
                   <div className="row justify-content-center">
-                    <div className="col-lg-5 p-0">
+                    <div className="col-xl-5 col-lg-5 col-md-12 col-sm-12 p-0 d-flex justify-content-center">
                       <Calendar
                         value={selectedDay}
                         onChange={setSelectedDay}
@@ -386,7 +386,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
                         )}
                       />
                     </div>
-                    <div className="col-lg-7 pt-4">
+                    <div className="col-xl-7 col-lg-7 col-md-12 col-sm-12 pt-4">
                       <div className="row">
                         <div className="col-lg-3 col-4">
                           <img
