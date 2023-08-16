@@ -45,7 +45,7 @@ const Header = () => {
         <Nav>
           <Logo>
             <Link href="/">
-              <img src="/images/Logo.svg" />
+              <Img src="/images/Logo.png" />
             </Link>
           </Logo>
           <Menu isMenuOpen={isMenuOpen}>
@@ -251,8 +251,19 @@ const Nav = styled.nav`
 `;
 
 const Logo = styled.div`
-  font-size: 24px;
-  font-weight: bold;
+  /* font-size: 24px;
+  font-weight: bold; */
+  max-width: 10rem;
+  @media (max-width: 1124px) and (min-width: 769px) {
+    min-width: 6rem;
+  }
+`;
+
+const Img = styled.img`
+  max-width: 100%; /* Ensure the image doesn't exceed its parent's width */
+  height: auto;
+  display: block;
+  margin: 0 auto; /* Center the image horizontally if needed */
 `;
 
 const SpHomeScroll = styled.span`
@@ -320,6 +331,9 @@ const Menu = styled.ul`
     li {
       margin: 10px 0;
     }
+  }
+  @media (max-width: 1124px) and (min-width: 769px) {
+    min-width: 6rem;
   }
 `;
 

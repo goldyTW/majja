@@ -53,7 +53,7 @@ function Dashboard({ updateRes }) {
   const openModal = (record) => {
     setModalOpen(true)
     setnama(record.name)
-    setjadwal(moment(record.tanggal_booking).format('DD MMM YY') + ', ' + record.jam_booking)
+    setjadwal(moment(record.tanggal_booking).format('DD MMM') + ', ' + moment(record.jam_booking, 'HH:mm:ss').format('HH:mm'))
     setdokter(record.nama_dokter)
     setstatusbook(record.action_status)
     settelepon(record.phone)
@@ -375,7 +375,7 @@ function Dashboard({ updateRes }) {
           <div className="row justify-content-center">
             <div className="col-4">
               <span className="modalSubtitle">Jadwal Konsultasi</span><br></br>
-              <span className="modalSubtitleData">{moment(jadwal).format('DD MMM, HH:mm')}</span>
+              <span className="modalSubtitleData">{jadwal}</span>
             </div>
             <div className="col-5">
               <span className="modalSubtitle">Dokter</span><br></br>
