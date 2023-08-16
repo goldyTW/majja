@@ -102,7 +102,6 @@ function Dashboard({ updateRes }) {
       },
     })
       .then(res => {
-        console.log(res.data)
         setcountBook(res.data.data.curr_book)
         setcountEarning(res.data.data.curr_book * 50000)
         setcountPasien(res.data.data.curr_pasien)

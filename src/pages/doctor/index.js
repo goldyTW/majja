@@ -94,7 +94,8 @@ function Dokter() {
       },
     })
     .then(res => {
-      setDataDokter([...slice2(res.data.dokter, 0, 9)])
+      // setDataDokter([...slice2(res.data.dokter, 0, 9)])
+      setDataDokter(res.data.dokter)
       setDataDokterMaster(res.data.dokter)
     })
 
