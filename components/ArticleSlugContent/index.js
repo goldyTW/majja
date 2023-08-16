@@ -16,9 +16,7 @@ function ArticleSlugContent({ data }) {
       <SubTitleWrapper>
         <StyledSubTitle>
           Terakhir diperharui:{" "}
-          {moment(data && data[0] && data[0].data.date.iv).format(
-            "DD MMMM YYYY"
-          )}
+          {data && data[0] && data[0].data.date.iv}
         </StyledSubTitle>
         <StyledSubTitle>
           Ditinjau oleh: {data && data[0] && data[0].data.creator && data[0].data.creator.iv}
