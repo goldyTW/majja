@@ -94,7 +94,8 @@ function Dokter() {
       },
     })
     .then(res => {
-      setDataDokter([...slice2(res.data.dokter, 0, 9)])
+      // setDataDokter([...slice2(res.data.dokter, 0, 9)])
+      setDataDokter(res.data.dokter)
       setDataDokterMaster(res.data.dokter)
     })
 
@@ -185,7 +186,7 @@ function Dokter() {
             {
              DataDokter?.map((item, i) => (
                 <div className='col-xl-4 col-lg-6 col-12 p-3' key={i}>
-                  <div className='cardDokterList' >
+                  <div className='cardDokterList container' >
                     <div className='d-flex'>
                       <img src={item?.gambar} height="140px" width="105px" style={{borderRadius:'5px', objectFit:'cover'}}></img>
                       <div className='ps-3' style={{height:"140px"}}>
