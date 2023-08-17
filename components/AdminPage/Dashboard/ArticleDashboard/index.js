@@ -209,7 +209,7 @@ function ArticleDashboard({ updateRes }) {
                           </div>
                           <div className="row pt-3">
                             <div className="col-lg-6">
-                              <Icon
+                              {/* <Icon
                                 icon="mdi:eye"
                                 className="ms-1 align-self-center"
                                 style={{
@@ -217,7 +217,7 @@ function ArticleDashboard({ updateRes }) {
                                   fontSize: "16px",
                                   color: "#8D8D8D",
                                 }}
-                              />
+                              /> */}
                             </div>
                             <div className="col-lg-6 align-self-center text-end" style={{ cursor: "pointer", fontSize: "16px", color: "#8D8D8D" }}
                               onClick={() => deleteArticle(item.id)}>

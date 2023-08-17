@@ -19,6 +19,7 @@ function NewDoctor({ updateBatal, updateSimpan, callData }) {
   const [xpText, setxpText] = useState();
   const [status, setstatus] = useState();
   const [email, setemail] = useState();
+  const [isValidEmail, setIsValidEmail] = useState(true);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const url = process.env.NEXT_PUBLIC_API_URL ||  "http://localhost:3000";
@@ -58,6 +59,10 @@ function NewDoctor({ updateBatal, updateSimpan, callData }) {
       setLoading(false)
       // seterrorPass(true)
       toast.error('Passsword harus diisi!')
+    }
+    else if(!isValidEmail){
+      setLoading(false)
+      toast.error('Email tidak valid')
     }
     else{
       axios.post(`${url}/api/doctors/add`,
@@ -118,6 +123,18 @@ function NewDoctor({ updateBatal, updateSimpan, callData }) {
     setemail("");
     updateBatal(false);
   }
+
+  // email on change
+  const handleEmailChange = (e) => {
+    const newEmail = e.target.value;
+    setemail(newEmail);
+    setIsValidEmail(validateEmail(newEmail));
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    return emailRegex.test(email);
+  };
 
   return (
     <Wrapper className="container-fluid">
@@ -219,6 +236,7 @@ function NewDoctor({ updateBatal, updateSimpan, callData }) {
                 <div className="col-6 py-1">
                   <Input
                     placeholder="3"
+                    min={0}
                     type="number"
                     style={{ width: "100%" }}
                     value={xpNumber}
@@ -277,7 +295,8 @@ function NewDoctor({ updateBatal, updateSimpan, callData }) {
               <Input
                 placeholder="emaildokter@mail.com"
                 value={email}
-                onChange={(event) => setemail(event.target.value)}
+                onChange={handleEmailChange}
+                className={isValidEmail ? null : 'ant-input-error'}
               />
               {erroremail && (
                 <span className="error mt-4">Email harus diisi!</span>

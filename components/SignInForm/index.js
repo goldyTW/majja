@@ -14,6 +14,8 @@ export default function SignInForm({loading, setLoading}) {
   const [password, setPassword] = useState('');
   const [errorEmail, setErrorEmail] = useState(false);
   const [errorEmail2, setErrorEmail2] = useState(false);
+  const [errorEmail3, setErrorEmail3] = useState(false);
+  const [isValidEmail, setIsValidEmail] = useState(true);
   const [errorPass, setErrorPass] = useState(false);
   const [errorPass2, setErrorPass2] = useState(false);
   const router = useRouter();
@@ -27,7 +29,8 @@ export default function SignInForm({loading, setLoading}) {
     setErrorEmail(false)
     setErrorPass(false)
     setErrorEmail2(false)
-     setErrorPass2(false)
+    setErrorPass2(false)
+    setErrorEmail3(false) 
     const data = {
       email,
       password,
@@ -37,6 +40,10 @@ export default function SignInForm({loading, setLoading}) {
       setLoading(false)
       setErrorEmail(true)
     } 
+    else if(!isValidEmail) {
+      setLoading(false)
+      setErrorEmail3(true)
+    }
     else if(!password){
       setLoading(false)
       setErrorPass(true)
@@ -88,6 +95,17 @@ export default function SignInForm({loading, setLoading}) {
     }
   };
 
+  const handleEmailChange = (e) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+    setIsValidEmail(validateEmail(newEmail));
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    return emailRegex.test(email);
+  };
+
   return (
     <div className='text-center mx-auto'>
       <div className="col-12">
@@ -96,12 +114,13 @@ export default function SignInForm({loading, setLoading}) {
           className="text-lg"
           placeholder="youremail@mail.com"
           value={email}
-          onChange={(event) => setEmail(event.target.value)}
+          onChange={handleEmailChange}
           prefix={<UserOutlined className='iconOutline' />} 
           />
         {
           errorEmail ?  <p className='error pt-2'>Fill Your Email!</p> : <p>{''}</p>
         }
+        { errorEmail3 ? <p className='error pt-2'>Invalid Email</p> : <p>{''}</p> }
         {
           errorEmail2 ?  <p className='error'>User Doesn&apos;t Exist!</p> : <p>{''}</p>
         }
@@ -126,12 +145,12 @@ export default function SignInForm({loading, setLoading}) {
       </div>
       <div className="col-12 pt-2">
         <div className='row'>
-          <div className="col-6 text-start">
+          {/* <div className="col-6 text-start">
             <Checkbox className="forgot-password" onChange={onChangeRemember}>Remember me</Checkbox>
-          </div>
-          <div className="col-6 text-end">
+          </div> */}
+          {/* <div className="col-6 text-end">
             <a className="forgot-password" href="/email-password">Forgot Password?</a>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="col-12 pt-5">
