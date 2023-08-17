@@ -258,7 +258,7 @@ function Dashboard() {
           style={{ height:"100vh", width:'100px', position:'fixed'}}
         >
           <Logo>
-            <img src="/images/Logo.svg" />
+            <Img src="/images/Logo.png" />
           </Logo>
           <Menu
             theme="light"
@@ -325,6 +325,13 @@ function Dashboard() {
 
 const Logo = styled.div`
   padding: 1.5rem;
+`;
+
+const Img = styled.img`
+  max-width: 100%; /* Ensure the image doesn't exceed its parent's width */
+  height: auto;
+  display: block;
+  margin: 0 auto; /* Center the image horizontally if needed */
 `;
 
 export default Dashboard;

@@ -186,7 +186,7 @@ function Dokter() {
             {
              DataDokter?.map((item, i) => (
                 <div className='col-xl-4 col-lg-6 col-12 p-3' key={i}>
-                  <div className='cardDokterList' >
+                  <div className='cardDokterList container' >
                     <div className='d-flex'>
                       <img
                         src={(item?.gambar != "" ? item?.gambar : '/images/pp.png')}
