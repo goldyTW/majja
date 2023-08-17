@@ -79,13 +79,15 @@ function Articles({data}) {
             {newsList?.map((item, index) => (
               <div className="col-xl-3 col-lg-5 col-md-6 col-12 p-3" key={index} onClick={()=> router.push('/articles/' + item?.id)}>
                 <>
-                  <img src={item?.data?.photo?.iv} width="100%"></img>
+                  <img src={item?.data?.photo?.iv} width="100%" style={{aspectRatio:'4/3', objectFit:'cover', borderRadius:'10px 10px 0 0'}}></img>
                   <CardWrapper className="p-3">
                     <CardTitleWrapper>
                       <CardTitle>{item?.data?.judul?.iv}</CardTitle>
                     </CardTitleWrapper>
                     <CardBodyText>
-                      {moment(item?.data?.date?.iv).format("DD MMMM YYYY")}
+                      {item?.data?.date?.iv
+                      // moment(item?.data?.date?.iv).format("DD MMMM YYYY")
+                      }
                     </CardBodyText>
                     <CardBodyWrapper className="my-2">
                       <CardBodyText><div dangerouslySetInnerHTML={{__html: item?.data?.content?.iv}}></div> </CardBodyText>
@@ -174,6 +176,7 @@ const CardBodyWrapper = styled.div`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   overflow: hidden;
+  max-height:100px;
 `;
 
 const CardBodyText = styled.p`

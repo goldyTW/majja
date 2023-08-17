@@ -188,7 +188,11 @@ function Dokter() {
                 <div className='col-xl-4 col-lg-6 col-12 p-3' key={i}>
                   <div className='cardDokterList' >
                     <div className='d-flex'>
-                      <img src={item?.gambar} height="140px" width="105px" style={{borderRadius:'5px', objectFit:'cover'}}></img>
+                      <img
+                        src={(item?.gambar != "" ? item?.gambar : '/images/pp.png')}
+                        alt={item?.nama}
+                        height="140px" width="105px" style={{borderRadius:'5px', objectFit:'cover'}}
+                      />
                       <div className='ps-3' style={{height:"140px"}}>
                         <span className='cardDokterTitle'>{item?.nama}</span>
                         <p className='cardDokterText'>{item?.posisi}</p>

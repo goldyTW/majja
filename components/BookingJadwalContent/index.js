@@ -226,6 +226,10 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
     moment(i, "H").format("HH:mm:ss")
   );
 
+  const dgnPerjanjian = Array.from({ length: 12 }, (_, i) =>
+  moment(i+8, "H").format("HH:mm")
+);
+
   const handleSelectedTime = (e) => {
     setValuejam(e);
   };
@@ -442,6 +446,13 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
                         >
                           {jadwal && jadwal.map((item, i) => 
                               dayName == item.hari &&
+                              item.jam_mulai == "Dengan Perjanjian" ?
+                              dgnPerjanjian.filter((time) => isFutureTime(time)).map((time, i3) => (
+                                <Option key={i3} value={time}>
+                                  {time}
+                                </Option>
+                              ))
+                              :
                               // Pecah jam item.jam menjadi array jam_booking yang telah dipesan
                               filteredTimes(
                                 availableTimes,

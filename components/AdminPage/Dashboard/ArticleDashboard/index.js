@@ -200,16 +200,16 @@ function ArticleDashboard({ updateRes }) {
                   {
                     data?.queryArtikelContents.map((item, i) => (
                       <div className="col-lg-3 col-md-4 col-12 py-2" key={i}>
-                        <img src={item.data.photo != null ? item.data.photo.iv : ""} width="100%"></img>
+                        <img src={item.data.photo != null ? item.data.photo.iv : ""} width="100%" style={{aspectRatio:'4/3', objectFit:'cover', borderRadius:'10px 10px 0 0'}}></img>
                         <div className="cardArticle p-4" >
                           <h1 className="cardArticleTitle">{item.data.judul.iv}</h1>
                           {/* <a className="cardDate my-2">{item.data.date != null ? item.data.date.iv : ''}</a> */}
-                          <div className="cardArticleText mb-1">
+                          <div className="cardArticleText mb-1" style={{maxHeight:'90px'}}>
                             <div dangerouslySetInnerHTML={{ __html: item.data.content.iv }} />
                           </div>
                           <div className="row pt-3">
                             <div className="col-lg-6">
-                              <Icon
+                              {/* <Icon
                                 icon="mdi:eye"
                                 className="ms-1 align-self-center"
                                 style={{
@@ -217,7 +217,7 @@ function ArticleDashboard({ updateRes }) {
                                   fontSize: "16px",
                                   color: "#8D8D8D",
                                 }}
-                              />
+                              /> */}
                             </div>
                             <div className="col-lg-6 align-self-center text-end" style={{ cursor: "pointer", fontSize: "16px", color: "#8D8D8D" }}
                               onClick={() => deleteArticle(item.id)}>

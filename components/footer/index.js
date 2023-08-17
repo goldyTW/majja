@@ -22,22 +22,24 @@ function Footer() {
                         <h3 className='footer-title'>
                             {/* {i18n.t('product')} */} Information
                             </h3>
-                        <p className='footer-text'>Home</p>
+                        <p className='footer-text'>
+                        <Link2 to="hero">Home</Link2>
+                        </p>
                         <p className='footer-text'>
                         <Link2 to="offering">
                             About
                         </Link2>
                         </p>
-                        <p className='footer-text' onClick={() => router.push('/doctors')}>Doctors</p>
-                        <p className='footer-text' onClick={() => router.push('/services')}>Services</p>
+                        <p className='footer-text' style={{cursor: 'pointer'}} onClick={() => router.push('/doctor')}>Doctors</p>
+                        <p className='footer-text' style={{cursor: 'pointer'}} onClick={() => router.push('/services')}>Services</p>
                     </div>
                     <div className="col-lg-2 col-md-3 col-12 p-md-2 px-4 py-2">
                         <h3 className='footer-title'>
                             {/* {i18n.t('product')} */} Supports
                             </h3>
-                        <p className='footer-text'>Location</p>
-                        <p className='footer-text'>Contacts</p>
-                        <p className='footer-text' onClick={() => router.push('/articles')}>Articles</p>
+                        <p className='footer-text'><Link2 to="findUs">Location</Link2></p>
+                        <p className='footer-text'><Link2 to="findUs">Contacts</Link2></p>
+                        <p className='footer-text' style={{cursor: 'pointer'}} onClick={() => router.push('/articles')}>Articles</p>
                     </div>
                     <div className="col-lg-3 col-md-5 col-12 p-md-2 px-4 py-2">
                         <h3 className='footer-title'>Connect With Us</h3>
