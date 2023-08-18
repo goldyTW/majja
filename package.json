@@ -30,6 +30,7 @@
     "jsonwebtoken": "^9.0.0",
     "lottie-react": "^2.4.0",
     "moment": "^2.29.4",
+    "mysql": "^2.18.1",
     "mysql2": "^3.5.1",
     "next": "^13.4.5",
     "nextjs-cors": "^2.1.2",

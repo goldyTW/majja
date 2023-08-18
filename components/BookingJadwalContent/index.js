@@ -96,6 +96,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
   var dayName = days[d.getDay()];
   const [today, setToday] = useState(new Date());
   const [bookingan, setbookingan] = useState([])
+  const [booking, setBooking] = useState([]); // Inisialisasi variabel booking
   // const [DayofWeek, setDayofWeek] = useState(utils().getDayOfWeek());
   const [filteredDate, setFilteredDate] = useState([]);
   const [valuejam, setValuejam] = useState();
@@ -122,47 +123,30 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
 
   useEffect(() => {
     axios
-      .post(`${url}/api/booking/checkbooking`, {
-        today: moment(today).format("YYYY-MM-DD"),
-        id_dokter: id,
-      }, {
+      .get(`${url}/api/booking/checkbooking`, {
+        params: {
+          tanggal: moment(selectedDay).format("YYYY-MM-DD"),
+          id_dokter: id,
+        },
         headers: {
           "Content-Type": "application/json",
         },
       })
       .then((res) => {
-        const bookinganData = res.data.result.map((item) => ({
-          tanggal_booking: new Date(item.tanggal_booking),
-          jam_booking: item.jam_booking.split(":")[0],
-        }));
-        setbookingan(bookinganData);
-  
-        // Ambil data jam_booking dari tabel booking untuk dokter dan tanggal tertentu
-        const getBookedTimes = async () => {
-          try {
-            const response = await axios.post(
-              `${url}/api/booking/getBookedTimes`,
-              {
-                id_dokter: router.query.id,
-                tanggal_booking: moment(selectedDay).format("YYYY-MM-DD"),
-              },
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }
-            );
-            // Menyimpan jam_booking yang telah dipesan dalam state availableTimes
-            setAvailableTimes(response.data.bookedTimes);
-          } catch (error) {
-            console.error("Error fetching booked times: ", error);
-          }
-        };
-  
-        getBookedTimes();
+        const result = res.data.result;
+
+        if (result.length > 0) {
+          // Ambil data pertama dari hasil query
+          const booking = result[0];
+          setBooking(booking);
+        } else {
+          // Set state booking menjadi null jika hasil query kosong
+          setBooking(null);
+        }
       });
-      setValuejam(null);
-  }, [selectedDay]); // Jalankan hanya saat selectedDay berubah
+
+    setValuejam(null);
+}, [selectedDay]);
 
   const onChangeKategori = (e) => {
     setKategoriPasien(e.target.value);
@@ -430,45 +414,53 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
                         </RenderJamWrapper> */}
 
                         {/* Render pilihan waktu temu yang telah difilter */}
-                        <span className="waktuTemu pt-5">Waktu Temu</span><br></br>
-                         <Select
+                        <div>
+                          {booking ? (
+                            <ul>
+                              <li>
+                                Tanggal Booking: {booking.tanggal_booking}, Jam Booking: {booking.jam_booking}
+                              </li>
+                            </ul>
+                          ) : (
+                            <p>Tidak ada jadwal booking tersedia. Selected Day: {moment(selectedDay).format("YYYY-MM-DD")}. ID Dokter: {id}</p>
+                          )}
+                        </div>
+                        <span className="waktuTemu pt-5">Waktu Temu</span><br />
+                        <Select
                           showSearch
-                          className='py-1 waktuTemuSelector'
+                          className="py-1 waktuTemuSelector"
                           placeholder="Pilih jam"
                           optionFilterProp="children"
                           onChange={handleSelectedTime}
                           value={valuejam}
                         >
-                          {jadwal && jadwal.map((item, i) => 
-                              dayName == item.hari &&
-                              // Pecah jam item.jam menjadi array jam_booking yang telah dipesan
-                              filteredTimes(
-                                availableTimes,
-                                pecahjam(item.jam_mulai+'-'+item.jam_selesai).map((item2, i2) => item2)
-                              )
-                              .filter((time) => isFutureTime(time)) // Filter only future times
-                              .map((time, i3) => (
-                                <Option key={i3} value={time}>
-                                {time}
-                                </Option>
-                              ))
-                              )
-                          }
-                          {/* {data.jadwal &&
-                            data.jadwal.map((item, i) =>
+                          {jadwal &&
+                            jadwal.map((item, i) =>
                               dayName === item.hari &&
-                              item.jam2 &&
                               filteredTimes(
                                 availableTimes,
-                                pecahjam(item.jam2).map((item3, i3) => item3)
+                                pecahjam(item.jam_mulai + "-" + item.jam_selesai).map(
+                                  (time, i2) => time
+                                )
                               )
-                              .filter((time) => isFutureTime(time)) // Filter only future times
-                              .map((time, i3) => (
-                                <Option key={i3} value={time}>
-                                  {time}
-                                </Option>
-                              ))
-                            )} */}
+                                .filter((time) => isFutureTime(time))
+                                .map((time, i3) => {
+                                  // Cek apakah waktu ini sudah dibooking
+                                  const isBooked =
+                                    booking &&
+                                    moment(booking.tanggal_booking).isSame(selectedDay, "day") &&
+                                    moment(booking.jam_booking, "HH:mm").format("HH:mm") === time;
+
+                                  // Jika belum dibooking, render opsi
+                                  if (!isBooked) {
+                                    return (
+                                      <Option key={i3} value={time}>
+                                        {time}
+                                      </Option>
+                                    );
+                                  }
+                                })
+                            )}
                         </Select>
                       </div>
                     </div>
