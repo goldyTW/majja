@@ -5,29 +5,70 @@ import ButtonAlt from '../ButtonAlt'
 function LayananHome() {
     const layanan = [
         {
-            title:'Ovulasi Induksi',
-            text:'Sebuah metode pengobatan untuk merangsang ovulasi pada wanita yang mengalami masalah kesuburan.'
+            image:'/images/services_icon/andrologi.png',
+            title:'Andrologi',
+            text:'Sindrom polikistik ovarium atau polycystic ovarian syndrome (PCOS) adalah gangguan hormon yang terjadi pada wanita di usia su..'
         },
         {
-            title:'Intrauterine Insemination',
-            text:'Sebuah prosedur inseminasi buatan untuk meningkatkan peluang kehamilan.'
+            image: '/images/services_icon/endometriosis.png',
+            title:'Endometriosis',
+            text:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lobortis, lorem at finibus imperdiet, erat erat tincidunt nunc'
         },
         {
-            title:'Liquid Based Cytology',
-            text:'Sebuah metode pemeriksaan untuk mendeteksi perubahan sel-sel yang bisa menjadi tanda awal kanker serviks.'
+            image: '/images/services_icon/implantasi.png',
+            title:'Implantasi & Kehamilan Dini',
+            text:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lobortis, lorem at finibus imperdiet, erat erat tincidunt nunc'
         },
         {
-            title:'Kesuburan',
-            text:'Sebuah metode pemeriksaan untuk mendeteksi perubahan sel-sel yang bisa menjadi tanda awal kanker serviks.'
+            image: '/images/services_icon/reproduksi_genetik.png',
+            title:'Reproduksi Genetik',
+            text:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lobortis, lorem at finibus imperdiet, erat erat tincidunt nunc'
         },
         {
-            title:'Deteksi HPV',
-            text:'Human Papillomavirus (HPV) dapat menyebabkan kanker pada area genital pria dan wanita.'
+            image: '/images/services_icon/masalah_kesuburan.png',
+            title:'Masalah Kesuburan',
+            text:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lobortis, lorem at finibus imperdiet, erat erat tincidunt nunc'
         },
         {
-            title:'USG Transvaginal',
-            text:'Sebuah prosedur pemeriksaan gambaran organ reproduksi wanita dengan probe kecil melalui vagina.'
+            image: '/images/services_icon/prakonsepsi.png',
+            title:'Prakonsepsi ECS',
+            text:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lobortis, lorem at finibus imperdiet, erat erat tincidunt nunc'
         },
+        {
+            image: '/images/services_icon/operasi.png',
+            title:'Operasi Endometriosis',
+            text:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lobortis, lorem at finibus imperdiet, erat erat tincidunt nunc'
+        },
+        {
+            image: '/images/services_icon/stimulasi.png',
+            title:'Stimulasi Ovarium',
+            text:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lobortis, lorem at finibus imperdiet, erat erat tincidunt nunc'
+        },
+        {
+            image: '/images/services_icon/anomali.png',
+            title:'Anomali Genital Wanita',
+            text:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lobortis, lorem at finibus imperdiet, erat erat tincidunt nunc'
+        },
+        // {
+        //     title:'Endometriosis',
+        //     text:'Sebuah prosedur inseminasi buatan untuk meningkatkan peluang kehamilan.'
+        // },
+        // {
+        //     title:'Liquid Based Cytology',
+        //     text:'Sebuah metode pemeriksaan untuk mendeteksi perubahan sel-sel yang bisa menjadi tanda awal kanker serviks.'
+        // },
+        // {
+        //     title:'Kesuburan',
+        //     text:'Sebuah metode pemeriksaan untuk mendeteksi perubahan sel-sel yang bisa menjadi tanda awal kanker serviks.'
+        // },
+        // {
+        //     title:'Deteksi HPV',
+        //     text:'Human Papillomavirus (HPV) dapat menyebabkan kanker pada area genital pria dan wanita.'
+        // },
+        // {
+        //     title:'USG Transvaginal',
+        //     text:'Sebuah prosedur pemeriksaan gambaran organ reproduksi wanita dengan probe kecil melalui vagina.'
+        // },
     ]
   return (
     <section className='layananWrapper py-5' id='layanan'>
@@ -37,7 +78,7 @@ function LayananHome() {
                 {
                     layanan.map((item, i) => (
                         <div className='col-xl-4 col-lg-4 col-md-6 col-12 p-4' key={i} data-aos="fade-up">
-                            <CardLayanan title={item.title} text={item.text}></CardLayanan>
+                            <CardLayanan image={item.image} title={item.title} text={item.text}></CardLayanan>
                         </div>
                     ))
                 }

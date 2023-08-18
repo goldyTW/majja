@@ -201,6 +201,22 @@
     font-size: 14px;
     color: #DF3034;
 }
+.layananUsia{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 150%;
+    color: #433B3B;
+}
+.layananUsiaSelected{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 150%;
+    color: #DF3034;
+}
 @media (max-width:576px) {
     .card{
         min-height: 420px;
