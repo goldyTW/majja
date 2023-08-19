@@ -5,25 +5,25 @@
   z-index: 90;
   transition: all 300ms;
 }
-.wabtn{
+/* .wabtn{
   width: 85%;
-}
+} */
 @media(max-width:768px){
   .SidebtnContainer{
-    right: -5%;
+    right: 15%;
     bottom: 2%;
   }
   .wabtn{
-    width: 90%;
+    width: 200%;
   }
 }
 @media(max-width:576px){
   .SidebtnContainer{
-    right: -5%;
+    right: 25%;
     bottom: 2%;
   }
   .wabtn{
-    width: 95%;
+    width: 200%;
   }
 }
 /* 

@@ -242,7 +242,6 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
     return selectedDateTime.isAfter(moment());
   };
 
-
   function bayar(){
     setLoading(true);
     seterrornama(false)
@@ -279,11 +278,20 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
           'Content-Type': 'application/json', 
         },}).then(res => {
           if(res.status==200){
+            if(kategoriPasien == "baru"){
+              axios.post(`${url}/api/patient/add`,{nama, telp:phone.toString()},{
+                headers: {
+                  'Content-Type': 'application/json', 
+                },}).then(res => {
+                  if(res.status != 200){
+                    toast.error(res.data.msg)
+                  }
+                })
+            }
             axios.post(`${awsendpoint}/gateway1/snap/checkout`,{booking_id: res.data.result.insertId, amount: 50000, full_name: nama, phone: phone.toString()},{ 
               headers: {
               'Content-Type': 'application/json',
-            },}).
-            then(res => {
+            },}).then(res => {
               if(res.status == 200){
                 if (typeof window !== 'undefined') {
                 localStorage.setItem('nama_booking', nama)
@@ -446,7 +454,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
                         >
                           {jadwal && jadwal.map((item, i) => 
                               dayName == item.hari &&
-                              item.jam_mulai == "Dengan Perjanjian" ?
+                              (item.jam_mulai == "Dengan Perjanjian" ?
                               dgnPerjanjian.filter((time) => isFutureTime(time)).map((time, i3) => (
                                 <Option key={i3} value={time}>
                                   {time}
@@ -465,7 +473,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
                                 </Option>
                               ))
                               )
-                          }
+                              )}
                           {/* {data.jadwal &&
                             data.jadwal.map((item, i) =>
                               dayName === item.hari &&
@@ -633,7 +641,11 @@ const StyledSectionTitle = styled.div`
   font-size: var(--fs-32);
   color: #a5090c;
 
-  padding: 0 0 0 5%;
+  padding: 0 0 0 6%;
+
+  @media(max-width:576px){
+    padding: 0 0 0 8%;
+  }
 `;
 
 const StyledSelected = styled.div`

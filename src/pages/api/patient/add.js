@@ -17,15 +17,36 @@ export default async function exportDoctor(req, res) {
     
     try {
         if (nama !== undefined && telp !== undefined){
-            const pasien = await excuteQuery({
-                query: `INSERT INTO tb_pasien (nama, telp, id_record) VALUES("${nama}", "${telp}", null)`,
-                values:'',
+
+            const rekamMedis = Math.floor(100000 + Math.random() * 900000);
+            const cek = await excuteQuery({
+                query:'SELECT no_rekam_medis FROM tb_pasien where no_rekam_medis = ?',
+                values:[rekamMedis],
             });
-            if (pasien.error == null){
-                res.status(200).json({ id_pasien:pasien.insertId, mgs:"Success" });
-            } else {
-                res.status(200).json({ msg:pasien.error.sqlMessage })
+            if(cek.length > 0){
+                return
             }
+            else{
+                const cekpasien = await excuteQuery({
+                    // query: `SELECT * FROM tb_pasien LIMIT 100`,
+                    query:'SELECT * FROM tb_pasien where telp = ?',
+                    values:[telp],
+                });
+                if(cekpasien.length > 0){
+                    res.status(400).json({ msg:'Pasien Sudah Terdaftar! Silahkan Pilih Kategori Pasien Lama!' })
+                }
+                else{
+                    const pasien = await excuteQuery({
+                        query: `INSERT INTO tb_pasien (nama, telp, no_rekam_medis) VALUES(?, ?, ?)`,
+                        values:[nama, telp, rekamMedis],
+                    });
+                    if (pasien.error == null){
+                        res.status(200).json({ id_pasien:pasien.insertId, mgs:"Success" });
+                    } else {
+                        res.status(400).json({ msg:pasien.error.sqlMessage })
+                    }
+                }
+            }            
         } else {
             throw Error("Data not complete")
         }

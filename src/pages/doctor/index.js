@@ -68,8 +68,8 @@ function Dokter() {
     }
   };
 
-  const handlePagination = async (value) => {
-    if((value*9)-1 > DataDokterMaster.length){
+  const handlePagination = (value) => {
+    if(DataDokterMaster.length < value*9){
       setDataDokter([...slice2(DataDokterMaster, (value-1)*9, DataDokterMaster.length)])
     }
     else{
@@ -84,7 +84,7 @@ function Dokter() {
     }
 
     return subarray;
-}
+  }
 
   useEffect(() => {
     setLoading(true)
@@ -94,8 +94,8 @@ function Dokter() {
       },
     })
     .then(res => {
-      // setDataDokter([...slice2(res.data.dokter, 0, 9)])
-      setDataDokter(res.data.dokter)
+      setDataDokter([...slice2(res.data.dokter, 0, 9)])
+      // setDataDokter(res.data.dokter)
       setDataDokterMaster(res.data.dokter)
     })
 
@@ -214,7 +214,7 @@ function Dokter() {
                           <div className='col-2 text'>{hari}</div>
                           {
                             DataJadwalDokter?.map((jdwl, i) => (
-                              (jdwl.id_dokter == item.id_dokter && 
+                              (jdwl?.id_dokter == item?.id_dokter && 
                                ( jdwl.hari == hari &&
                                 <div className='col-5'><span className='text2'>{jdwl.jam_mulai+(jdwl.jam_selesai != null ? (' - '+jdwl.jam_selesai):'')}</span></div>
                                 // :
@@ -227,7 +227,7 @@ function Dokter() {
                         </div>
                        ))
                     }
-                    <Link href={'/booking/'+item.id_dokter} style={{textDecoration:'none'}}>
+                    <Link href={'/booking/'+item?.id_dokter} style={{textDecoration:'none'}}>
                     <div className='button2 mt-5'>Booking Jadwal</div>
                     </Link>
                   </div>

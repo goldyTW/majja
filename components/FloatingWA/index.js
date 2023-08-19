@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Icon } from "@iconify/react";
+import Image from "next/image";
 
 function FloatingWA() {
   // const [show, setShow] = useState(false);
@@ -15,7 +16,7 @@ function FloatingWA() {
     <div className="SidebtnContainer">
       <div className="container">
         <Link href="/">
-          <img src="/images/WA.svg" className="wabtn"></img>
+          <Image src="/images/WA.svg" width={293.75} height={100} className="wabtn"></Image>
         </Link>
         {/* <div className="iconContainer">
           <Icon
