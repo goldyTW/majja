@@ -98,7 +98,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
   const [today, setToday] = useState(new Date());
   const [bookingan, setbookingan] = useState([])
   // const [DayofWeek, setDayofWeek] = useState(utils().getDayOfWeek());
-  const [filteredDate, setFilteredDate] = useState([]);
+  // const [filteredDate, setFilteredDate] = useState([]);
   const [valuejam, setValuejam] = useState();
   const [nama, setnama] = useState();
   const [phone, setphone] = useState();
@@ -119,51 +119,21 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
   const awsendpoint = process.env.NEXT_PUBLIC_AWSENDPOINT ;
   const { Option } = Select;
   const { TextArea } = Input;
-  const [availableTimes, setAvailableTimes] = useState([]);
 
   useEffect(() => {
-    axios
-      .post(`${url}/api/booking/checkbooking`, {
-        today: moment(today).format("YYYY-MM-DD"),
-        id_dokter: id,
-      }, {
+    let url2 = "http://localhost:3000";
+    axios.post(`${url2}/api/booking/checkbooking`, {today: moment(today).format("YYYY-MM-DD"), id_dokter: id}, {
         headers: {
           "Content-Type": "application/json",
         },
       })
       .then((res) => {
-        const bookinganData = res.data.result.map((item) => ({
-          tanggal_booking: new Date(item.tanggal_booking),
-          jam_booking: item.jam_booking.split(":")[0],
-        }));
-        setbookingan(bookinganData);
-  
-        // Ambil data jam_booking dari tabel booking untuk dokter dan tanggal tertentu
-        const getBookedTimes = async () => {
-          try {
-            const response = await axios.post(
-              `${url}/api/booking/getBookedTimes`,
-              {
-                id_dokter: router.query.id,
-                tanggal_booking: moment(selectedDay).format("YYYY-MM-DD"),
-              },
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }
-            );
-            // Menyimpan jam_booking yang telah dipesan dalam state availableTimes
-            setAvailableTimes(response.data.bookedTimes);
-          } catch (error) {
-            console.error("Error fetching booked times: ", error);
-          }
-        };
-  
-        getBookedTimes();
+        res.data.result.length > 0 && res.data.result.map((item) => (
+          bookingan.push({tanggal_booking: new Date(item.tanggal_booking), jam_booking:Number(item.jam_booking.split(":")[0])+'.00'})
+        ));
       });
       setValuejam(null);
-  }, [selectedDay]); // Jalankan hanya saat selectedDay berubah
+  }, []);
 
   const onChangeKategori = (e) => {
     setKategoriPasien(e.target.value);
@@ -173,23 +143,6 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
       setshowrekamMedis(false);
     }
   };
-
-  // const filterData = availableDays.filter(
-  //   (item) =>
-  //     item.day == selectedDay.day &&
-  //     item.month == selectedDay.month &&
-  //     item.year == selectedDay.year
-  // );
-  // const mappingJam = filterData.map((item) => item.hour);
-  // const availableHour = mappingJam.map((item) => item.available);
-  // const unavailableHour = mappingJam.map((item) => item.unavailable);
-  // const allHour = availableHour.flat(1).concat(unavailableHour.flat(1));
-  // const sortAllHour = allHour.sort(function (a, b) {
-  //   return a - b;
-  // });
-  // const chkDisabled = () => {
-  //   if (allHour.indexOf(unavailableHour) !== -1) return true;
-  // };
 
   // Minggu jadi Days off
   const AllHariMingguOffInThisYear = getArrayEveryNDayDates(["0"]);
@@ -217,8 +170,25 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
   const availableDaysDynamic = transformDatesToFormatDaysOn(AllHariOnInThisYear);
 
   // Memfilter waktu yang telah dipesan dari pilihan waktu yang akan ditampilkan
-  const filteredTimes = (availableTimes, allTimes) => {
-    return allTimes.filter((time) => !availableTimes.includes(time));
+  const filteredTimes = (bookedTimes, allTimes) => {
+    let arrJam;
+    if(bookedTimes.length > 0){
+      let setJam = new Set();
+      console.log(allTimes)
+      allTimes.map((all) => (
+        bookedTimes.map((booked) => (
+          moment(d).format('YYYY-MM-DD') == moment(booked.tanggal_booking).format('YYYY-MM-DD') ?
+          (all != booked.jam_booking && setJam.add(all))
+          :
+          setJam.add(all)
+        ))
+      ))
+      arrJam = Array.from(setJam)
+    }
+    else{
+      arrJam = allTimes
+    }
+    return arrJam
   };
 
   // Membuat array dari 00:00:00 hingga 23:59:59
@@ -227,8 +197,9 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
   );
 
   const dgnPerjanjian = Array.from({ length: 12 }, (_, i) =>
-  moment(i+8, "H").format("HH:mm")
-);
+  // moment(i+8, "H").format("HH:mm")
+    Number(i+8)+'.00'
+  );
 
   const handleSelectedTime = (e) => {
     setValuejam(e);
@@ -331,9 +302,9 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
     }
   }
 
-  function pecahjam(jam){
+  function pecahjam(jam, bookingan){
     var temp = [];
-    var jamstring
+    var jamstring;
     if(jam){
       jam.split('.')
       var awal = jam[0]+jam[1];
@@ -341,7 +312,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
       var akhir = jam[6]+jam[7];
       var akhirconverted = Number(akhir)
       for(var i = awalconverted; i < akhirconverted; i++){
-        jamstring = i+'.00',
+        jamstring = i+'.00';
         temp.push(jamstring)
       }
     }  
@@ -455,7 +426,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
                           {jadwal && jadwal.map((item, i) => 
                               dayName == item.hari &&
                               (item.jam_mulai == "Dengan Perjanjian" ?
-                              dgnPerjanjian.filter((time) => isFutureTime(time)).map((time, i3) => (
+                              filteredTimes(bookingan, dgnPerjanjian).filter((time) => isFutureTime(time)).map((time, i3) => (
                                 <Option key={i3} value={time}>
                                   {time}
                                 </Option>
@@ -463,7 +434,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
                               :
                               // Pecah jam item.jam menjadi array jam_booking yang telah dipesan
                               filteredTimes(
-                                availableTimes,
+                                bookingan,
                                 pecahjam(item.jam_mulai+'-'+item.jam_selesai).map((item2, i2) => item2)
                               )
                               .filter((time) => isFutureTime(time)) // Filter only future times
