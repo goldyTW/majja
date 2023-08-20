@@ -121,8 +121,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
   const { TextArea } = Input;
 
   useEffect(() => {
-    let url2 = "http://localhost:3000";
-    axios.post(`${url2}/api/booking/checkbooking`, {today: moment(today).format("YYYY-MM-DD"), id_dokter: id}, {
+    axios.post(`${url}/api/booking/checkbooking`, {today: moment(today).format("YYYY-MM-DD"), id_dokter: id}, {
         headers: {
           "Content-Type": "application/json",
         },
