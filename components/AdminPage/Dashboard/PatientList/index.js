@@ -16,11 +16,10 @@ function PatientList({ updateRes }) {
   const [DataPatient, setDataPatient] = useState()
   const [DataPatientMaster, setDataPatientMaster] = useState();
   const [loading, setLoading] = useState(false);
-   const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   const router = useRouter();
-
   const onSearch = (value) => {
-    const filteredData =  DataPatientMaster.filter(entry =>
+    const filteredData = DataPatientMaster.filter(entry =>
       (entry.nama.toLowerCase().includes(value))
     );
     setDataPatient(filteredData);
@@ -28,20 +27,20 @@ function PatientList({ updateRes }) {
 
   useEffect(() => {
     setLoading(true)
-    if(!Cookies.get('token')){
+    if (!Cookies.get('token')) {
       router.push('/login')
     }
-    else{
-    axios.get(`${url}/api/patient/list`,{
+    else {
+      axios.get(`${url}/api/patient/list`, {
         headers: {
           'Content-Type': 'application/json',
         },
       })
-      .then(res => {
-        setLoading(false)
-        setDataPatient(res.data.pasien)
-        setDataPatientMaster(res.data.pasien)
-      })
+        .then(res => {
+          setLoading(false)
+          setDataPatient(res.data.pasien)
+          setDataPatientMaster(res.data.pasien)
+        })
     }
   }, [])
 
@@ -59,24 +58,29 @@ function PatientList({ updateRes }) {
       width: 350,
     },
     {
-        title: "No Rekam Medis",
-        dataIndex: "no_rekam_medis",
-        width: 350,
-      },
+      title: "No Rekam Medis",
+      dataIndex: "no_rekam_medis",
+      width: 350,
+    },
     {
       title: "Status",
       dataIndex: "kategori",
-      sorter: (a, b) => a.kategori - b.kategori,
+      sorter: (a, b) => a.kategori.localeCompare(b.kategori),
       render: ((_, record) => (
         record.kategori == "baru" ?
-        <Tag color="geekblue">
-          Pasien Baru
-        </Tag>
-        :
-        <Tag color="magenta">
-          Pasien Lama
-        </Tag>
-    )),
+          <Tag color="geekblue">
+            Pasien Baru
+          </Tag>
+          :
+          record.kategori == "lama" ?
+            <Tag color="magenta">
+              Pasien Lama
+            </Tag>
+            :
+            <Tag color="red">
+              Unknown
+            </Tag>
+      )),
     },
   ];
 
@@ -89,30 +93,30 @@ function PatientList({ updateRes }) {
         <BigCard className="col m-2">
           {/* <StyledTitle>Jadwal Booking Konsultasi</StyledTitle> */}
           <div className="col-lg-3 col-12 ">
-          <Search
-          className="py-2"
-          placeholder="Cari Pasien"
-          allowClear
-          onSearch={onSearch}
-        />
-        </div>
-          <div>
-          {
-           !loading ?
-            <Table
-              columns={columns}
-              dataSource={DataPatient}
-              pagination={false}
+            <Search
+              className="py-2"
+              placeholder="Cari Pasien"
+              allowClear
+              onSearch={onSearch}
             />
-            :
-            <div className="loader">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
+          </div>
+          <div>
+            {
+              !loading ?
+                <Table
+                  columns={columns}
+                  dataSource={DataPatient}
+                  pagination={false}
+                />
+                :
+                <div className="loader">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
             }
           </div>
         </BigCard>
