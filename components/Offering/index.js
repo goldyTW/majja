@@ -90,8 +90,6 @@ const layananTua = [
   }
 ]
 
-
-
 function Offering() {
   useEffect(() => {
     Aos.init();
@@ -306,7 +304,8 @@ const Wrapper = styled.div`
 `;
 
 const ImgWrapper = styled.div`
-  padding: 0 50%;
+  // padding: 0 50%;
+  width: 85%;
   margin-top: 5%;
 
   @media (max-width: 1120px) {
