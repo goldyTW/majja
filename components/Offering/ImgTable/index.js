@@ -101,6 +101,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: flex-start;
   padding: 1rem;
+  padding-left:2.5rem;
 
   background: #ffffff;
   box-shadow: 0px 0px 2rem rgba(192, 192, 192, 0.25);

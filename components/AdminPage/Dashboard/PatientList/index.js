@@ -66,7 +66,7 @@ function PatientList({ updateRes }) {
     {
       title: "Status",
       dataIndex: "kategori",
-      sorter: (a, b) => a.kategori - b.kategori,
+      sorter: (a, b) => a.kategori.localeCompare(b.kategori),
       render: ((_, record) => (
         record.kategori == "baru" ?
         <Tag color="geekblue">
