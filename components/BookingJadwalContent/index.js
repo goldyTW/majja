@@ -173,7 +173,6 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
     let arrJam;
     if(bookedTimes.length > 0){
       let setJam = new Set();
-      console.log(allTimes)
       allTimes.map((all) => (
         bookedTimes.map((booked) => (
           moment(d).format('YYYY-MM-DD') == moment(booked.tanggal_booking).format('YYYY-MM-DD') ?
