@@ -36,15 +36,18 @@ function DetailBooking({ value, dateItem, showCalendar, setshowCalendar, bayar,l
           borderRadius: "1.5rem",
         }}
       >
-        {value ? (
+        {/* {value ? ( */}
           <div>
             <TopWrapper>
               <StyledText>Sesi Konsultasi</StyledText>
+              {
+                dateItem &&
               <StyledText>
                 {dt.format("dddd")}, {dateItem.day}{" "}
                 {getMonthName(dateItem.month)} {dateItem.year}
               </StyledText>
-              <StyledText>Jam {moment(value, "HH").format("HH:mm")}</StyledText>
+              }
+              <StyledText>Jam {value ? moment(value, "HH").format("HH:mm") : ''}</StyledText>
             </TopWrapper>
             <StyledDashed />
             <BottomWrapper>
@@ -62,9 +65,13 @@ function DetailBooking({ value, dateItem, showCalendar, setshowCalendar, bayar,l
               !loading ? 
                 (
                   showCalendar ? 
-                  <LoginButton className="button" onClick={() => setshowCalendar(false)}>Selanjutnya</LoginButton>
+                  (value?
+                  <LoginButton onClick={() => setshowCalendar(false)}>Selanjutnya</LoginButton>
                   :
-                  <LoginButton className="button" onClick={() => bayar()}>Bayar</LoginButton>
+                  <DisabledButton onClick={() => setshowCalendar(false)} disabled={true}>Selajutnya</DisabledButton>
+                  )
+                  :
+                  <LoginButton onClick={() => bayar()}>Bayar</LoginButton>
                 )
               :
               <Icon
@@ -74,9 +81,9 @@ function DetailBooking({ value, dateItem, showCalendar, setshowCalendar, bayar,l
               />
             }
             </div>
-         ) : (
+         {/* ) : (
           <></>
-        )} 
+        )}  */}
       </Card>
     </div>
   );
@@ -151,5 +158,23 @@ const LoginButton = styled.button`
 
   margin-top: 15%;
 `;
+
+const DisabledButton = styled.button`
+  background: #ccc;
+  width: 100%;
+  border: 0.2rem solid #ccc;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: var(--fs-16);
+  color: #ffffff;
+  cursor:not-allowed;
+
+  margin-top: 15%;`
+;
 
 export default DetailBooking;
