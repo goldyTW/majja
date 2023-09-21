@@ -558,7 +558,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
         </div>
         {/* </PC> */}
 
-        <MOBILE></MOBILE>
+        {/* <MOBILE></MOBILE> */}
       </Config>
     </Wrapper>
   );
