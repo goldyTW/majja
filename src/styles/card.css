@@ -90,7 +90,7 @@
     font-style: normal;
     font-weight: 600;
     font-size: 18px;
-    line-height: 150%;
+    /* line-height: 150%; */
     color: #433B3B;
 }
 .cardDokterText{
@@ -98,8 +98,14 @@
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
-    line-height: 24px;
+    /* line-height: 24px; */
     color: #8D8D8D;
+}
+.gaktaukenapakokgini{
+    font-family: 'Poppins';
+    font-style: normal;
+    line-height: 5px;
+    color: white !important;
 }
 .buttonAlt{
     padding: 0.7rem 1.4rem;

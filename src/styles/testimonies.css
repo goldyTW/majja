@@ -39,7 +39,9 @@
 }
 .backtestimonies{
     background: url('/images/backtestimonies.png');
+    background-position: center;
     object-fit: contain;
+    background-repeat: no-repeat;
 }
 @media(max-width:768px){
     .swipercarousel{

@@ -39,7 +39,8 @@ function Testimonies() {
   return (
     <Wrapper className='container-fluid py-5 my-5'>
       <h1 className='testi-title mb-4'>Dipercaya Oleh 8,500+ Pelanggan</h1>
-      <div className="row justify-content-center backtestimonies">
+      <div className='backtestimonies'>
+      <div className="row justify-content-center">
         <div className='col-12 my-5'>
           <div className="swipercarousel">
             <Swiper
@@ -77,6 +78,7 @@ function Testimonies() {
           </div>
         </div>
       </div>
+      </div>
     </Wrapper>
   )
 }
@@ -86,10 +88,10 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center; */
 
-  background: transparent;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+  // background: transparent;
+  // background-size: cover;
+  // background-repeat: no-repeat;
+  // background-position: center;
 
   padding: 10%;
 `;

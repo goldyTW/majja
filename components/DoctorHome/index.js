@@ -71,7 +71,8 @@ function DoctorHome() {
                                     <div className='row'>
                                         <div className='col-2'></div>
                                         <div className='col-10'>
-                                            <p className='cardDokterTitle'>{item.name}</p>
+                                            <p className='cardDokterTitle'>{item.name}</p> 
+                                            {/* <p className='gaktaukenapakokgini'></p> */}
                                             <p className='cardDokterText'>{item.position}</p>
                                             <div className='d-flex'>
                                                 <Icon

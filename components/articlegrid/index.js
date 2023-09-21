@@ -51,7 +51,8 @@ function ArticleGridHome({newsList}) {
                     <h1 className="cardArticleTitle">{item.data.judul.iv}</h1>
                     <div className="cardArticleText my-2" style={{ maxHeight:'90px'}}  dangerouslySetInnerHTML={{__html: item.data.content.iv}}>
                     </div>
-                    <BacaSelengkapnya link={'/articles/'+item.id}></BacaSelengkapnya>
+                    <br></br>
+                    <BacaSelengkapnya link={'/articles/'+item.id} color='#DF3034'></BacaSelengkapnya>
                 </div>
             </div>
             ))
