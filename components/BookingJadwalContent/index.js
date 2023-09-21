@@ -7,6 +7,7 @@ import "@amir04lm26/react-modern-calendar-date-picker/lib/DatePicker.css";
 import { Calendar, utils } from "@amir04lm26/react-modern-calendar-date-picker";
 import { Icon } from "@iconify/react";
 import moment from "moment";
+require('moment/locale/id');
 import { useRouter } from "next/router";
 import {
   convertDaysToNumbers,
@@ -92,9 +93,12 @@ import { toast } from 'react-toastify';
 function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
   const router = useRouter();
   const [selectedDay, setSelectedDay] = useState(utils().getToday());
-  var days = ['Minggu','Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-  var d = new Date(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day);
-  var dayName = days[d.getDay()];
+  let days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+  // let d = new Date(selectedDay.year + '-' + selectedDay.month + '-' + selectedDay.day);
+  // let dayName = days[d.getDay()];
+  let date = moment(`${selectedDay.year}-${selectedDay.month}-${selectedDay.day}`, 'YYYY-MM-DD');
+  date.locale('id');
+  let dayName = date.format('dddd');
   const [today, setToday] = useState(new Date());
   const [bookingan, setbookingan] = useState([])
   // const [DayofWeek, setDayofWeek] = useState(utils().getDayOfWeek());
@@ -114,24 +118,24 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
   const [errorrekam, seterrorrekam] = useState(false);
   const regExPhone = /^(\+62|62)8[1-9]{1}\d{1}[\s-]?\d{4}[\s-]?\d{2,5}$/;
   const [loading, setLoading] = useState(false);
-  const url =  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
- 
-  const awsendpoint = process.env.NEXT_PUBLIC_AWSENDPOINT ;
+  const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+
+  const awsendpoint = process.env.NEXT_PUBLIC_AWSENDPOINT;
   const { Option } = Select;
   const { TextArea } = Input;
 
   useEffect(() => {
-    axios.post(`${url}/api/booking/checkbooking`, {today: moment(today).format("YYYY-MM-DD"), id_dokter: id}, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+    axios.post(`${url}/api/booking/checkbooking`, { today: moment(today).format("YYYY-MM-DD"), id_dokter: id }, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((res) => {
         res.data.result.length > 0 && res.data.result.map((item) => (
-          bookingan.push({tanggal_booking: new Date(item.tanggal_booking), jam_booking:Number(item.jam_booking.split(":")[0])+'.00'})
+          bookingan.push({ tanggal_booking: new Date(item.tanggal_booking), jam_booking: Number(item.jam_booking.split(":")[0]) + '.00' })
         ));
       });
-      setValuejam(null);
+    setValuejam(null);
   }, []);
 
   const onChangeKategori = (e) => {
@@ -171,19 +175,19 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
   // Memfilter waktu yang telah dipesan dari pilihan waktu yang akan ditampilkan
   const filteredTimes = (bookedTimes, allTimes) => {
     let arrJam;
-    if(bookedTimes.length > 0){
+    if (bookedTimes.length > 0) {
       let setJam = new Set();
       allTimes.map((all) => (
         bookedTimes.map((booked) => (
           moment(d).format('YYYY-MM-DD') == moment(booked.tanggal_booking).format('YYYY-MM-DD') ?
-          (all != booked.jam_booking && setJam.add(all))
-          :
-          setJam.add(all)
+            (all != booked.jam_booking && setJam.add(all))
+            :
+            setJam.add(all)
         ))
       ))
       arrJam = Array.from(setJam)
     }
-    else{
+    else {
       arrJam = allTimes
     }
     return arrJam
@@ -195,8 +199,8 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
   );
 
   const dgnPerjanjian = Array.from({ length: 12 }, (_, i) =>
-  // moment(i+8, "H").format("HH:mm")
-    Number(i+8)+'.00'
+    // moment(i+8, "H").format("HH:mm")
+    Number(i + 8) + '.00'
   );
 
   const handleSelectedTime = (e) => {
@@ -211,18 +215,18 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
     return selectedDateTime.isAfter(moment());
   };
 
-  function bayar(){
+  function bayar() {
     setLoading(true);
     seterrornama(false)
     seterrorphone(false)
     seterrorkategori(false)
     seterrorrekam(false)
-    if(!nama || !phone || !kategoriPasien){
-      if(!nama){
+    if (!nama || !phone || !kategoriPasien) {
+      if (!nama) {
         setLoading(false);
         seterrornama(true)
       }
-      if(!phone){
+      if (!phone) {
         setLoading(false);
         seterrorphone(true)
       }
@@ -230,7 +234,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
       //   seterrorphone2(true)
       //   setLoading(false)
       // }
-      if(!kategoriPasien){
+      if (!kategoriPasien) {
         setLoading(false);
         seterrorkategori(true)
       }
@@ -238,55 +242,61 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
       //   setLoading(false);
       //   seterrorrekam(true)
       // }
-    }else{
+    } else {
       const jam = valuejam.split('.');
-      axios.post(`${url}/api/booking/add`,{nama, phone:phone.toString(), kategori:kategoriPasien, no_rekam_medis:rekamMedis, keluhan, 
-        tanggal_booking:moment(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day).format("YYYY-MM-DD"), jam_booking: moment.utc(jam, "THH Z").format('HH:mm:ss'), 
-        id_dokter:router.query.id, action_status:1},{
+      axios.post(`${url}/api/booking/add`, {
+        nama, phone: phone.toString(), kategori: kategoriPasien, no_rekam_medis: rekamMedis, keluhan,
+        tanggal_booking: moment(selectedDay.year + '-' + selectedDay.month + '-' + selectedDay.day).format("YYYY-MM-DD"), jam_booking: moment.utc(jam, "THH Z").format('HH:mm:ss'),
+        id_dokter: router.query.id, action_status: 1
+      }, {
         headers: {
-          'Content-Type': 'application/json', 
-        },}).then(res => {
-          if(res.status==200){
-            if(kategoriPasien == "baru"){
-              axios.post(`${url}/api/patient/add`,{nama, telp:phone.toString()},{
-                headers: {
-                  'Content-Type': 'application/json', 
-                },}).then(res => {
-                  if(res.status != 200){
-                    toast.error(res.data.msg)
-                  }
-                })
-            }
-            axios.post(`${awsendpoint}/gateway1/snap/checkout`,{booking_id: res.data.result.insertId, amount: 50000, full_name: nama, phone: phone.toString()},{ 
+          'Content-Type': 'application/json',
+        },
+      }).then(res => {
+        if (res.status == 200) {
+          if (kategoriPasien == "baru") {
+            axios.post(`${url}/api/patient/add`, { nama, telp: phone.toString() }, {
               headers: {
-              'Content-Type': 'application/json',
-            },}).then(res => {
-              if(res.status == 200){
-                if (typeof window !== 'undefined') {
-                localStorage.setItem('nama_booking', nama)
-                localStorage.setItem('phone_booking', phone.toString())
-                localStorage.setItem('kategori_booking',kategoriPasien)
-                localStorage.setItem('rekamMedis_booking', rekamMedis)
-                localStorage.setItem('keluhan_booking', keluhan)
-                localStorage.setItem('tanggal_booking', moment(selectedDay.year+'-'+selectedDay.month+'-'+selectedDay.day).format("dddd, YYYY-MM-DD"))
-                localStorage.setItem('jam_booking', moment.utc(jam, "THH Z").format('HH:mm:ss'))
-                localStorage.setItem('idDokter_booking', router.query.id)}
-                var url = res.data.url;
-                window.location.replace(url)
+                'Content-Type': 'application/json',
+              },
+            }).then(res => {
+              if (res.status != 200) {
+                toast.error(res.data.msg)
               }
             })
-          }      
-          else{
-            toast.error('cek kembali data Anda!')
-          } 
+          }
+          axios.post(`${awsendpoint}/gateway1/snap/checkout`, { booking_id: res.data.result.insertId, amount: 50000, full_name: nama, phone: phone.toString() }, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }).then(res => {
+            if (res.status == 200) {
+              if (typeof window !== 'undefined') {
+                localStorage.setItem('nama_booking', nama)
+                localStorage.setItem('phone_booking', phone.toString())
+                localStorage.setItem('kategori_booking', kategoriPasien)
+                localStorage.setItem('rekamMedis_booking', rekamMedis)
+                localStorage.setItem('keluhan_booking', keluhan)
+                localStorage.setItem('tanggal_booking', moment(selectedDay.year + '-' + selectedDay.month + '-' + selectedDay.day).format("dddd, YYYY-MM-DD"))
+                localStorage.setItem('jam_booking', moment.utc(jam, "THH Z").format('HH:mm:ss'))
+                localStorage.setItem('idDokter_booking', router.query.id)
+              }
+              var url = res.data.url;
+              window.location.replace(url)
+            }
+          })
+        }
+        else {
+          toast.error('cek kembali data Anda!')
+        }
       })
-      .catch(function (error) {
-        setLoading(true);
+        .catch(function (error) {
+          setLoading(true);
           if (error.response) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
-            if(error.response.status == 404){
+            if (error.response.status == 404) {
               toast.error(error)
               setLoading(false);
             }
@@ -296,24 +306,25 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
           } else {
             console.log('Error', error.message);
             setLoading(false);
-          }})
+          }
+        })
     }
   }
 
-  function pecahjam(jam, bookingan){
+  function pecahjam(jam, bookingan) {
     var temp = [];
     var jamstring;
-    if(jam){
+    if (jam) {
       jam.split('.')
-      var awal = jam[0]+jam[1];
+      var awal = jam[0] + jam[1];
       var awalconverted = Number(awal)
-      var akhir = jam[6]+jam[7];
+      var akhir = jam[6] + jam[7];
       var akhirconverted = Number(akhir)
-      for(var i = awalconverted; i < akhirconverted; i++){
-        jamstring = i+'.00';
+      for (var i = awalconverted; i < akhirconverted; i++) {
+        jamstring = i + '.00';
         temp.push(jamstring)
       }
-    }  
+    }
     return temp
   }
 
@@ -413,7 +424,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
 
                         {/* Render pilihan waktu temu yang telah difilter */}
                         <span className="waktuTemu pt-5">Waktu Temu</span><br></br>
-                         <Select
+                        <Select
                           showSearch
                           className='py-1 waktuTemuSelector'
                           placeholder="Pilih jam"
@@ -421,9 +432,10 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
                           onChange={handleSelectedTime}
                           value={valuejam}
                         >
-                          {jadwal && jadwal.map((item, i) => 
-                              dayName == item.hari &&
-                              (item.jam_mulai == "Dengan Perjanjian" ?
+                          {jadwal && jadwal.map((item, i) =>
+                          // dayName undefined @ safari, need to convert DateJS to MomentJS or DaysJS, fixed but need to check expected result
+                            dayName == item.hari &&
+                            (item.jam_mulai == "Dengan Perjanjian" ?
                               filteredTimes(bookingan, dgnPerjanjian).filter((time) => isFutureTime(time)).map((time, i3) => (
                                 <Option key={i3} value={time}>
                                   {time}
@@ -433,16 +445,16 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
                               // Pecah jam item.jam menjadi array jam_booking yang telah dipesan
                               filteredTimes(
                                 bookingan,
-                                pecahjam(item.jam_mulai+'-'+item.jam_selesai).map((item2, i2) => item2)
+                                pecahjam(item.jam_mulai + '-' + item.jam_selesai).map((item2, i2) => item2)
                               )
-                              .filter((time) => isFutureTime(time)) // Filter only future times
-                              .map((time, i3) => (
-                                <Option key={i3} value={time}>
-                                {time}
-                                </Option>
-                              ))
-                              )
-                              )}
+                                .filter((time) => isFutureTime(time)) // Filter only future times
+                                .map((time, i3) => (
+                                  <Option key={i3} value={time}>
+                                    {time}
+                                  </Option>
+                                ))
+                            )
+                          )}
                           {/* {data.jadwal &&
                             data.jadwal.map((item, i) =>
                               dayName === item.hari &&
@@ -474,7 +486,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
                         onChange={(event) => setnama(event.target.value)}
                       />
                       {
-                        errornama &&  
+                        errornama &&
                         <span className='error mt-4'>Nama Anda harus diisi!</span>
                       }
                     </div>
@@ -489,7 +501,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
                         onChange={(event) => setphone(event.target.value)}
                       />
                       {
-                        errorphone &&  
+                        errorphone &&
                         <span className='error mt-4'>Nomor Telepon Anda harus diisi!</span>
                       }
                     </div>
@@ -508,7 +520,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
                       </Radio.Group>
                       <br></br>
                       {
-                        errorkategori &&  
+                        errorkategori &&
                         <span className='error mt-4'>Kategori harus dipilih!</span>
                       }
                     </div>
@@ -538,7 +550,7 @@ function BookingJadwalContent({ data, id, jadwal, hariOff, hariOn }) {
                         value={keluhan}
                         onChange={(event) => setkeluhan(event.target.value)}
                         rows={3}
-                      />                                                      
+                      />
                     </div>
                   </div>
                 )}
